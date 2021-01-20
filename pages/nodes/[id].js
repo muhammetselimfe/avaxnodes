@@ -3,10 +3,10 @@ import Head from 'next/head'
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient, { gql } from "apollo-boost";
 
-import Nodes from '../components/Nodes';
-import Layout from '../components/Layout';
+import Node from '../../components/Node';
+import Layout from '../../components/Layout';
 
-import styles from '../styles/Home.module.css'
+import styles from '../../styles/Home.module.css'
 
 export default function Home() {
   const client = new ApolloClient({
@@ -24,7 +24,7 @@ export default function Home() {
         </Head>
 
         <Layout>
-          <Nodes />
+          <Node />
         </Layout>
       </div>
     </ApolloProvider>
