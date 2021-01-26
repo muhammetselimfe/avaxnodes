@@ -3,12 +3,16 @@ import React from 'react'
 import Footer from '../Footer'
 import Header from '../Header'
 
-export const Layout = ({ children }) => {
+import { defaultLocale, locales } from '../../locales';
+import { Link } from '../../routes'
+
+const Layout = ({ router = {}, currentLocale, currentRoute, children, ...rest }) => {
+  const route = `${currentLocale}-home`
   return (
     <>
-      <Header />
+      <Header currentLocale={currentLocale} route={route} currentRoute={currentRoute} />
       {children}
-      <Footer />
+      <Footer currentLocale={currentLocale} route={route} currentRoute={currentRoute} />
     </>
   )
 }

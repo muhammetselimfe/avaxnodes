@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { defaultLocale, locales } from '../../locales';
+import { Link } from '../../routes'
+
 export const Footer = ({ children }) => {
   return (
     <div className="footer">

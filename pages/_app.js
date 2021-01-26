@@ -1,3 +1,7 @@
+import React from 'react';
+import Routes from '../routes';
+import App from 'next/app'
+
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/main.css'
@@ -19,8 +23,37 @@ import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 //   <script src="https://kit.fontawesome.com/f17b18449a.js" crossorigin="anonymous"></script>
 //   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"></link>
 
-function CustomApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+// function CustomApp({ Component, pageProps }) {
+//   return <Component {...pageProps} />
+// }
+
+// export default CustomApp
+
+// import 'bootstrap/dist/css/bootstrap.min.css'
+// import '../styles/globals.css'
+// import '../styles/dd.css'
+
+class CustomApp extends App {
+  static async getInitialProps(props) {
+    const { Component, ctx } = props
+    let pageProps = {};
+
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+      pageProps._url = Routes.match(ctx.asPath);
+    }
+
+    return { pageProps }
+  }
+
+  render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <Component {...pageProps} />
+    )
+  }
 }
 
 export default CustomApp
+

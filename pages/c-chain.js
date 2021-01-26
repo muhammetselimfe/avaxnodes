@@ -2,13 +2,20 @@ import Head from 'next/head'
 
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient, { gql } from "apollo-boost";
+import { useRouter } from 'next/router'
 
 import CChain from '../components/CChain';
 import Layout from '../components/Layout';
+import { defaultLocale } from '../locales'
 
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home(props) {
+  const router = useRouter()
+
+  const currentLocale = ((router || {}).query || {}).locale || defaultLocale
+  const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
+
   const client = new ApolloClient({
     uri: "http://localhost:3000/api/graphql",
   });
@@ -23,7 +30,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Layout>
+        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>
           <CChain />
         </Layout>
       </div>

@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  traefik:
+    image: traefik:1.7-alpine
+    command:
+      - "--logLevel=INFO"
+      - "--defaultentrypoints=http"
+      - "--docker"
+      - "--docker.exposedbydefault=false"
+      - "--docker.domain=test.avalanche.capital"
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: always
+
+  avalanche-capital-test:
+    container_name: avalanche-capital
+    build:
+      # context: ./sites/avalanche-capital
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=avalanche-capital"
+      - "traefik.frontend.rule=Host:test.avalanche.capital"
+    ports:
+      - "7500:3000"
