@@ -16,9 +16,6 @@ export const typeDefs = gql`
     threshold: String
     addresses: [String]
     potentialReward: String
-    delegationFee: String
-    uptime: String
-    connected: Boolean
   }
 
   type Node {
@@ -29,6 +26,11 @@ export const typeDefs = gql`
     stakeAmount: String
     rewardOwner: RewardOwner
     delegators: [Delegator]
+    isPartner: Boolean
+    isSponsored: Boolean
+    delegationFee: String
+    uptime: String
+    connected: Boolean
   }
 
   input NodeFilter {

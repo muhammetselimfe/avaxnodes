@@ -41,7 +41,27 @@ export const resolvers = {
         console.log((page - 1) * perPage, page * perPage)
 
         return {
-          items: allItems.slice((page - 1) * perPage, page * perPage),
+          items: allItems.slice((page - 1) * perPage, page * perPage).map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                isPartner: true,
+                isSponsored: true
+              }
+            }
+            if (index === 1) {
+              return {
+                ...item,
+                isPartner: true,
+                isSponsored: false
+              }
+            }
+            return {
+              ...item,
+              isPartner: false,
+              isSponsored: false
+            }
+          }),
           pagination: {
             page,
             perPage,

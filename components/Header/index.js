@@ -43,11 +43,49 @@ export const Header = ({ children }) => {
             </label>
           </div>
           <div className="collapse navbar-collapse" id="headerMenu">
-            <span className="navbar-text">
+            {/* <span className="navbar-text">
               <select name="countries" id="countries">
                 <option value='us' data-image="/static/images/icons/blank.gif" data-imagecss="flag us" data-title="Netherlands Antilles">EN</option>
                 <option value='ca' data-image="/static/images/icons/blank.gif" data-imagecss="flag ca" data-title="Netherlands Antilles">CA</option>
               </select>
+            </span> */}
+
+            <span className="navbar-text">
+              <div className="ddOutOfVision" id="countries_msddHolder" style={{ height: '0px', overflow: 'hidden', position: 'absolute' }}>
+                <select name="countries" id="countries">
+                  <option value="us" data-image="/static/images/icons/blank.gif" data-imagecss="flag us" data-title="Netherlands Antilles">EN</option>
+                  <option value="ca" data-image="/static/images/icons/blank.gif" data-imagecss="flag ca" data-title="Netherlands Antilles">CA</option>
+                </select>
+              </div>
+              <div className="dd ddcommon borderRadiusTp" id="countries_msdd" style={{ width: '43px' }}>
+                <div className="ddTitle borderRadiusTp">
+                  <span className="undefined"></span>
+                  <span className="arrow fas fa-chevron-down" aria-hidden="true"></span>
+                  <span className="ddTitleText " id="countries_title">
+                    <img src="/static/images/icons/blank.gif" className="flag us fnone" />
+                    <span className="ddlabel">EN</span>
+                  </span>
+                </div>
+                <input id="countries_titleText" type="text" autoComplete="off" className="text shadow borderRadius" style={{ display: 'none' }} />
+                <div
+                  className="ddChild ddchild_ border shadow"
+                  id="countries_child"
+                  style={{ zIndex: '9999', position: 'absolute', top: '30px', display: 'block' }}
+                >
+                  <ul>
+                    <li className="enabled _msddli_ selected" title="Netherlands Antilles">
+                      <img src="/static/images/icons/blank.gif" className="flag us fnone" />
+                      <span className="ddlabel">EN</span>
+                      <div className="clear"></div>
+                    </li>
+                    <li className="enabled _msddli_" title="Netherlands Antilles">
+                      <img src="/static/images/icons/blank.gif" className="flag ca fnone" />
+                      <span className="ddlabel">CA</span>
+                      <div className="clear"></div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </span>
           </div>
 
