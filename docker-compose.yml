@@ -8,7 +8,7 @@ services:
       - "--defaultentrypoints=http"
       - "--docker"
       - "--docker.exposedbydefault=false"
-      - "--docker.domain=test.avalanche.capital"
+      - "--docker.domain=avaxnodes.com"
     ports:
       - target: 80
         published: 80
@@ -17,16 +17,16 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     restart: always
 
-  avalanche-capital-test:
-    container_name: avalanche-capital
+  avaxnodes:
+    container_name: avaxnodes
     build:
-      # context: ./sites/avalanche-capital
+      # context: ./sites/avaxnodes.com
       context: .
       dockerfile: Dockerfile
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=avalanche-capital"
-      - "traefik.frontend.rule=Host:test.avalanche.capital"
+      - "traefik.backend=avaxnodes"
+      - "traefik.frontend.rule=Host:avaxnodes.com"
     ports:
-      - "7500:3000"
+      - "7600:3000"

@@ -17,7 +17,7 @@ export default function NodePage(props) {
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
   const client = new ApolloClient({
-    uri: "http://localhost:3000/api/graphql",
+    uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
   });
 
   return (
