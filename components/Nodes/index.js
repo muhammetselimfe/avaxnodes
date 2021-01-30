@@ -5,12 +5,24 @@ import moment from 'moment'
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
+import { defaultLocale, locales } from '../../locales';
+import { Link } from '../../routes'
+
 const GET_NODES = gql`
-  query GetNodes ($filter: NodeFilter!) {
+  query GetNodes ($filter: NodesFilter!) {
+    stats {
+      totalNodes
+      totalTransactions
+      totalProviders
+      totalDelegations
+      totalBlocks
+      totalParticipation
+    }
     nodes(filter: $filter) {
       items {
         nodeID
         stakeAmount
+        potentialReward
         isPartner
         isSponsored
         delegationFee
@@ -18,8 +30,10 @@ const GET_NODES = gql`
         startTime
         endTime
         delegators {
-          nodeID
-          stakeAmount
+          totalStaked
+          pagination {
+            count
+          }
         }
       }
       pagination {
@@ -124,7 +138,7 @@ const TableControls = () => {
   )
 }
 
-const Stats = () => {
+const Stats = ({ data = {} }) => {
   return (
     <div className="col-md-9 col-sm-9 rectangleSmall">
       <div className="row total-node-wrapper">
@@ -133,7 +147,7 @@ const Stats = () => {
             TOTAL NODES
           </div>
           <div className="FigurText">
-            836
+            {data.totalNodes}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -141,7 +155,7 @@ const Stats = () => {
             TOTAL PROVIDERS
           </div>
           <div className="FigurText">
-            55
+            {data.totalProviders}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -149,7 +163,7 @@ const Stats = () => {
             TOTAL DELIGATIONS
           </div>
           <div className="FigurText">
-            2613
+            {data.totalDelegations}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -157,7 +171,7 @@ const Stats = () => {
             TOTAL BLOCKS
           </div>
           <div className="FigurText">
-            636
+            {data.totalBlocks}
           </div>
         </div>
       </div>
@@ -167,7 +181,7 @@ const Stats = () => {
             TOTAL TRANSACTIONS
           </div>
           <div className="FigurText">
-            410, 316
+            {data.totalTransactions}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -175,23 +189,7 @@ const Stats = () => {
             TOTAL PARTICIPATION
           </div>
           <div className="FigurText">
-            74.3%
-          </div>
-        </div>
-        <div className="col-6 col-md-3 col-sm-3">
-          <div className="TitleText">
-            TOTAL DELIGATIONS
-          </div>
-          <div className="FigurText">
-            2613
-          </div>
-        </div>
-        <div className="col-6 col-md-3 col-sm-3">
-          <div className="TitleText">
-            TOTAL BLOCKS
-          </div>
-          <div className="FigurText">
-            636
+            {data.totalParticipation}
           </div>
         </div>
       </div>
@@ -305,7 +303,7 @@ const Filters = () => {
   )
 }
 
-export const Nodes = () => {
+export const Nodes = ({ currentLocale }) => {
   const filter = {
     page: 1,
     perPage: 10,
@@ -317,6 +315,8 @@ export const Nodes = () => {
   });
 
   console.log(data)
+
+  const locale = currentLocale === defaultLocale ? undefined : currentLocale
 
   // if (loading) return 'Loading...';
   // if (error) return `Error! ${error.message}`;
@@ -336,7 +336,7 @@ export const Nodes = () => {
                 </a>
               </div>
             </div>
-            <Stats />
+            <Stats data={data && data.stats ? data.stats : {}} />
           </div>
         </div>
       </div>
@@ -360,7 +360,7 @@ export const Nodes = () => {
               <TableControls />
               <div className="row mb-3">
                 <div className="col-sm-12">
-                  <table id="datatable" className="display responsive nowrap dataTable" style={{ width: '100%' }}>
+                  <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
                     <thead>
                       <tr>
                         <th>Node ID</th>
@@ -377,9 +377,7 @@ export const Nodes = () => {
                     </thead>
                     <tbody>
                       {data && data.nodes && data.nodes.items && data.nodes.items.map((item, index) => {
-                        const delegatorsStaked = (item.delegators || [])
-                          .map(delegator => delegator.stakeAmount / 1000000000)
-                          .reduce((result, current) => result + current, 0)
+                        const delegatorsStaked = parseFloat(item.delegators.totalStaked)
                         const totalStacked = item.stakeAmount / 1000000000 + delegatorsStaked
                         const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
                         const leftToStack = maxStaked - totalStacked
@@ -395,48 +393,59 @@ export const Nodes = () => {
                         const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
 
                         return (
-                          <tr key={index}>
-                            <td style={{ position: 'relative' }}>
-                              <span id="code">{shortNodeId(item.nodeID)}</span>
-                              <img
-                                data-clipboard-action="copy"
-                                data-clipboard-target="#code"
-                                src="/static/images/pdficon.svg"
-                                className="pdf-image"
-                              />
-                              <div className="table-tab-wrapper">
-                                {item.isSponsored && (<span className="sponsertag">Sponsored</span>)}
-                                {item.isPartner && (<span className="providertag">Provider</span>)}
-                              </div>
 
-                            </td>
-                            <td>{(item.delegators || []).length}</td>
-                            <td colSpan="2">
-                              <div className="progress-bar-wrap relative">
-                                <div className="label-wrap">
-                                  <label className="available-label"><strong>{numberFormat(totalStacked)}</strong>AVAX</label>
-                                  <label className="total-label"><strong>{numberFormat(leftToStack)}</strong>AVAX</label>
-                                </div>
-                                <div className="progress">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    style={{ width: `${stackedPercent}%` }}
-                                    aria-valuenow={stackedPercent}
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
+                              <tr key={index}>
+                                <td scope="row" style={{ position: 'relative' }}>
+                                  <Link route={`${currentLocale}-node`} params={{ locale, id: item.nodeID }}>
+                            <a className="stretched-link text-white">
+
+                                  <span id="code">{shortNodeId(item.nodeID)}</span>
+                                  <img
+                                    data-clipboard-action="copy"
+                                    data-clipboard-target="#code"
+                                    src="/static/images/pdficon.svg"
+                                    className="pdf-image"
                                   />
-                                </div>
-                              </div>
-                            </td>
-                            <td style={{ display: 'none' }}></td>
-                            <td>Nov 23, 2020</td>
-                            <td>364 days</td>
-                            <td>{parseInt(item.delegationFee)}%</td>
-                            <td>10.07%</td>
-                            <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
-                            <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
-                          </tr>
+                                  <div className="table-tab-wrapper">
+                                    {item.isSponsored && (<span className="sponsertag mr-1">Sponsored</span>)}
+                                    {item.isPartner && (<span className="providertag">Provider</span>)}
+                                  </div>
+                                  </a>
+                          </Link>
+
+                                </td>
+                                <td>{item.delegators.pagination.count}</td>
+                                <td colSpan="2">
+                                  <div className="progress-bar-wrap relative">
+                                    <div className="label-wrap">
+                                      <label className="available-label"><strong>{numberFormat(totalStacked)}</strong>AVAX</label>
+                                      <label className="total-label"><strong>{numberFormat(leftToStack)}</strong>AVAX</label>
+                                    </div>
+                                    <div className="progress">
+                                      <div
+                                        className="progress-bar"
+                                        role="progressbar"
+                                        style={{ width: `${stackedPercent}%` }}
+                                        aria-valuenow={stackedPercent}
+                                        aria-valuemin="0"
+                                        aria-valuemax="100"
+                                      />
+                                    </div>
+                                  </div>
+                                </td>
+                                <td style={{ display: 'none' }}></td>
+                                <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
+                                <td>
+                                  {!!daysLeft && (<span>{daysLeft} days left</span>)}
+                                  {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
+                                  {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
+                                </td>
+                                <td>{parseInt(item.delegationFee)}%</td>
+                                <td>{numberFormat(potentialRewardPercent, 3)}%</td>
+                                <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
+                                <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
+                              </tr>
+
                         )
                       })}
                     </tbody>

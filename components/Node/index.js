@@ -1,4 +1,68 @@
-export const Node = () => {
+import { gql, useQuery } from '@apollo/client';
+import { FaCircle } from "react-icons/fa";
+import moment from 'moment'
+
+import dynamic from "next/dynamic";
+
+
+import shortNodeId from '../../utils/shortNodeId';
+import numberFormat from '../../utils/numberFormat';
+
+import { defaultLocale, locales } from '../../locales';
+import { Link } from '../../routes'
+
+
+
+const GET_NODE = gql`
+  query GetNode ($filter: NodeFilter!) {
+    node(filter: $filter) {
+      nodeID
+      stakeAmount
+      potentialReward
+      isPartner
+      isSponsored
+      delegationFee
+      connected
+      startTime
+      endTime
+      delegators {
+        items {
+          nodeID
+          stakeAmount
+        }
+        pagination {
+          page
+          perPage
+          count
+        }
+      }
+    }
+  }
+`;
+
+export const Node = ({ router }) => {
+  console.log({ router })
+
+  const filter = {
+    nodeID: router.query.id,
+    page: 1,
+    perPage: 10,
+  }
+  const { loading, error, data } = useQuery(GET_NODE, {
+    variables: {
+      filter: filter
+    },
+  });
+
+  console.log(data)
+
+  const position = [51.505, -0.09]
+
+  const MapWithNoSSR = dynamic(() => import("../Map"), {
+    ssr: false
+  });
+
+
   return (
     <>
       <div className="contact-wrapper">
@@ -22,14 +86,16 @@ export const Node = () => {
             <div className="row content-inner align-items-center">
               <div className=" col-9 col-md-8 col-sm-8">
                 <div className="Title">
-                  <span id="copycode">NodeID-76KcjHN&MYN&YNVyY2</span>  <img data-clipboard-action="copy" data-clipboard-target="#copycode" src="/static/images/pdficon.svg" className="pdf-image" />
+                  <span id="copycode">{shortNodeId(router.query.id)}</span>  <img data-clipboard-action="copy" data-clipboard-target="#copycode" src="/static/images/pdficon.svg" className="pdf-image" />
                 </div>
 
               </div>
               <div className=" col-3 col-md-4 col-sm-4 ">
+              {data && data.node && data.node.connected && (
                 <div className="PagesubTitle"><i className="fas fa-circle"></i>
-                        ACTIVE
-                    </div>
+                  ACTIVE
+                </div>
+              )}
               </div>
             </div>
           </div>
@@ -65,8 +131,8 @@ export const Node = () => {
           </div>
         </div>
       </div>
-      <div className="map-content">
-        <div id="map"></div>
+      <div className="map-content" style={{position: 'relative',  overflow: 'hidden'}}>
+        <MapWithNoSSR position={position} />
       </div>
       <div className="box-wrapper">
         <div className="container">
@@ -196,110 +262,19 @@ export const Node = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><span id="code1">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code2">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code2" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code3">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code3" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code4">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code4" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code5">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code5" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code6">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code6" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code7">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code7" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code8">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code8" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code9">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code9" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td><span id="code10">P-avax18ylhx…rjg0</span> <img data-clipboard-action="copy" data-clipboard-target="#code10" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td>P-avax18ylhx…rjg0 <img src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td>P-avax18ylhx…rjg0 <img src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
-                <tr>
-                  <td>P-avax18ylhx…rjg0 <img src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                  <td>200.74 AVAX</td>
-                  <td>42.65AVAX</td>
-                  <td>Nov 23, 2020</td>
-                  <td>364 days</td>
-                  <td><i className="fas fa-circle"></i></td>
-                </tr>
+
+                {data && data.node && data.node.delegators && data.node.delegators.items && data.node.delegators.items.map((item, index) => {
+                  return (
+                    <tr>
+                      <td><span id="code1">{shortNodeId(item.nodeID)}</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
+                      <td>200.74 AVAX</td>
+                      <td>42.65AVAX</td>
+                      <td>Nov 23, 2020</td>
+                      <td>364 days</td>
+                      <td><i className="fas fa-circle"></i></td>
+                    </tr>
+                  )
+                })}
 
               </tbody>
 

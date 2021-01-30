@@ -30,8 +30,8 @@ export default function Home(props) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>
-          <Nodes />
+        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
+          <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
         </Layout>
       </div>
     </ApolloProvider>

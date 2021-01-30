@@ -8,7 +8,7 @@ import Node from '../components/Node';
 import Layout from '../components/Layout';
 import { defaultLocale } from '../locales'
 
-import styles from '../../styles/Home.module.css'
+import styles from '../styles/Home.module.css'
 
 export default function NodePage(props) {
   const router = useRouter()
@@ -31,7 +31,7 @@ export default function NodePage(props) {
         </Head>
 
         <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>
-          <Node />
+          <Node router={router} />
         </Layout>
       </div>
     </ApolloProvider>

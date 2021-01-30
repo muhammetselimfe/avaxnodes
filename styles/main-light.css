@@ -349,7 +349,7 @@ table.dataTable thead .sorting_desc {
 
 
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
   color: #20202A;
   border-radius: 8px;
@@ -500,10 +500,10 @@ dropdown.language {
   right: 90px;
 }
 .map-content{
-  background-image: url(../images/light-map.png);
+  /* background-image: url(../images/light-map.png); */
   height: 300px;
-  background-position: 100% 100%;
-  background-size: 100% 100%;
+  /* background-position: 100% 100%;
+  background-size: 100% 100%; */
   position: relative;
 }
 .box-wrapper{
@@ -1468,7 +1468,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
   width: 100%;
   float: left;
   padding-top: 30px;
-  padding-bottom:31px; 
+  padding-bottom:31px;
 }
 .footer .wrap{
   display: flex;
@@ -1559,14 +1559,14 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
   text-align: center;
 }
 
-::-webkit-input-placeholder { 
+::-webkit-input-placeholder {
   color: #81818C;
   font-size: 16px;
   letter-spacing: -0.07px;
   font-weight: 500;
 }
 
-:-ms-input-placeholder { 
+:-ms-input-placeholder {
   color: #81818C;
   font-size: 16px;
   letter-spacing: -0.07px;
@@ -1650,11 +1650,11 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
   }
   .freespace-wrap {
     max-width: 17%;
-  } 
+  }
   .PageTitleFont {
     font-size: 30px;
     line-height: 38px;
-  } 
+  }
   .main-content {
     padding-bottom: 30px;
   }
@@ -1817,7 +1817,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
 .bottom #jump-to-page {
   width: 70%;
 }
-}   
+}
 #toggle_checkbox {
   display: none;
 }

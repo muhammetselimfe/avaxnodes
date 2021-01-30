@@ -3,7 +3,14 @@ import { setupCache } from 'axios-cache-adapter'
 
 // Create `axios-cache-adapter` instance
 const cache = setupCache({
-  maxAge: 60 * 60 * 1000
+  maxAge: 60 * 60 * 1000,
+  invalidate: async (config, request) => {
+    const method = request.method.toLowerCase()
+
+    if (method !== 'get' && method !== 'post') {
+      await config.store.removeItem(config.uuid)
+    }
+  },
 })
 
 // Create `axios` instance passing the newly created `cache.adapter`
@@ -11,55 +18,76 @@ const api = axios.create({
   adapter: cache.adapter
 })
 
+const getAllValidators = async () => {
+  const payload = {
+    "jsonrpc": "2.0",
+    "method": "platform.getCurrentValidators",
+    "params": {
+      "subnetID": "11111111111111111111111111111111LpoYY"
+    },
+    "id": 1
+  }
+
+  const validators = await api.post(`https://api.avax.network/ext/P`, payload)
+
+  const allItems = validators.data.result.validators
+
+  return allItems
+}
+
 export const resolvers = {
   Query: {
+    stats: async (parent, args, context, info) => {
+      const validators = await getAllValidators()
+      return {
+        totalNodes: validators.length,
+        totalTransactions: 0,
+        totalProviders: 0,
+        totalDelegations: 0,
+        totalBlocks: 0,
+        totalParticipation: 0,
+      }
+    },
     nodes: async (parent, args, context, info) => {
       try {
         console.log({args})
 
-        const payload = {
-          "jsonrpc": "2.0",
-          "method": "platform.getCurrentValidators",
-          "params": {
-            "subnetID": "11111111111111111111111111111111LpoYY"
-          },
-          "id": 1
-        }
-
-        const validators = await api.post(`https://api.avax.network/ext/P`, payload)
-
-        // page: Int
-        // perPage: Int
-        // totalCount: Int
-
-        const allItems = validators.data.result.validators
+        const validators = await getAllValidators()
 
         const page = Math.abs(args.filter.page) || 1
         const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
-        const count = validators.data.result.validators.length
+        const count = validators.length
 
         console.log((page - 1) * perPage, page * perPage)
 
         return {
-          items: allItems.slice((page - 1) * perPage, page * perPage).map((item, index) => {
+          items: validators.slice((page - 1) * perPage, page * perPage).map((item, index) => {
+            let isPartner = false
+            let isSponsored = false
             if (index === 0) {
-              return {
-                ...item,
-                isPartner: true,
-                isSponsored: true
-              }
+              isPartner = true
+              isSponsored = true
+
             }
             if (index === 1) {
-              return {
-                ...item,
-                isPartner: true,
-                isSponsored: false
-              }
+              isPartner = true
             }
+            const delegators = item.delegators || []
             return {
               ...item,
-              isPartner: false,
-              isSponsored: false
+              isPartner,
+              isSponsored,
+              delegators: {
+                items: delegators.slice((page - 1) * perPage, page * perPage),
+                pagination: {
+                  page,
+                  perPage,
+                  count: delegators.length
+                },
+                totalStaked: delegators
+                  .map(delegator => delegator.stakeAmount / 1000000000)
+                  .reduce((result, current) => result + current, 0)
+              }
             }
           }),
           pagination: {
@@ -68,9 +96,6 @@ export const resolvers = {
             count,
           },
         }
-        // .map((item) => {
-        //   return item
-        // });
       } catch (error) {
         throw error;
       }
@@ -78,29 +103,33 @@ export const resolvers = {
     node: async (parent, args, context, info) => {
       console.log({args})
       try {
+        const validators = await getAllValidators()
 
-        const payload = {
-          "jsonrpc":"2.0",
-          "method":"platform.getCurrentValidators",
-          "params": {
-            "subnetID":"11111111111111111111111111111111LpoYY"
-          },
-          "id":1
-        }
+        const node = validators
+          .find(item => item.nodeID === args.filter.nodeID)
 
-        const validators = await api.post(`https://api.avax.network/ext/P`, payload)
+        const delegators = node.delegators || []
 
-        console.log(
-          validators.data.result.validators.length,
-          validators.data.result.validators[0]
-        )
-        const node = validators.data.result.validators
-          // .map((item) => {
-          //   return item
-          // })
-          .find(item => item.nodeID === args.nodeID)
+        const page = Math.abs(args.filter.page) || 1
+        const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
+        const count = delegators.length
 
-        return node;
+        console.log((page - 1) * perPage, page * perPage)
+
+        return {
+          ...node,
+          delegators: {
+            items: delegators.slice((page - 1) * perPage, page * perPage),
+            pagination: {
+              page,
+              perPage,
+              count,
+            },
+            totalStaked: delegators
+              .map(delegator => delegator.stakeAmount / 1000000000)
+              .reduce((result, current) => result + current, 0)
+          }
+        };
       } catch (error) {
         throw error;
       }

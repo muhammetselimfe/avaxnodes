@@ -10,7 +10,7 @@ const Layout = ({ router = {}, currentLocale, currentRoute, children, ...rest })
   const route = `${currentLocale}-home`
   return (
     <>
-      <Header currentLocale={currentLocale} route={route} currentRoute={currentRoute} />
+      <Header currentLocale={currentLocale} route={route} currentRoute={currentRoute} router={router} />
       {children}
       <Footer currentLocale={currentLocale} route={route} currentRoute={currentRoute} />
     </>
