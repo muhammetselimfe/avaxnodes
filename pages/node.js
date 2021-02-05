@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient, { gql } from "apollo-boost";
+// import { ApolloProvider } from "@apollo/react-hooks";
+// import ApolloClient, { gql } from "apollo-boost";
 import { useRouter } from 'next/router'
 
 import Node from '../components/Node';
@@ -16,12 +16,12 @@ export default function NodePage(props) {
   const currentLocale = ((router || {}).query || {}).locale || defaultLocale
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
-  const client = new ApolloClient({
-    uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
-  });
+  // const client = new ApolloClient({
+  //   uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
+  // });
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <div className={styles.container}>
         <Head>
           <meta charset="utf-8" />
@@ -34,6 +34,6 @@ export default function NodePage(props) {
           <Node router={router} />
         </Layout>
       </div>
-    </ApolloProvider>
+    // </ApolloProvider>
   )
 }

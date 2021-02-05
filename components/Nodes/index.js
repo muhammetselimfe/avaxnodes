@@ -8,7 +8,7 @@ import numberFormat from '../../utils/numberFormat';
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
-const GET_NODES = gql`
+export const GET_NODES = gql`
   query GetNodes ($filter: NodesFilter!) {
     stats {
       totalNodes

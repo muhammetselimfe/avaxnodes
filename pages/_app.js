@@ -1,6 +1,11 @@
 import React from 'react';
 import Routes from '../routes';
-import App from 'next/app'
+// import App from 'next/app'
+
+import { ApolloProvider } from "@apollo/react-hooks";
+// import ApolloClient from "apollo-boost";
+
+import { useApollo } from '../lib/apolloClient'
 
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -10,50 +15,30 @@ import '../styles/flags.css'
 import '../styles/jquery.dataTables.min.css'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
-
-//+   <link href="asset/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-//+   <link href="asset/css/main.css" rel="stylesheet" id="pagestyle" />
-//+   <link href="https://avalanchecapital.netlify.app/css/dd.css" rel="stylesheet" />
-//+   <link href="https://avalanchecapital.netlify.app/css/flags.css" rel="stylesheet" />
-//-   <link href="asset/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-//+   <link rel="preconnect" href="https://fonts.gstatic.com">
-//+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-//-   <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
-//   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css">
-//   <script src="https://kit.fontawesome.com/f17b18449a.js" crossorigin="anonymous"></script>
-//   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"></link>
-
-// function CustomApp({ Component, pageProps }) {
-//   return <Component {...pageProps} />
-// }
-
-// export default CustomApp
-
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import '../styles/globals.css'
-// import '../styles/dd.css'
-
-class CustomApp extends App {
-  static async getInitialProps(props) {
-    const { Component, ctx } = props
-    let pageProps = {};
-
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-      pageProps._url = Routes.match(ctx.asPath);
-    }
-
-    return { pageProps }
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
+function App({ Component, pageProps }) {
+    const apolloClient = useApollo(pageProps)
+    // const client = new ApolloClient({
+    //   uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
+    // });
     return (
-      <Component {...pageProps} />
+      <ApolloProvider client={apolloClient}>
+        <Component {...pageProps} />
+      </ApolloProvider>
     )
-  }
 }
 
-export default CustomApp
+App.getInitialProps = async (props) => {
+  const { Component, ctx } = props
+  let pageProps = {};
+
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+    pageProps._url = Routes.match(ctx.asPath);
+  }
+
+  return { pageProps }
+}
+
+export default App
 

@@ -16,12 +16,7 @@ export default function Home(props) {
   const currentLocale = ((router || {}).query || {}).locale || defaultLocale
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
-  const client = new ApolloClient({
-    uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
-  });
-
   return (
-    <ApolloProvider client={client}>
       <div className={styles.container}>
         <Head>
           <meta charset="utf-8" />
@@ -34,6 +29,5 @@ export default function Home(props) {
           <CChain />
         </Layout>
       </div>
-    </ApolloProvider>
   )
 }

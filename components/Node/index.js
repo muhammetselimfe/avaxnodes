@@ -12,8 +12,7 @@ import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
 
-
-const GET_NODE = gql`
+export const GET_NODE = gql`
   query GetNode ($filter: NodeFilter!) {
     node(filter: $filter) {
       nodeID

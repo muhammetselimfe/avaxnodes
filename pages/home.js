@@ -1,12 +1,11 @@
 import Head from 'next/head'
 
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient, { gql } from "apollo-boost";
 import { useRouter } from 'next/router'
 
-import Nodes from '../components/Nodes';
+import Nodes, { GET_NODES } from '../components/Nodes';
 import Layout from '../components/Layout';
 import { defaultLocale } from '../locales'
+import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
 import styles from '../styles/Home.module.css'
 
@@ -16,25 +15,19 @@ export default function Home(props) {
   const currentLocale = ((router || {}).query || {}).locale || defaultLocale
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
-  const client = new ApolloClient({
-    uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
-  });
-
   return (
-    <ApolloProvider client={client}>
-      <div className={styles.container}>
-        <Head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-          <title>Avaxnodes</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <div className={styles.container}>
+      <Head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Avaxnodes</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
-          <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
-        </Layout>
-      </div>
-    </ApolloProvider>
+      <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
+        <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
+      </Layout>
+    </div>
   )
 }
 
@@ -45,10 +38,28 @@ export const getServerSideProps = async (ctx) => {
   // const res = await fetch('http://localhost:3000/api/nodes')
   // const nodes = await res.json()
 
-  return {
+  // return {
+  //   props: {
+  //     // nodes,
+  //     currentLocale
+  //   },
+  // }
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: GET_NODES,
+    variables: {
+      filter: {
+        page: 1,
+        perPage: 10,
+      }
+    },
+  })
+
+  return addApolloState(apolloClient, {
     props: {
-      // nodes,
       currentLocale
     },
-  }
+    // revalidate: 1,
+  })
 };
