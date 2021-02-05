@@ -32,34 +32,6 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
                 </a>
               </Link>
             </li>
-            <li className={`nav-item ${currentRoute === 'providers' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-providers`} params={{ locale }}>
-                <a className="nav-link">
-                  Providers
-                </a>
-              </Link>
-            </li>
-            <li className={`nav-item ${currentRoute === 'delegations' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-delegations`} params={{ locale }}>
-                <a className="nav-link">
-                  Delegations
-                </a>
-              </Link>
-            </li>
-            <li className={`nav-item ${currentRoute === 'x-chain' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-x-chain`} params={{ locale }}>
-                <a className="nav-link">
-                  X-Chain
-                </a>
-              </Link>
-            </li>
-            <li className={`nav-item ${currentRoute === 'c-chain' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-c-chain`} params={{ locale }}>
-                <a className="nav-link">
-                  C-Chain
-                </a>
-              </Link>
-            </li>
             <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
               <Link route={`${currentLocale}-notifier`} params={{ locale }}>
                 <a className="nav-link">
@@ -69,7 +41,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             </li>
           </ul>
 
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item toggle-wrap" id="toggel_btn">
               <input type="checkbox" id="toggle_checkbox" />
               <label htmlFor="toggle_checkbox">
@@ -130,24 +102,6 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
               </NavDropdown.Item>
             ))}
           </NavDropdown>
-
-          <ul className="navbar-nav ml-auto myaccount">
-            <li className="dropdown nav-item">
-              <a href="#" className="dropdown-toggle nav-link" data-toggle="dropdown">
-                My Account
-              </a>
-              <ul className="dropdown-menu dropdown-navbar">
-                <li className="nav-link">
-                  <a href="/profile" className="nav-item dropdown-item">
-                    Profile
-                  </a>
-                </li>
-                <li className="nav-link">
-                  <a href="/settings" className="nav-item dropdown-item">Settings</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
 
         </div>
 
