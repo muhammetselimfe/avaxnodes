@@ -1,3 +1,4 @@
+import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
@@ -7,6 +8,7 @@ import numberFormat from '../../utils/numberFormat';
 
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
+import TableControls from '../TableControls'
 
 export const GET_NODES = gql`
   query GetNodes ($filter: NodesFilter!) {
@@ -44,99 +46,6 @@ export const GET_NODES = gql`
     }
   }
 `;
-
-const TableControls = () => {
-
-  return (
-    <div className="row">
-      <div className="col-sm-3">
-        <div className="dataTables_length bs-select" id="datatable_length">
-          <label>
-            Show
-            {' '}
-            <select name="datatable_length" aria-controls="datatable" className="">
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-              <option value="-1">All</option>
-            </select>
-            {' '}
-            entries
-          </label>
-        </div>
-      </div>
-      <div className="col-sm-3"></div>
-      <div className="col-sm-6">
-        <div className="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-          <a className="paginate_button previous disabled" aria-controls="datatable" data-dt-idx="0" tabIndex="-1" id="datatable_previous">
-            <div>
-              <img src="/static/images/prev.svg" className="dark-angle" />
-              <img src="/static/images/left-angle.svg" className="light-angle" style={{ display: 'none' }} />
-            </div>
-          </a>
-          <span>
-            <a className="paginate_button current" aria-controls="datatable" data-dt-idx="1" tabIndex="0">1</a>
-            <a className="paginate_button " aria-controls="datatable" data-dt-idx="2" tabIndex="0">2</a>
-          </span>
-          <a className="paginate_button next" aria-controls="datatable" data-dt-idx="3" tabIndex="0" id="datatable_next">
-            <div>
-              <img src="/static/images/next.svg" className="dark-angle" />
-              <img src="/static/images/right-angle.svg" className="light-angle" style={{ display: 'none' }} />
-            </div>
-          </a>
-        </div>
-        <div id="jump-to-page">
-          <span>Jump to page:</span>
-          <div className="dropdown bootstrap-select selectpage">
-            <select className="selectpage" tabIndex="-98">
-              <option>20</option>
-              <option>30</option>
-              <option>40</option>
-            </select>
-            <button
-              type="button"
-              className="btn dropdown-toggle btn-light"
-              data-toggle="dropdown"
-              role="combobox"
-              aria-owns="bs-select-3"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              title="20"
-            >
-              <div className="filter-option">
-                <div className="filter-option-inner">
-                  <div className="filter-option-inner-inner">20</div>
-                </div>
-              </div>
-            </button>
-            <div className="dropdown-menu ">
-              <div className="inner show" role="listbox" id="bs-select-3" tabIndex="-1">
-                <ul className="dropdown-menu inner show" role="presentation" style={{marginTop: '0px', marginBottom: '0px'}}>
-                  <li className="selected active">
-                    <a role="option" className="dropdown-item active selected" id="bs-select-5-0" tabIndex="0" aria-setsize="3" aria-posinset="1" aria-selected="true">
-                      <span className="text">20</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a role="option" className="dropdown-item" id="bs-select-5-1" tabIndex="0">
-                      <span className="text">30</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a role="option" className="dropdown-item" id="bs-select-5-2" tabIndex="0">
-                      <span className="text">40</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 const Stats = ({ data = {} }) => {
   return (
@@ -304,9 +213,12 @@ const Filters = () => {
 }
 
 export const Nodes = ({ currentLocale }) => {
+  const [page, setPage] = React.useState(1);
+  const [perPage, setPerPage] = React.useState(10);
+
   const filter = {
-    page: 1,
-    perPage: 10,
+    page,
+    perPage,
   }
   const { loading, error, data } = useQuery(GET_NODES, {
     variables: {
@@ -328,12 +240,17 @@ export const Nodes = ({ currentLocale }) => {
           <div className="row content-inner">
             <div className="col-md-3 col-sm-3">
               <div className="bredcrum">
-                <a href="#">
-                  <img src="/static/images/home.svg" className="home-image" />
-                </a><span style={{ color: '#fff' }}> /</span>
-                <a href="#" className="nodes">
-                  Nodes
-                </a>
+                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                  <a>
+                    <img src="/static/images/home.svg" className="home-image" />
+                  </a>
+                </Link>
+                <span style={{ color: '#fff' }}> / </span>
+                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                  <a className="nodes">
+                    Nodes
+                  </a>
+                </Link>
               </div>
             </div>
             <Stats data={data && data.stats ? data.stats : {}} />
@@ -357,7 +274,13 @@ export const Nodes = ({ currentLocale }) => {
         <div className="">
           <div className="container">
             <div id="datatable_wrapper" className="dataTables_wrapper no-footer">
-              <TableControls />
+              <TableControls
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                pagination={data && data.nodes && data.nodes.pagination}
+              />
               <div className="row mb-3">
                 <div className="col-sm-12">
                   <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
@@ -393,11 +316,10 @@ export const Nodes = ({ currentLocale }) => {
                         const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
 
                         return (
-
-                              <tr key={index}>
-                                <td scope="row" style={{ position: 'relative' }}>
-                                  <Link route={`${currentLocale}-node`} params={{ locale, id: item.nodeID }}>
-                            <a className="stretched-link text-white">
+                          <tr key={index}>
+                            <td scope="row" style={{ position: 'relative' }}>
+                              <Link route={`${currentLocale}-node`} params={{ locale, id: item.nodeID }}>
+                                <a className="stretched-link text-white">
 
                                   <span id="code">{shortNodeId(item.nodeID)}</span>
                                   <img
@@ -410,49 +332,54 @@ export const Nodes = ({ currentLocale }) => {
                                     {item.isSponsored && (<span className="sponsertag mr-1">Sponsored</span>)}
                                     {item.isPartner && (<span className="providertag">Provider</span>)}
                                   </div>
-                                  </a>
-                          </Link>
+                                </a>
+                              </Link>
 
-                                </td>
-                                <td>{item.delegators.pagination.count}</td>
-                                <td colSpan="2">
-                                  <div className="progress-bar-wrap relative">
-                                    <div className="label-wrap">
-                                      <label className="available-label"><strong>{numberFormat(totalStacked)}</strong>AVAX</label>
-                                      <label className="total-label"><strong>{numberFormat(leftToStack)}</strong>AVAX</label>
-                                    </div>
-                                    <div className="progress">
-                                      <div
-                                        className="progress-bar"
-                                        role="progressbar"
-                                        style={{ width: `${stackedPercent}%` }}
-                                        aria-valuenow={stackedPercent}
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                      />
-                                    </div>
-                                  </div>
-                                </td>
-                                <td style={{ display: 'none' }}></td>
-                                <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
-                                <td>
-                                  {!!daysLeft && (<span>{daysLeft} days left</span>)}
-                                  {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
-                                  {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
-                                </td>
-                                <td>{parseInt(item.delegationFee)}%</td>
-                                <td>{numberFormat(potentialRewardPercent, 3)}%</td>
-                                <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
-                                <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
-                              </tr>
-
+                            </td>
+                            <td>{item.delegators.pagination.count}</td>
+                            <td colSpan="2">
+                              <div className="progress-bar-wrap relative">
+                                <div className="label-wrap">
+                                  <label className="available-label"><strong>{numberFormat(totalStacked)}</strong>AVAX</label>
+                                  <label className="total-label"><strong>{numberFormat(leftToStack)}</strong>AVAX</label>
+                                </div>
+                                <div className="progress">
+                                  <div
+                                    className="progress-bar"
+                                    role="progressbar"
+                                    style={{ width: `${stackedPercent}%` }}
+                                    aria-valuenow={stackedPercent}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                            <td style={{ display: 'none' }}></td>
+                            <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
+                            <td>
+                              {!!daysLeft && (<span>{daysLeft} days left</span>)}
+                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
+                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
+                            </td>
+                            <td>{parseInt(item.delegationFee)}%</td>
+                            <td>{numberFormat(potentialRewardPercent, 3)}%</td>
+                            <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
+                            <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
+                          </tr>
                         )
                       })}
                     </tbody>
                   </table>
                 </div>
               </div>
-              <TableControls />
+              <TableControls
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                pagination={data && data.nodes && data.nodes.pagination}
+              />
             </div>
           </div>
         </div>

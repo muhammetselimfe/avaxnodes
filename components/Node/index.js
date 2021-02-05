@@ -1,3 +1,4 @@
+import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
@@ -10,6 +11,7 @@ import numberFormat from '../../utils/numberFormat';
 
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
+import TableControls from '../TableControls'
 
 
 export const GET_NODE = gql`
@@ -26,8 +28,13 @@ export const GET_NODE = gql`
       endTime
       delegators {
         items {
-          nodeID
+          rewardOwner {
+            addresses
+          }
           stakeAmount
+          potentialReward
+          startTime
+          endTime
         }
         pagination {
           page
@@ -39,13 +46,19 @@ export const GET_NODE = gql`
   }
 `;
 
-export const Node = ({ router }) => {
+export const Node = ({
+  router,
+  currentLocale,
+}) => {
+  const [page, setPage] = React.useState(1);
+  const [perPage, setPerPage] = React.useState(10);
+
   console.log({ router })
 
   const filter = {
     nodeID: router.query.id,
-    page: 1,
-    perPage: 10,
+    page,
+    perPage,
   }
   const { loading, error, data } = useQuery(GET_NODE, {
     variables: {
@@ -61,6 +74,7 @@ export const Node = ({ router }) => {
     ssr: false
   });
 
+  const locale = currentLocale === defaultLocale ? undefined : currentLocale
 
   return (
     <>
@@ -69,11 +83,23 @@ export const Node = ({ router }) => {
           <div className="row content-inner">
             <div className="col-md-4 col-sm-6 col-lg-3">
               <div className="nodebredcrum">
-                <a href="#">
-                  <img src="/static/images/home.svg" className="home-image" />
-                </a><span style={{ color: '#fff' }}> /</span>
-                <a href="#" className="nodes">
-                  Nodes</a><span style={{ color: '#fff' }}> /</span><a href="#" className="nodes"> Node details</a>
+                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                  <a>
+                    <img src="/static/images/home.svg" className="home-image" />
+                  </a>
+                </Link>
+                <span style={{ color: '#fff' }}> / </span>
+                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                  <a className="nodes">
+                    Nodes
+                  </a>
+                </Link>
+                <span style={{ color: '#fff' }}> / </span>
+                <Link route={`${currentLocale}-node`} params={{ locale, id: router.query.id }}>
+                  <a className="nodes">
+                    Node details
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -90,11 +116,11 @@ export const Node = ({ router }) => {
 
               </div>
               <div className=" col-3 col-md-4 col-sm-4 ">
-              {data && data.node && data.node.connected && (
-                <div className="PagesubTitle"><i className="fas fa-circle"></i>
+                {data && data.node && data.node.connected && (
+                  <div className="PagesubTitle"><i className="fas fa-circle"></i>
                   ACTIVE
-                </div>
-              )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -130,7 +156,7 @@ export const Node = ({ router }) => {
           </div>
         </div>
       </div>
-      <div className="map-content" style={{position: 'relative',  overflow: 'hidden'}}>
+      <div className="map-content" style={{ position: 'relative', overflow: 'hidden' }}>
         <MapWithNoSSR position={position} />
       </div>
       <div className="box-wrapper">
@@ -249,35 +275,61 @@ export const Node = ({ router }) => {
         </div>
         <div className="contact-table node-details-wrapper">
           <div className="container">
-            <table id="datatable" className="display responsive nowrap" style={{ width: '100%' }}>
-              <thead>
-                <tr>
-                  <th>BENEFICIARY</th>
-                  <th>DELEGATED</th>
-                  <th>POTENTIAL REWARDS</th>
-                  <th>STARTED ON</th>
-                  <th>TIME LEFT</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
+            <div id="datatable_wrapper" className="dataTables_wrapper no-footer">
+              <TableControls
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                pagination={data && data.node && data.node.delegators && data.node.delegators.pagination}
+              />
+              <div className="row mb-3">
+                <div className="col-sm-12">
+                  <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
+                    <thead>
+                      <tr>
+                        <th>BENEFICIARY</th>
+                        <th>DELEGATED</th>
+                        <th>POTENTIAL REWARDS</th>
+                        <th>STARTED ON</th>
+                        <th>TIME LEFT</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                {data && data.node && data.node.delegators && data.node.delegators.items && data.node.delegators.items.map((item, index) => {
-                  return (
-                    <tr>
-                      <td><span id="code1">{shortNodeId(item.nodeID)}</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                      <td>200.74 AVAX</td>
-                      <td>42.65AVAX</td>
-                      <td>Nov 23, 2020</td>
-                      <td>364 days</td>
-                      <td><i className="fas fa-circle"></i></td>
-                    </tr>
-                  )
-                })}
+                      {data && data.node && data.node.delegators && data.node.delegators.items && data.node.delegators.items.map((item, index) => {
+                        const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
+                        const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
+                        const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
+                        return (
+                          <tr key={item.rewardOwner.addresses[0]}>
+                            <td><span id="code1">{shortNodeId(item.rewardOwner.addresses[0])}</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
+                            <td>{numberFormat(item.stakeAmount / 1000000000)} AVAX</td>
+                            <td>{numberFormat(item.potentialReward / 1000000000)} AVAX</td>
+                            <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
+                            <td>
+                              {!!daysLeft && (<span>{daysLeft} days left</span>)}
+                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
+                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
+                            </td>
+                            <td><i className="fas fa-circle"></i></td>
+                          </tr>
+                        )
+                      })}
 
-              </tbody>
-
-            </table>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <TableControls
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                pagination={data && data.node && data.node.delegators && data.node.delegators.pagination}
+              />
+            </div>
           </div>
         </div>
       </div>

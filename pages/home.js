@@ -15,6 +15,8 @@ export default function Home(props) {
   const currentLocale = ((router || {}).query || {}).locale || defaultLocale
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
+  console.log('Home', router, currentRoute, currentLocale)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -35,15 +37,6 @@ export const getServerSideProps = async (ctx) => {
   const params = new URLSearchParams(`${ctx.resolvedUrl}`.split('?')[1] || '');
   const currentLocale = params.get('locale') || defaultLocale
 
-  // const res = await fetch('http://localhost:3000/api/nodes')
-  // const nodes = await res.json()
-
-  // return {
-  //   props: {
-  //     // nodes,
-  //     currentLocale
-  //   },
-  // }
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
@@ -60,6 +53,5 @@ export const getServerSideProps = async (ctx) => {
     props: {
       currentLocale
     },
-    // revalidate: 1,
   })
 };

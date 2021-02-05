@@ -15,7 +15,6 @@ export const typeDefs = gql`
     locktime: String
     threshold: String
     addresses: [String]
-    potentialReward: String
   }
 
   type Delegators {
