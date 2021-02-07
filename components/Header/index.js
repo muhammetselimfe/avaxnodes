@@ -1,23 +1,46 @@
 import React from 'react'
 import { NavDropdown } from 'react-bootstrap'
 import { useRouter } from 'next/router'
+import { useDarkMode } from 'next-dark-mode'
 
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
 export const Header = ({ children, currentLocale, currentRoute, route }) => {
   const router = useRouter()
+  const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode()
+
+  // const findActive = (text) => {
+  //   if (autoModeActive) return text === 'auto'
+  //   else if (darkModeActive) return text === 'dark'
+  //   else return text === 'light'
+  // }
+
+  console.log({darkModeActive})
+
+  // const toggleMode = () => {
+  //   if (darkModeActive) {
+  //     console.log('toggleMode switchToLightMode')
+  //     switchToLightMode()
+  //   } else {
+  //     console.log('toggleMode switchToDarkMode')
+  //     switchToDarkMode()
+  //   }
+  // }
 
   const dropdownLocales = locales.filter(item => item !== currentLocale)
   console.log(currentRoute, `${currentLocale}-home`)
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${darkModeActive ? 'bg-dark' : 'bg-light'}`}>
       <div className="container">
         <Link route={route} params={{ locale }}>
           <a className="navbar-brand">
-            <img src="/static/images/logo.svg" className="img-fluid logoTop dark" alt="" />
-            <img src="/static/images/mainlogo.svg" className="img-fluid logoTop light" alt="" />
+            {darkModeActive ? (
+              <img src="/static/images/logo.svg" className="img-fluid logoTop dark" alt="" />
+            ) : (
+              <img src="/static/images/mainlogo.svg" className="img-fluid logoTop light d-inline" alt="" />
+            )}
           </a>
         </Link>
 
@@ -45,8 +68,12 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             <li className="nav-item toggle-wrap" id="toggel_btn">
               <input type="checkbox" id="toggle_checkbox" />
               <label htmlFor="toggle_checkbox">
-                <img src="/static/images/switch1.svg" className="night" /><img src="/static/images/light-moon.svg" className="night-light" style={{ display: 'none' }} />
-                <img src="/static/images/day.svg" className="day" />
+                {darkModeActive ? (
+                  <img src="/static/images/switch1.svg" className="night" />
+                ) : (
+                  <img src="/static/images/light-moon.svg" className="night-light" onClick={() => switchToDarkMode()} />
+                )}
+                <img src="/static/images/day.svg" className="day" onClick={() => switchToLightMode()} />
               </label>
             </li>
           </ul>

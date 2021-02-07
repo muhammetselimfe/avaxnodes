@@ -1,6 +1,7 @@
 import React from 'react';
 import Routes from '../routes';
 // import App from 'next/app'
+import withDarkMode from 'next-dark-mode'
 
 import { ApolloProvider } from "@apollo/react-hooks";
 // import ApolloClient from "apollo-boost";
@@ -16,15 +17,13 @@ import '../styles/jquery.dataTables.min.css'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
 function App({ Component, pageProps }) {
-    const apolloClient = useApollo(pageProps)
-    // const client = new ApolloClient({
-    //   uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
-    // });
-    return (
-      <ApolloProvider client={apolloClient}>
-        <Component {...pageProps} />
-      </ApolloProvider>
-    )
+  const apolloClient = useApollo(pageProps)
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
 }
 
 App.getInitialProps = async (props) => {
@@ -40,5 +39,4 @@ App.getInitialProps = async (props) => {
   return { pageProps }
 }
 
-export default App
-
+export default withDarkMode(App)
