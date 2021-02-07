@@ -56,7 +56,7 @@ const Stats = ({ data = {} }) => {
             TOTAL NODES
           </div>
           <div className="FigurText">
-            {data.totalNodes}
+            {numberFormat(data.totalNodes || 0, 0)}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -64,7 +64,7 @@ const Stats = ({ data = {} }) => {
             TOTAL PROVIDERS
           </div>
           <div className="FigurText">
-            {data.totalProviders}
+            {numberFormat(data.totalProviders || 0, 0)}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -72,7 +72,7 @@ const Stats = ({ data = {} }) => {
             TOTAL DELIGATIONS
           </div>
           <div className="FigurText">
-            {data.totalDelegations}
+            {numberFormat(data.totalDelegations || 0, 0)}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -80,7 +80,7 @@ const Stats = ({ data = {} }) => {
             TOTAL BLOCKS
           </div>
           <div className="FigurText">
-            {data.totalBlocks}
+            {numberFormat(data.totalBlocks || 0, 0)}
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@ const Stats = ({ data = {} }) => {
             TOTAL TRANSACTIONS
           </div>
           <div className="FigurText">
-            {data.totalTransactions}
+            {numberFormat(data.totalTransactions || 0, 0)}
           </div>
         </div>
         <div className="col-6 col-md-3 col-sm-3">
@@ -98,7 +98,7 @@ const Stats = ({ data = {} }) => {
             TOTAL PARTICIPATION
           </div>
           <div className="FigurText">
-            {data.totalParticipation}
+            {numberFormat(data.totalParticipation || 0, 1)}
           </div>
         </div>
       </div>
@@ -106,12 +106,26 @@ const Stats = ({ data = {} }) => {
   )
 }
 
-const Filters = () => {
+const Filters = ({
+  filter,
+  setFilter,
+  setPage,
+}) => {
   return (
     <div className="filter-wrapper">
       <div className="search-container">
         <div className="input-icons">
-          <input id="text1" type="text" className="form-control search-field" placeholder="Search Address / TX / Asset / Blockchain / Subnet" />
+          <input
+            id="text1"
+            type="text"
+            className="form-control search-field"
+            placeholder="Search Address / TX / Asset / Blockchain / Subnet"
+            value={filter}
+            onChange={(event) => {
+              setFilter(event.target.value)
+              setPage(1)
+            }}
+          />
           <img src="/static/images/search.svg" alt="search" className="search" />
           <img src="/static/images/right-arrow.svg" className="right-arrow dark" />
           <img src="/static/images/search2.svg" className="right-arrow light" />
@@ -213,16 +227,17 @@ const Filters = () => {
 }
 
 export const Nodes = ({ currentLocale }) => {
+  const [filter, setFilter] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
 
-  const filter = {
-    page,
-    perPage,
-  }
   const { loading, error, data } = useQuery(GET_NODES, {
     variables: {
-      filter: filter
+      filter: {
+        filter,
+        page,
+        perPage,
+      }
     },
   });
 
@@ -259,7 +274,11 @@ export const Nodes = ({ currentLocale }) => {
       </div>
       <div className="main-content">
         <div className="container">
-          <Filters />
+          <Filters
+            filter={filter}
+            setFilter={setFilter}
+            setPage={setPage}
+          />
         </div>
         <div className="PageTitle">
           <div className="container">
@@ -308,8 +327,8 @@ export const Nodes = ({ currentLocale }) => {
 
                         const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
                         const timeLeftRatePercent = 100 - timeLeftRate * 100
-                        const felegationFeeRate = 1 - item.delegationFee / 100
-                        const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * felegationFeeRate
+                        const delegationFeeRate = 1 - item.delegationFee / 100
+                        const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * delegationFeeRate
 
                         const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
                         const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
@@ -336,7 +355,7 @@ export const Nodes = ({ currentLocale }) => {
                               </Link>
 
                             </td>
-                            <td>{item.delegators.pagination.count}</td>
+                            <td>{numberFormat(item.delegators.pagination.count, 0)}</td>
                             <td colSpan="2">
                               <div className="progress-bar-wrap relative">
                                 <div className="label-wrap">
@@ -362,7 +381,7 @@ export const Nodes = ({ currentLocale }) => {
                               {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
                               {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
                             </td>
-                            <td>{parseInt(item.delegationFee)}%</td>
+                            <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(potentialRewardPercent, 3)}%</td>
                             <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
                             <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>

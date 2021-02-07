@@ -62,7 +62,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
               border: 'none',
             }}
             title={(
-              <span className="mr-2 d-flex align-items-center">
+              <span className="mr-2 d-flex align-items-center text-white">
                 <img
                   src={`/static/images/icons/flag-${currentLocale}.svg`}
                   width={25}

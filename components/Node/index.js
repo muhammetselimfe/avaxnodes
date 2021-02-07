@@ -20,6 +20,9 @@ export const GET_NODE = gql`
       nodeID
       stakeAmount
       potentialReward
+      rewardOwner {
+        addresses
+      }
       isPartner
       isSponsored
       delegationFee
@@ -36,6 +39,7 @@ export const GET_NODE = gql`
           startTime
           endTime
         }
+        totalStaked
         pagination {
           page
           perPage
@@ -74,7 +78,32 @@ export const Node = ({
     ssr: false
   });
 
+  const item = (data && data.node) || {delegators: {}}
+
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
+
+  const delegatorsStaked = parseFloat(item.delegators.totalStaked || 0)
+  const stakeAmount = item.stakeAmount / 1000000000
+  const totalStacked = stakeAmount + delegatorsStaked
+  const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
+  const leftToStack = maxStaked - totalStacked
+  const stackedPercent = totalStacked * 100 / maxStaked
+
+  const ownRewards = item.potentialReward / 1000000000
+  const delegatorsRewards = (item.delegators.items || [])
+    .map(delegator => delegator.potentialReward / 1000000000)
+    .reduce((result, current) => result + current, 0)
+  const totalRewards = ownRewards + delegatorsRewards
+  const ownRewardsPercent = ownRewards * 100 / totalRewards
+
+  const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
+  const timeLeftRatePercent = 100 - timeLeftRate * 100
+  const delegationFeeRate = 1 - item.delegationFee / 100
+  const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * delegationFeeRate
+
+  const daysTotal = moment(item.endTime * 1000).diff(moment(item.startTime * 1000), 'days')
+  const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
+  const daysLeftPercent = daysLeft * 100 / daysTotal
 
   return (
     <>
@@ -116,7 +145,7 @@ export const Node = ({
 
               </div>
               <div className=" col-3 col-md-4 col-sm-4 ">
-                {data && data.node && data.node.connected && (
+                {item && item.connected && (
                   <div className="PagesubTitle"><i className="fas fa-circle"></i>
                   ACTIVE
                   </div>
@@ -132,11 +161,18 @@ export const Node = ({
                 <p className="progress-title">Available space</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>8,377.19</strong> AVAX total</label>
-                    <label className="total-label"><strong>2,031.50</strong> AVAX free</label>
+                    <label className="available-label"><strong>{numberFormat(maxStaked)}</strong> AVAX total</label>
+                    <label className="total-label"><strong>{numberFormat(leftToStack)}</strong> AVAX free</label>
                   </div>
                   <div className="progress">
-                    <div className="progress-bar" role="progressbar" style={{ width: '70%' }} aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{ width: `${numberFormat(stackedPercent, 0)}%` }}
+                      aria-valuenow={numberFormat(stackedPercent, 0)}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    />
                   </div>
                 </div>
               </div>
@@ -144,11 +180,18 @@ export const Node = ({
                 <p className="progress-title">Time remaining</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>45</strong> days total</label>
-                    <label className="total-label"><strong>3</strong> days remaining</label>
+                    <label className="available-label"><strong>{daysTotal}</strong> days total</label>
+                    <label className="total-label"><strong>{daysLeft}</strong> days remaining</label>
                   </div>
                   <div className="progress">
-                    <div className="progress-bar" role="progressbar" style={{ width: '70%' }} aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{ width: `${numberFormat(daysLeftPercent, 0)}%` }}
+                      aria-valuenow={numberFormat(daysLeftPercent, 0)}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    />
                   </div>
                 </div>
               </div>
@@ -167,7 +210,9 @@ export const Node = ({
                 <p className="title">BENEFICIARY</p>
                 <div className="card-content">
                   <span>Address</span>
-                  <p className="subtext">P-avax18ylhx0ym0vgm2a06ahd3qr87t9a8kssrx2rjg0</p>
+                  <p className="subtext">
+                    {item && item.rewardOwner && item.rewardOwner.addresses && item.rewardOwner.addresses[0]}
+                  </p>
                 </div>
               </div>
               <div className="card-wrapper">
@@ -175,11 +220,11 @@ export const Node = ({
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
                     <span>Owned</span>
-                    <p className="subtext">1,800,000 AVAX</p>
+                    <p className="subtext">{numberFormat(stakeAmount, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>Total</span>
-                    <p className="subtext">1,800,000 AVAX</p>
+                    <p className="subtext">{numberFormat(totalStacked, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>Network share</span>
@@ -192,7 +237,7 @@ export const Node = ({
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
                     <span>Max yield</span>
-                    <p className="subtext">0.329 492 915 %</p>
+                    <p className="subtext">{numberFormat(potentialRewardPercent, 3)} %</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>Delegation fees</span>
@@ -210,11 +255,11 @@ export const Node = ({
                   </div>
                   <div className="card-content smallbox">
                     <span>Delegated</span>
-                    <p className="subtext">0 AVAX</p>
+                    <p className="subtext">{numberFormat(delegatorsStaked, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>Free space</span>
-                    <p className="subtext">1,200,000 AVAX</p>
+                    <p className="subtext">{numberFormat(leftToStack, 0)} AVAX</p>
                   </div>
                 </div>
               </div>
@@ -238,15 +283,15 @@ export const Node = ({
                 <p className="title">Potential rewards</p>
                 <div className="card-content">
                   <span>From owned state</span>
-                  <p className="subtext">10,547.375 713 219 AVAX</p>
+                  <p className="subtext">{numberFormat(ownRewards, 0)} AVAX</p>
                 </div>
                 <div className="card-content">
                   <span>From delegations</span>
-                  <p className="subtext">0 AVAX</p>
+                  <p className="subtext">{numberFormat(delegatorsRewards, 0)} AVAX</p>
                 </div>
                 <div className="card-content">
                   <span>Total rewards</span>
-                  <p className="subtext">10,547.375 713 219 AVAX</p>
+                  <p className="subtext">{numberFormat(totalRewards, 0)} AVAX</p>
                 </div>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
@@ -254,7 +299,14 @@ export const Node = ({
                     <label className="total-label">From delegations</label>
                   </div>
                   <div className="progress">
-                    <div className="progress-bar" role="progressbar" style={{ width: '86.5%' }} aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{ width: `${numberFormat(100 - ownRewardsPercent, 0)}%` }}
+                      aria-valuenow={`${numberFormat(100 - ownRewardsPercent, 0)}`}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    />
                   </div>
                 </div>
               </div>
@@ -298,7 +350,7 @@ export const Node = ({
                     </thead>
                     <tbody>
 
-                      {data && data.node && data.node.delegators && data.node.delegators.items && data.node.delegators.items.map((item, index) => {
+                      {item && item.delegators && item.delegators.items && item.delegators.items.map((item, index) => {
                         const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
                         const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
                         const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
@@ -327,7 +379,7 @@ export const Node = ({
                 setPage={setPage}
                 perPage={perPage}
                 setPerPage={setPerPage}
-                pagination={data && data.node && data.node.delegators && data.node.delegators.pagination}
+                pagination={item && item.delegators && item.delegators.pagination}
               />
             </div>
           </div>

@@ -45,7 +45,7 @@ export const typeDefs = gql`
     totalProviders: Int
     totalDelegations: Int
     totalBlocks: Int
-    totalParticipation: Int
+    totalParticipation: Float
   }
 
   input NodesFilter {
@@ -54,6 +54,7 @@ export const typeDefs = gql`
     maxYield: String
     page: Int
     perPage: Int
+    sorting: String
   }
 
   input NodeFilter {
