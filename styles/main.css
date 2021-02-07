@@ -2043,3 +2043,13 @@ table.dataTable.transactions tbody tr td:first-child {
 .bootstrap-select .dropdown-toggle .filter-option {
   height: auto !important;
 }
+.dropdown-menu .dropdown-item,
+.dropdown-menu .dropdown-item a {
+  color: #000;
+  text-decoration: none;
+}
+.dropdown-menu .dropdown-item:hover {
+  outline: none;
+  color: #000;
+  background-color: #f2f2f2;
+}

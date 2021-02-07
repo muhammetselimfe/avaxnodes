@@ -37,8 +37,6 @@ export const getServerSideProps = async (ctx) => {
 
   const apolloClient = initializeApollo()
 
-  console.log('Node.getServerSideProps params', params, ctx, ctx.query)
-
   await apolloClient.query({
     query: GET_NODE,
     variables: {
