@@ -1,9 +1,12 @@
 import React from 'react'
+import { useIntl } from "react-intl"
 
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
 export const Footer = ({ children }) => {
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
   return (
     <div className="footer">
       <div className="container">
@@ -14,7 +17,7 @@ export const Footer = ({ children }) => {
             </div>
           </div>
           <div className="right">
-            <button type="button" className="btn btn-secondary join-us">Join us on Telegram</button>
+            <button type="button" className="btn btn-secondary join-us">{f('footer.join.us.telegram')}</button>
             <ul className="social-icon">
               <li><a href="#"><img src="/static/images/instagram.png" alt="" className="footer-dark" />
                 <img src="/static/images/light-instagram.png" alt="" className="footer-light" style={{ display: 'none' }} /></a></li>

@@ -1,8 +1,10 @@
 // import React from 'react'
 import Head from 'next/head'
 
+import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
 // import { useDarkMode } from 'next-dark-mode'
+// import I18nProvider from 'next-translate/I18nProvider'
 
 import Nodes, { GET_NODES } from '../components/Nodes';
 import Layout from '../components/Layout';
@@ -17,7 +19,7 @@ export default function Home(props) {
   const currentLocale = ((router || {}).query || {}).locale || defaultLocale
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
-  console.log('Home', router, currentRoute, currentLocale)
+  console.log('Home', currentRoute, currentLocale)
 
   // const { darkModeActive } = useDarkMode()
 
@@ -25,18 +27,23 @@ export default function Home(props) {
   //   document.querySelector("body").classList.toggle('mode-dark', darkModeActive)
   // }, [darkModeActive]);
 
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
+
   return (
     <>
-      <Head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Avaxnodes</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      {/* <I18nProvider lang={currentLocale}> */}
+        <Head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+          <title>Avaxnodes {f('page.nodes.title')}</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
-        <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
-      </Layout>
+        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
+          <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
+        </Layout>
+      {/* </I18nProvider> */}
     </>
   )
 }

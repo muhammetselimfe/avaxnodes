@@ -1,4 +1,5 @@
 import { useDarkMode } from 'next-dark-mode'
+import { useIntl } from "react-intl"
 
 const maxPagesToShow = 5
 
@@ -10,6 +11,8 @@ const TableControls = ({
   pagination = {},
 }) => {
   const { darkModeActive } = useDarkMode()
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
 
   const numberOfPages = Math.ceil(pagination.count / perPage) || 0
 
@@ -22,21 +25,12 @@ const TableControls = ({
   }
   const endPage = Math.min(startPage + maxPagesToShow, numberOfPages)
 
-  console.log({
-    page,
-    startPage,
-    endPage,
-    pagination,
-    perPage,
-    numberOfPages,
-  })
-
   return (
     <div className="row">
       <div className="col-sm-3">
         <div className="dataTables_length bs-select" id="datatable_length">
           <label>
-            Show
+            {f('pagination.show')}
             {' '}
             <select
               name="datatable_length"
@@ -52,7 +46,7 @@ const TableControls = ({
               <option value="-1">All</option>
             </select>
             {' '}
-            entries
+            {f('pagination.entries')}
           </label>
         </div>
       </div>
@@ -119,7 +113,7 @@ const TableControls = ({
           </a>
         </div>
         <div id="jump-to-page">
-          <span>Jump to page:</span>
+          <span>{f('pagination.jump.to.page')}:</span>
           <div className="dataTables_length bs-select">
             <select
               disabled={numberOfPages < 40}

@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
+import { useIntl } from "react-intl"
 
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
@@ -49,12 +50,14 @@ export const GET_NODES = gql`
 `;
 
 const Stats = ({ data = {} }) => {
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
   return (
     <div className="col-md-9 col-sm-9 rectangleSmall">
       <div className="row total-node-wrapper">
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL NODES
+            {f('stats.total.nodes.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalNodes || 0, 0)}
@@ -62,7 +65,7 @@ const Stats = ({ data = {} }) => {
         </div>
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL PROVIDERS
+            {f('stats.total.providers.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalProviders || 0, 0)}
@@ -70,7 +73,7 @@ const Stats = ({ data = {} }) => {
         </div>
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL DELIGATIONS
+            {f('stats.total.delegations.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalDelegations || 0, 0)}
@@ -78,7 +81,7 @@ const Stats = ({ data = {} }) => {
         </div>
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL BLOCKS
+            {f('stats.total.blocks.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalBlocks || 0, 0)}
@@ -88,7 +91,7 @@ const Stats = ({ data = {} }) => {
       <div className="row">
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL TRANSACTIONS
+            {f('stats.total.transactions.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalTransactions || 0, 0)}
@@ -96,7 +99,7 @@ const Stats = ({ data = {} }) => {
         </div>
         <div className="col-6 col-md-3 col-sm-3">
           <div className="TitleText">
-            TOTAL PARTICIPATION
+            {f('stats.total.participation.title')}
           </div>
           <div className="FigurText">
             {numberFormat(data.totalParticipation || 0, 1)}
@@ -115,6 +118,8 @@ const Filters = ({
   const [selectFilterOpen, setSelectFilterOpen] = React.useState(false);
   const [selectFilterOptionsOpen, setSelectFilterOptionsOpen] = React.useState(false);
   const { darkModeActive } = useDarkMode()
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
   return (
     <div className="filter-wrapper">
       <div className="search-container">
@@ -123,7 +128,7 @@ const Filters = ({
             id="text1"
             type="text"
             className="form-control search-field"
-            placeholder="Search Address / TX / Asset / Blockchain / Subnet"
+            placeholder={f('filter.search.placeolder')}
             value={filter}
             onChange={(event) => {
               setFilter(event.target.value)
@@ -261,9 +266,10 @@ export const Nodes = ({ currentLocale }) => {
     },
   });
 
-  console.log(data)
-
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
+
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
 
   // if (loading) return 'Loading...';
   // if (error) return `Error! ${error.message}`;
@@ -283,7 +289,7 @@ export const Nodes = ({ currentLocale }) => {
                 <span style={{ color: '#fff' }}> / </span>
                 <Link route={`${currentLocale}-home`} params={{ locale }}>
                   <a className="nodes">
-                    Nodes
+                    {f('page.nodes.header')}
                   </a>
                 </Link>
               </div>
@@ -304,7 +310,7 @@ export const Nodes = ({ currentLocale }) => {
           <div className="container">
             <div className="">
               <div className="PageTitleFont">
-                Nodes
+                {f('page.nodes.header')}
               </div>
             </div>
           </div>
@@ -325,15 +331,15 @@ export const Nodes = ({ currentLocale }) => {
                   <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
                     <thead>
                       <tr>
-                        <th>Node ID</th>
-                        <th>Delegators</th>
-                        <th>Total stake</th>
-                        <th className="free-space">Free space</th>
-                        <th>Started on</th>
-                        <th>Time left</th>
-                        <th>Fee</th>
-                        <th>Max yield</th>
-                        <th>Country</th>
+                        <th>{f('page.nodes.table.header.nodeid.title')}</th>
+                        <th>{f('page.nodes.table.header.delegators.title')}</th>
+                        <th>{f('page.nodes.table.header.totalstake.title')}</th>
+                        <th className="free-space">{f('page.nodes.table.header.freespace.title')}</th>
+                        <th>{f('page.nodes.table.header.startedon.title')}</th>
+                        <th>{f('page.nodes.table.header.timeleft.title')}</th>
+                        <th>{f('page.nodes.table.header.fee.title')}</th>
+                        <th>{f('page.nodes.table.header.maxyield.title')}</th>
+                        <th>{f('page.nodes.table.header.country.title')}</th>
                         <th></th>
                       </tr>
                     </thead>

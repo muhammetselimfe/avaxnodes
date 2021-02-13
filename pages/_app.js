@@ -1,13 +1,21 @@
 import React from 'react';
 import Routes from '../routes';
-// import App from 'next/app'
+import App from 'next/app'
 import withDarkMode from 'next-dark-mode'
 import { useDarkMode } from 'next-dark-mode'
+// import appWithI18n from 'next-translate/appWithI18n'
+import { useRouter } from "next/router"
 
+// import i18nConfig from '../i18n'
 import { ApolloProvider } from "@apollo/react-hooks";
 // import ApolloClient from "apollo-boost";
+// import { appWithTranslation } from '../i18n'
+import { IntlProvider } from "react-intl"
 
 import { useApollo } from '../lib/apolloClient'
+
+import allMessages from '../i18nLocales'
+import { defaultLocale } from '../locales'
 
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -17,10 +25,16 @@ import '../styles/flags.css'
 import '../styles/jquery.dataTables.min.css'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
-function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps)
 
   const { darkModeActive } = useDarkMode()
+
+  const router = useRouter()
+
+  const locale = ((router || {}).query || {}).locale || defaultLocale
+
+  const messages = allMessages[locale]
 
   React.useEffect(() => {
     document.querySelector("body").classList.toggle('mode-light', !darkModeActive)
@@ -28,12 +42,18 @@ function App({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
+      <IntlProvider
+        locale={locale}
+        defaultLocale={defaultLocale}
+        messages={messages}
+      >
+        <Component {...pageProps} />
+      </IntlProvider>
     </ApolloProvider>
   )
 }
 
-App.getInitialProps = async (props) => {
+MyApp.getInitialProps = async (props) => {
   const { Component, ctx } = props
   let pageProps = {};
 
@@ -46,4 +66,6 @@ App.getInitialProps = async (props) => {
   return { pageProps }
 }
 
-export default withDarkMode(App)
+// MyApp.getInitialProps = async (appContext) => ({ ...await App.getInitialProps(appContext) })
+
+export default withDarkMode(MyApp)

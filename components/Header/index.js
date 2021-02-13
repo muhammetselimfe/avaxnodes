@@ -2,11 +2,14 @@ import React from 'react'
 import { NavDropdown, Navbar } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { useDarkMode } from 'next-dark-mode'
+import { useIntl } from "react-intl"
 
 import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
 export const Header = ({ children, currentLocale, currentRoute, route }) => {
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
   const router = useRouter()
   const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode()
 
@@ -33,7 +36,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             <li className={`nav-item ${currentRoute === 'home' ? 'active' : ''}`}>
               <Link route={`${currentLocale}-home`} params={{ locale }}>
                 <a className="nav-link">
-                  Nodes
+                  {f('header.pages.nodes.title')}
                   <span className="sr-only">(current)</span>
                 </a>
               </Link>
@@ -41,7 +44,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
               <Link route={`${currentLocale}-notifier`} params={{ locale }}>
                 <a className="nav-link">
-                  Notifier
+                  {f('header.pages.notifier.title')}
                 </a>
               </Link>
             </li>

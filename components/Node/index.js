@@ -2,6 +2,7 @@ import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
+import { useIntl } from "react-intl"
 
 import dynamic from "next/dynamic";
 
@@ -57,8 +58,6 @@ export const Node = ({
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
 
-  console.log({ router })
-
   const filter = {
     nodeID: router.query.id,
     page,
@@ -69,8 +68,6 @@ export const Node = ({
       filter: filter
     },
   });
-
-  console.log(data)
 
   const position = [51.505, -0.09]
 
