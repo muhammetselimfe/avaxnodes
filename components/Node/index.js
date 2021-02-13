@@ -146,8 +146,9 @@ export const Node = ({
               </div>
               <div className=" col-3 col-md-4 col-sm-4 ">
                 {item && item.connected && (
-                  <div className="PagesubTitle"><i className="fas fa-circle"></i>
-                  ACTIVE
+                  <div className="PagesubTitle d-flex justify-content-end align-items-center">
+                    <FaCircle fill={item.connected ? '#5DA574' : undefined} fontSize={10} />
+                    <span className="ml-2">{'ACTIVE'}</span>
                   </div>
                 )}
               </div>
@@ -161,8 +162,8 @@ export const Node = ({
                 <p className="progress-title">Available space</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>{numberFormat(maxStaked)}</strong> AVAX total</label>
-                    <label className="total-label"><strong>{numberFormat(leftToStack)}</strong> AVAX free</label>
+                    <label className="available-label"><strong>{numberFormat(maxStaked, 0)}</strong> AVAX total</label>
+                    <label className="total-label"><strong>{numberFormat(leftToStack, 0)}</strong> AVAX free</label>
                   </div>
                   <div className="progress">
                     <div

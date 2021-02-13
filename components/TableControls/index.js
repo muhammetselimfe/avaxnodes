@@ -1,3 +1,5 @@
+import { useDarkMode } from 'next-dark-mode'
+
 const maxPagesToShow = 5
 
 const TableControls = ({
@@ -7,6 +9,7 @@ const TableControls = ({
   setPerPage,
   pagination = {},
 }) => {
+  const { darkModeActive } = useDarkMode()
 
   const numberOfPages = Math.ceil(pagination.count / perPage) || 0
 
@@ -53,8 +56,8 @@ const TableControls = ({
           </label>
         </div>
       </div>
-      <div className="col-sm-3"></div>
-      <div className="col-sm-6">
+      <div className="col-sm-1"></div>
+      <div className="col-sm-8">
         <div className="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
           <a
             className={`paginate_button previous ${page === 1 ? 'disabled' : ''}`}
@@ -68,8 +71,11 @@ const TableControls = ({
             }}
           >
             <div>
-              <img src="/static/images/prev.svg" className="dark-angle" />
-              <img src="/static/images/left-angle.svg" className="light-angle" style={{ display: 'none' }} />
+              {darkModeActive ? (
+                <img src="/static/images/prev.svg" className="dark-angle" />
+              ) : (
+                <img src="/static/images/left-angle.svg" className="light-angle" />
+              )}
             </div>
           </a>
           <span>
@@ -104,8 +110,11 @@ const TableControls = ({
             }}
           >
             <div>
-              <img src="/static/images/next.svg" className="dark-angle" />
-              <img src="/static/images/right-angle.svg" className="light-angle" style={{ display: 'none' }} />
+              {darkModeActive ? (
+                <img src="/static/images/next.svg" className="dark-angle" />
+              ) : (
+                <img src="/static/images/right-angle.svg" className="light-angle" />
+              )}
             </div>
           </a>
         </div>

@@ -1,6 +1,8 @@
+// import React from 'react'
 import Head from 'next/head'
 
 import { useRouter } from 'next/router'
+// import { useDarkMode } from 'next-dark-mode'
 
 import Nodes, { GET_NODES } from '../components/Nodes';
 import Layout from '../components/Layout';
@@ -17,8 +19,14 @@ export default function Home(props) {
 
   console.log('Home', router, currentRoute, currentLocale)
 
+  // const { darkModeActive } = useDarkMode()
+
+  // React.useEffect(() => {
+  //   document.querySelector("body").classList.toggle('mode-dark', darkModeActive)
+  // }, [darkModeActive]);
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -29,7 +37,7 @@ export default function Home(props) {
       <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
         <Nodes currentLocale={currentLocale} currentRoute={currentRoute} />
       </Layout>
-    </div>
+    </>
   )
 }
 
@@ -39,15 +47,21 @@ export const getServerSideProps = async (ctx) => {
 
   const apolloClient = initializeApollo()
 
-  await apolloClient.query({
-    query: GET_NODES,
-    variables: {
-      filter: {
-        page: 1,
-        perPage: 10,
-      }
-    },
-  })
+  try {
+    await apolloClient.query({
+      query: GET_NODES,
+      variables: {
+        filter: {
+          filter: '',
+          page: 1,
+          perPage: 10,
+        }
+      },
+    })
+  } catch (e) {
+    console.log(e.networkError)
+  }
+
 
   return addApolloState(apolloClient, {
     props: {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavDropdown } from 'react-bootstrap'
+import { NavDropdown, Navbar } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { useDarkMode } from 'next-dark-mode'
 
@@ -10,29 +10,11 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
   const router = useRouter()
   const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode()
 
-  // const findActive = (text) => {
-  //   if (autoModeActive) return text === 'auto'
-  //   else if (darkModeActive) return text === 'dark'
-  //   else return text === 'light'
-  // }
-
-  console.log({darkModeActive})
-
-  // const toggleMode = () => {
-  //   if (darkModeActive) {
-  //     console.log('toggleMode switchToLightMode')
-  //     switchToLightMode()
-  //   } else {
-  //     console.log('toggleMode switchToDarkMode')
-  //     switchToDarkMode()
-  //   }
-  // }
-
   const dropdownLocales = locales.filter(item => item !== currentLocale)
-  console.log(currentRoute, `${currentLocale}-home`)
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
   return (
-    <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${darkModeActive ? 'bg-dark' : 'bg-light'}`}>
+    <Navbar collapseOnSelect expand="lg" bg={darkModeActive ? 'dark' : 'light'} variant={darkModeActive ? 'dark' : 'light'} fixed="top">
+    {/* <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${darkModeActive ? 'bg-dark' : 'bg-light'}`}> */}
       <div className="container">
         <Link route={route} params={{ locale }}>
           <a className="navbar-brand">
@@ -44,7 +26,8 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
           </a>
         </Link>
 
-        <div className="collapse navbar-collapse" id="navbarResponsive">
+        <Navbar.Toggle aria-controls="navbarResponsive" />
+        <Navbar.Collapse id="navbarResponsive">
 
           <ul className="navbar-nav">
             <li className={`nav-item ${currentRoute === 'home' ? 'active' : ''}`}>
@@ -65,15 +48,21 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
           </ul>
 
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item toggle-wrap" id="toggel_btn">
-              <input type="checkbox" id="toggle_checkbox" />
+            <li className="nav-item toggle-wrap" id="toggel_btn" onClick={() => {
+              if (darkModeActive) {
+                switchToLightMode()
+              } else {
+                switchToDarkMode()
+              }
+            }}>
+              {/* <input type="checkbox" id="toggle_checkbox" /> */}
               <label htmlFor="toggle_checkbox">
                 {darkModeActive ? (
                   <img src="/static/images/switch1.svg" className="night" />
                 ) : (
-                  <img src="/static/images/light-moon.svg" className="night-light" onClick={() => switchToDarkMode()} />
+                  <img src="/static/images/light-moon.svg" className="night-light" />
                 )}
-                <img src="/static/images/day.svg" className="day" onClick={() => switchToLightMode()} />
+                <img src="/static/images/day.svg" className="day" />
               </label>
             </li>
           </ul>
@@ -89,7 +78,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
               border: 'none',
             }}
             title={(
-              <span className="mr-2 d-flex align-items-center text-white">
+              <span className="mr-2 d-flex align-items-center">
                 <img
                   src={`/static/images/icons/flag-${currentLocale}.svg`}
                   width={25}
@@ -130,10 +119,10 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             ))}
           </NavDropdown>
 
-        </div>
+        </Navbar.Collapse>
 
       </div>
-    </nav>
+    </Navbar>
   )
 }
 

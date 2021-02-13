@@ -16,7 +16,7 @@ export default function NodePage(props) {
   const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -27,7 +27,7 @@ export default function NodePage(props) {
       <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>
         <Node router={router} currentLocale={currentLocale} currentRoute={currentRoute} />
       </Layout>
-    </div>
+    </>
   )
 }
 

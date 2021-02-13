@@ -2,6 +2,7 @@ import React from 'react';
 import Routes from '../routes';
 // import App from 'next/app'
 import withDarkMode from 'next-dark-mode'
+import { useDarkMode } from 'next-dark-mode'
 
 import { ApolloProvider } from "@apollo/react-hooks";
 // import ApolloClient from "apollo-boost";
@@ -18,6 +19,12 @@ import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
 function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps)
+
+  const { darkModeActive } = useDarkMode()
+
+  React.useEffect(() => {
+    document.querySelector("body").classList.toggle('mode-light', !darkModeActive)
+  }, [darkModeActive]);
 
   return (
     <ApolloProvider client={apolloClient}>

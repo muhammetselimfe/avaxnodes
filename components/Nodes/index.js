@@ -2,6 +2,7 @@ import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
+import { useDarkMode } from 'next-dark-mode'
 
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
@@ -111,6 +112,9 @@ const Filters = ({
   setFilter,
   setPage,
 }) => {
+  const [selectFilterOpen, setSelectFilterOpen] = React.useState(false);
+  const [selectFilterOptionsOpen, setSelectFilterOptionsOpen] = React.useState(false);
+  const { darkModeActive } = useDarkMode()
   return (
     <div className="filter-wrapper">
       <div className="search-container">
@@ -127,8 +131,11 @@ const Filters = ({
             }}
           />
           <img src="/static/images/search.svg" alt="search" className="search" />
-          <img src="/static/images/right-arrow.svg" className="right-arrow dark" />
-          <img src="/static/images/search2.svg" className="right-arrow light" />
+          {darkModeActive ? (
+            <img src="/static/images/right-arrow.svg" className="right-arrow" />
+          ): (
+            <img src="/static/images/search2.svg" className="right-arrow" />
+          )}
         </div>
       </div>
       <div className="freespace-wrap">
@@ -147,6 +154,7 @@ const Filters = ({
             aria-haspopup="listbox"
             aria-expanded="false"
             title="Free Space"
+            onClick={() => setSelectFilterOpen(!selectFilterOpen)}
           >
             <div className="filter-option">
               <div className="filter-option-inner">
@@ -154,7 +162,10 @@ const Filters = ({
               </div>
             </div>
           </button>
-          <div className="dropdown-menu" style={{ maxHeight: '588.422px', overflow: 'hidden', minHeight: '0px', willChange: 'transform' }}>
+          <div
+            className={`dropdown-menu ${selectFilterOpen ? 'd-block' : ''}`}
+            style={{ maxHeight: '588.422px', overflow: 'hidden', minHeight: '0px', willChange: 'transform' }}
+          >
             <div className="inner show" role="listbox" id="bs-select-1" tabIndex="-1" aria-activedescendant="bs-select-1-0"
               style={{ maxHeight: '570.422px', overflowY: 'auto', minHeight: '0px' }}
             >
@@ -186,8 +197,16 @@ const Filters = ({
             <option>More than 10%</option>
             <option>More than 15%2</option>
           </select>
-          <button type="button" className="btn dropdown-toggle btn-light" data-toggle="dropdown"
-            role="combobox" aria-owns="bs-select-2" aria-haspopup="listbox" aria-expanded="false" title="More than 5%"
+          <button
+            type="button"
+            className="btn dropdown-toggle btn-light"
+            data-toggle="dropdown"
+            role="combobox"
+            aria-owns="bs-select-2"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            title="More than 5%"
+            onClick={() => setSelectFilterOptionsOpen(!selectFilterOptionsOpen)}
           >
             <div className="filter-option">
               <div className="filter-option-inner">
@@ -195,7 +214,8 @@ const Filters = ({
               </div>
             </div>
           </button>
-          <div className="dropdown-menu"
+          <div
+            className={`dropdown-menu ${selectFilterOptionsOpen ? 'd-block' : ''}`}
             style={{ maxHeight: '588.422px', overflow: 'hidden', minHeight: '0px', willChange: 'transform' }}
           >
             <div className="inner show" role="listbox" id="bs-select-2" tabIndex="-1" aria-activedescendant="bs-select-2-0"
@@ -338,7 +358,7 @@ export const Nodes = ({ currentLocale }) => {
                           <tr key={index}>
                             <td scope="row" style={{ position: 'relative' }}>
                               <Link route={`${currentLocale}-node`} params={{ locale, id: item.nodeID }}>
-                                <a className="stretched-link text-white">
+                                <a className="stretched-link">
 
                                   <span id="code">{shortNodeId(item.nodeID)}</span>
                                   <img

@@ -1,5 +1,5 @@
 body {
-  padding-top: 56px;
+  /* padding-top: 56px; */
   background-color: #13131A;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -69,7 +69,7 @@ body {
 .navbar-nav .nav-item.active:after {
   content: "";
   position: absolute;
-  top: 42px;
+  top: 44px;
   height: 2px;
   background-color: #fff;
   width: 100%;
@@ -77,7 +77,10 @@ body {
 }
 .bg-dark {
   background-color: #292932 !important;
-  padding: 9px 0px;
+  padding: 14px 0px;
+}
+.bg-light {
+  padding: 14px 0px;
 }
 .flag{
   background-size: cover !important;
@@ -133,7 +136,7 @@ span#countries_title {
 .content-wrapper {
   background-color: #32C5FF;
   padding: 25px 0% 34px !important;
-  margin-top: 10px;
+  margin-top: 66px;
 }
 
 .main-content {
@@ -241,10 +244,14 @@ table.dataTable thead th{
   border-bottom: 8px solid #13131a;
   font-size: 13px;
   letter-spacing: -0.06px;
-  padding-top: 21px;
-  padding-bottom: 18px;
+  padding: 9px 10px;
   font-weight: 500;
   border-top: 0px;
+  height: 58px;
+}
+#datatable_wrapper table.dataTable tbody td a {
+  text-decoration: none;
+  color: #fff;
 }
 .table-tab-wrapper {
   position: absolute;
@@ -445,7 +452,7 @@ dropdown.language {
 .contact-wrapper{
  background-color: #32C5FF;
  padding: 53px 0% 50px !important;
- margin-top: 10px;
+ margin-top: 55px;
 }
 .TitleNodeID .fa-circle:before {
   position: absolute;
@@ -562,7 +569,8 @@ dropdown.language {
   text-align: right;
 }
 .progress-bar-wrap .progress {
-  background-color: #111116;
+  /* background-color: #111116; */
+  background-color: #E4EBF1;
   border-radius: 2px;
   width: 100%;
   height: 5px;
@@ -665,11 +673,11 @@ dropdown.language {
 .contact-table #datatable_wrapper table.dataTable tbody td {
   background: #1C1C24;
   border-bottom: 10px solid #13131a;
-  padding-top: 21px;
+  /* padding-top: 21px; */
   font-size: 16px;
   letter-spacing: -0.07px;
   line-height: 19px;
-  padding-bottom: 18px;
+  /* padding-bottom: 18px; */
   border-top: 0px;
 }
 table.dataTable tbody tr {
@@ -1367,7 +1375,7 @@ table.dataTable.transactions tbody tr td:first-child {
   color: #484848 !important;
 }
 .node-details-wrapper .dataTables_paginate.paging_simple_numbers {
-  width: 100%;
+  /* width: 100%; */
   float: left !important;
 }
 .box-wrapper .content-inner .right .card-wrapper {
@@ -1481,8 +1489,8 @@ table.dataTable.transactions tbody tr td:first-child {
     left: auto !important;
   }
   .content-wrapper {
-   margin-top: 0;
- }
+    /* margin-top: 0; */
+  }
 
 }
 
@@ -1557,7 +1565,7 @@ table.dataTable.transactions tbody tr td:first-child {
   margin-right: 6px;
 }
 .form-control{
-  background-color: #20202A !important;
+  background-color: #20202A;
   border-radius: 4px;
   box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.06);
   border: none;
@@ -1652,7 +1660,7 @@ table.dataTable.transactions tbody tr td:first-child {
 }
 @media (min-width: 768px) and (max-width: 1024px) {
   .bg-dark {
-    padding: 13px 0px;
+    padding: 14px 0px;
   }
   .navbar-nav .nav-item.active:after {
     background-color: transparent;
@@ -2043,6 +2051,17 @@ table.dataTable.transactions tbody tr td:first-child {
 .bootstrap-select .dropdown-toggle .filter-option {
   height: auto !important;
 }
+.dropdown .dropdown-menu {
+  max-width: 100%;
+  min-width: 100%;
+  color: #000;
+}
+.dropdown .dropdown-toggle {
+  color: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 3%);
+  border: none;
+}
 .dropdown-menu .dropdown-item,
 .dropdown-menu .dropdown-item a {
   color: #000;
@@ -2052,4 +2071,159 @@ table.dataTable.transactions tbody tr td:first-child {
   outline: none;
   color: #000;
   background-color: #f2f2f2;
+}
+
+body.mode-light {
+  background-color: white;
+}
+.mode-light .navbar-nav .nav-item.active:after {
+  background-color: #FF6832;
+}
+
+.mode-light #toggel_btn label {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.mode-light #toggel_btn label img.night-light {
+  background-color: transparent;
+}
+.mode-light #toggel_btn label img.day {
+  opacity: 1;
+}
+.mode-light .footer {
+  background-color: #32C5FF;
+}
+.mode-light .footer .copyright {
+  color: #FFFFFF;
+}
+.mode-light .footer .join-us {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+.mode-light .main-content {
+  background-color: #F5F6FB;
+}
+.mode-light .PageTitleFont {
+  color: #20202A;
+}
+.mode-light .form-control {
+  background-color: white;
+  color: #81818C;
+}
+.mode-light .dropdown .dropdown-toggle {
+  color: #292932;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mode-light table.dataTable thead th {
+  border-bottom: none;
+}
+.mode-light #datatable_wrapper table.dataTable tbody td {
+  background: white;
+  border-top: 6px solid #f5f6fb;
+  border-bottom: none;
+}
+.mode-light #datatable_wrapper table.dataTable tbody td a {
+  color: #292932;
+}
+.mode-light #datatable_wrapper table.dataTable tbody td img.pdf-image {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.mode-light table.dataTable tbody tr {
+  background-color: transparent !important;
+}
+
+.mode-light div.dataTables_wrapper div.dataTables_length select {
+  background-color: #FFFFFF;
+  color: #81818C;
+  background-image: url('/static/images/light-dropdown.svg');
+  border: none;
+  outline: none;
+}
+.mode-light table.dataTable tbody tr td:first-child {
+  color: #20202A !important;
+}
+
+.mode-light .bootstrap-select .dropdown-toggle {
+  background-color: #fff!important;
+  color: #81818C!important;
+  background-image: url('/static/images/dropdown1.svg');
+}
+.mode-light .bootstrap-select .dropdown-menu {
+  background-color: #FFFFFF!important;
+}
+.mode-light .bootstrap-select .dropdown-item {
+  background-color: #FFFFFF!important;
+  color: #81818C!important;
+}
+.mode-light .bootstrap-select .dropdown-item.active {
+  background-color: #f2f2f2!important;
+  color: #000!important;
+}
+.mode-light .bootstrap-select .dropdown-item:hover {
+  background-color: #f2f2f2!important;
+  color: #000!important;
+}
+
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+  color: #666 !important;
+  border: 1px solid transparent;
+  background: transparent;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button {
+  border: 1px solid #E7E7E7 !important;
+}
+
+.mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button {
+  border: 1px solid #E7E7E7 !important;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #333 !important;
+  border: 1px solid transparent;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button {
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: transparent;
+  border: 1px solid #E7E7E7;
+  opacity: 0.87;
+}
+
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  color: white !important;
+  border: 1px solid #111;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #E0E0E0 !important;
+}
+.mode-light .Title {
+  color: #20202A;
+}
+.mode-light .content-inner img.pdf-image {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.mode-light .PagesubTitle {
+  color: #81818C;
+}
+.mode-light .main-progress-wrapper .progress-title {
+  color: #20202A;
+}
+.mode-light .main-progress-wrapper .right-side .progress-bar-wrap .progress,
+.mode-light .main-progress-wrapper .left-side .progress-bar-wrap .progress {
+  background-color: #EDEDED;
+}
+.mode-light .box-wrapper {
+  background-color: #F5F6FB;
+}
+.mode-light .card-wrapper {
+  background-color: #FFFFFF;
+}
+.mode-light .card-content {
+  background-color: #F5F9FA;
+}
+.mode-light .card-wrapper span {
+  color: #919191;
+}
+.mode-light .card-wrapper p.subtext {
+  color: #20202A;
 }
