@@ -21,6 +21,7 @@ services:
   test-avaxnodes:
     container_name: test-avaxnodes
     build:
+      context: .
       dockerfile: Dockerfile
       args:
         - ENV_FILE=.test.env
