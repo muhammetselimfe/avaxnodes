@@ -5,7 +5,7 @@ ARG ENV_FILE=.env
 COPY . /app
 WORKDIR /app
 
-ADD $ENV_FILE ./.env.local
+ADD $ENV_FILE ./.env
 
 RUN yarn install
 
