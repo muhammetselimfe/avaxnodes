@@ -9,8 +9,9 @@ import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
 import { defaultLocale, locales } from '../../locales';
-import { Link } from '../../routes'
+import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
+import pickParams from '../../utils/pickParams';
 
 export const GET_NODES = gql`
   query GetNodes ($filter: NodesFilter!) {
@@ -111,6 +112,8 @@ const Stats = ({ data = {} }) => {
 }
 
 const Filters = ({
+  locale,
+  router,
   filter,
   setFilter,
   setPage,
@@ -120,6 +123,9 @@ const Filters = ({
   const { darkModeActive } = useDarkMode()
   const { formatMessage } = useIntl()
   const f = id => formatMessage({ id })
+
+  const route = router.query.nextRoute
+
   return (
     <div className="filter-wrapper">
       <div className="search-container">
@@ -131,6 +137,11 @@ const Filters = ({
             placeholder={f('filter.search.placeolder')}
             value={filter}
             onChange={(event) => {
+              Router.pushRoute(
+                route,
+                { ...pickParams(router.params || {}), page: 1, filter: event.target.value },
+                locale
+              )
               setFilter(event.target.value)
               setPage(1)
             }}
@@ -251,10 +262,14 @@ const Filters = ({
   )
 }
 
-export const Nodes = ({ currentLocale }) => {
-  const [filter, setFilter] = React.useState('');
-  const [page, setPage] = React.useState(1);
-  const [perPage, setPerPage] = React.useState(10);
+export const Nodes = ({ currentLocale, router }) => {
+  const [filter, setFilter] = React.useState(
+    (!router.query.filter || router.query.filter === 'undefined')
+      ? ''
+      : router.query.filter
+  );
+  const [page, setPage] = React.useState(+router.query.page || 1);
+  const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
 
   const { loading, error, data } = useQuery(GET_NODES, {
     variables: {
@@ -266,7 +281,7 @@ export const Nodes = ({ currentLocale }) => {
     },
   });
 
-  const locale = currentLocale === defaultLocale ? undefined : currentLocale
+  const locale = currentLocale
 
   const { formatMessage } = useIntl()
   const f = id => formatMessage({ id })
@@ -281,13 +296,13 @@ export const Nodes = ({ currentLocale }) => {
           <div className="row content-inner">
             <div className="col-md-3 col-sm-3">
               <div className="bredcrum">
-                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                <Link href={`home`} locale={locale} params={{ }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                <Link href={`home`} locale={locale} params={{ }}>
                   <a className="nodes">
                     {f('page.nodes.header')}
                   </a>
@@ -301,6 +316,8 @@ export const Nodes = ({ currentLocale }) => {
       <div className="main-content">
         <div className="container">
           <Filters
+            locale={locale}
+            router={router}
             filter={filter}
             setFilter={setFilter}
             setPage={setPage}
@@ -320,6 +337,7 @@ export const Nodes = ({ currentLocale }) => {
           <div className="container">
             <div id="datatable_wrapper" className="dataTables_wrapper no-footer">
               <TableControls
+                locale={locale}
                 page={page}
                 setPage={setPage}
                 perPage={perPage}
@@ -363,7 +381,7 @@ export const Nodes = ({ currentLocale }) => {
                         return (
                           <tr key={index}>
                             <td scope="row" style={{ position: 'relative' }}>
-                              <Link route={`${currentLocale}-node`} params={{ locale, id: item.nodeID }}>
+                              <Link href={`node`} locale={locale} params={{ id: item.nodeID }}>
                                 <a className="stretched-link">
 
                                   <span id="code">{shortNodeId(item.nodeID)}</span>
@@ -374,8 +392,8 @@ export const Nodes = ({ currentLocale }) => {
                                     className="pdf-image"
                                   />
                                   <div className="table-tab-wrapper">
-                                    {item.isSponsored && (<span className="sponsertag mr-1">Sponsored</span>)}
-                                    {item.isPartner && (<span className="providertag">Provider</span>)}
+                                    {item.isSponsored && (<span className="sponsertag mr-1">{f('common.sponsored')}</span>)}
+                                    {item.isPartner && (<span className="providertag">{f('common.provider')}</span>)}
                                   </div>
                                 </a>
                               </Link>
@@ -403,9 +421,9 @@ export const Nodes = ({ currentLocale }) => {
                             <td style={{ display: 'none' }}></td>
                             <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
                             <td>
-                              {!!daysLeft && (<span>{daysLeft} days left</span>)}
-                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
-                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
+                              {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
+                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
+                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
                             </td>
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(potentialRewardPercent, 3)}%</td>
@@ -419,6 +437,7 @@ export const Nodes = ({ currentLocale }) => {
                 </div>
               </div>
               <TableControls
+                locale={locale}
                 page={page}
                 setPage={setPage}
                 perPage={perPage}

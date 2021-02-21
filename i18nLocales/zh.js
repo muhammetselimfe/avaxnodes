@@ -23,6 +23,50 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "最大产量",
   "page.nodes.table.header.country.title": "国家",
 
+  "page.node.title": "节点",
+  "page.node.header": "节点详细信息",
+
+  "page.node.space.available": '可用空间',
+  "page.node.time.remaining": '剩余空间',
+  "page.node.total": '全部的',
+  "page.node.free": '自由',
+  "page.node.days.total": '总天数',
+  "page.node.days.remaining": '剩余天数',
+
+  "page.node.info.title.beneficiary": "受益人",
+  "page.node.info.subtitle.address": "地址",
+
+  "page.node.info.title.perfomance": "表现",
+  "page.node.info.subtitle.responses.average": "平均回应",
+  "page.node.info.subtitle.responses.sampled": "抽样答复",
+  "page.node.info.description.perfomance": "来自Avalanche节点样本的响应数据。在结束时间之前无法知道节点的正常运行时间",
+
+  "page.node.info.title.stake": "赌注",
+  "page.node.info.subtitle.owned": "拥有的",
+  "page.node.info.subtitle.total": "全部的",
+  "page.node.info.subtitle.networkShare": "网络共享",
+
+  "page.node.info.title.potentialRewards": "潜在的回报",
+  "page.node.info.subtitle.fromOwnedStake": "来自拥有国",
+  "page.node.info.subtitle.fromDelegations": "来自代表团",
+  "page.node.info.subtitle.totalRewards": "总奖励",
+
+  "page.node.info.title.delegations": "代表团",
+  "page.node.info.subtitle.maxYield": "最大产量",
+  "page.node.info.subtitle.delegationsFees": "委托费",
+  "page.node.info.subtitle.grossRewards": "总奖励",
+  "page.node.info.subtitle.netRewards": "净奖励",
+  "page.node.info.subtitle.delegated": "委托",
+  "page.node.info.subtitle.freeSpace": "可用空间",
+
+  "page.node.table.header": "AVAX代表团",
+
+  "page.node.table.header.beneficiary.title": "受益人",
+  "page.node.table.header.delegated.title": "委托",
+  "page.node.table.header.potentialRewards.title": "潜在的回报",
+  "page.node.table.header.startedon.title": "开始于",
+  "page.node.table.header.timeleft.title": "剩余时间",
+
   "pagination.show": "展示",
   "pagination.entries": "参赛作品",
   "pagination.jump.to.page": "跳转到页面",
@@ -31,5 +75,12 @@ module.exports = {
 
   "space.available": "可用空间",
 
-  "footer.join.us.telegram": "加入我们的电报"
+  "footer.join.us.telegram": "加入我们的电报",
+
+  "common.provider": "提供者",
+  "common.sponsored": "赞助商",
+
+  "common.left.days": "还剩几天",
+  "common.left.hours": "还剩几个小时",
+  "common.left.minutes": "还剩分钟",
 }

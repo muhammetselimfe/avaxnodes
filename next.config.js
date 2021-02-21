@@ -6,20 +6,20 @@
 //   },
 
 module.exports = {
-  async redirects() {
-    return [
-      {
-        source: '/en',
-        destination: '/',
-        permanent: false,
-      },
-      {
-        source: '/en/:slug*',
-        destination: '/:slug*',
-        permanent: false,
-      },
-    ]
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/en',
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //     {
+  //       source: '/en/:slug*',
+  //       destination: '/:slug*',
+  //       permanent: false,
+  //     },
+  //   ]
+  // },
   // async redirects() {
   //   return [
   //     {

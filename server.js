@@ -3,6 +3,7 @@ const routes = require('./routes')
 const app = next({dev: process.env.NODE_ENV !== 'production'})
 
 const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
+  // console.log('handler', route, query, req.nextRoute.data)
   app.render(req, res, route.page, query)
 })
 

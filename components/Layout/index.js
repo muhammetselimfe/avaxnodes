@@ -7,7 +7,7 @@ import { defaultLocale, locales } from '../../locales';
 import { Link } from '../../routes'
 
 const Layout = ({ router = {}, currentLocale, currentRoute, children, ...rest }) => {
-  const route = `${currentLocale}-home`
+  const route = `home`
   return (
     <>
       <Header currentLocale={currentLocale} route={route} currentRoute={currentRoute} router={router} />

@@ -2228,3 +2228,9 @@ body.mode-light {
 .mode-light .card-wrapper p.subtext {
   color: #20202A;
 }
+.mode-light .card-wrapper p.title {
+  color: #20202A;
+}
+.mode-light .main-content .table-title {
+  color: #20202A;
+}

@@ -102,6 +102,9 @@ export const Node = ({
   const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
   const daysLeftPercent = daysLeft * 100 / daysTotal
 
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
+
   return (
     <>
       <div className="contact-wrapper">
@@ -109,21 +112,21 @@ export const Node = ({
           <div className="row content-inner">
             <div className="col-md-4 col-sm-6 col-lg-3">
               <div className="nodebredcrum">
-                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                <Link href={`home`} locale={locale} params={{ }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link route={`${currentLocale}-home`} params={{ locale }}>
+                <Link href={`home`} locale={locale} params={{ }}>
                   <a className="nodes">
-                    Nodes
+                    {f('page.nodes.header')}
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link route={`${currentLocale}-node`} params={{ locale, id: router.query.id }}>
+                <Link href={`node`} locale={locale} params={{ id: router.params.id }}>
                   <a className="nodes">
-                    Node details
+                    {f('page.node.header')}
                   </a>
                 </Link>
               </div>
@@ -156,11 +159,11 @@ export const Node = ({
           <div className="container">
             <div className="row">
               <div className="col-md-6 left-side">
-                <p className="progress-title">Available space</p>
+                <p className="progress-title">{f('page.node.space.available')}</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>{numberFormat(maxStaked, 0)}</strong> AVAX total</label>
-                    <label className="total-label"><strong>{numberFormat(leftToStack, 0)}</strong> AVAX free</label>
+                    <label className="available-label"><strong>{numberFormat(maxStaked, 0)}</strong> AVAX {f('page.node.total')}</label>
+                    <label className="total-label"><strong>{numberFormat(leftToStack, 0)}</strong> AVAX {f('page.node.free')}</label>
                   </div>
                   <div className="progress">
                     <div
@@ -175,11 +178,11 @@ export const Node = ({
                 </div>
               </div>
               <div className="col-md-6 right-side">
-                <p className="progress-title">Time remaining</p>
+                <p className="progress-title">{f('page.node.time.remaining')}</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>{daysTotal}</strong> days total</label>
-                    <label className="total-label"><strong>{daysLeft}</strong> days remaining</label>
+                    <label className="available-label"><strong>{daysTotal}</strong> {f('page.node.days.total')}</label>
+                    <label className="total-label"><strong>{daysLeft}</strong> {f('page.node.days.remaining')}</label>
                   </div>
                   <div className="progress">
                     <div
@@ -205,58 +208,58 @@ export const Node = ({
           <div className="row content-inner">
             <div className="col-md-6 left">
               <div className="card-wrapper first">
-                <p className="title">BENEFICIARY</p>
+                <p className="title">{f('page.node.info.title.beneficiary')}</p>
                 <div className="card-content">
-                  <span>Address</span>
+                  <span>{f('page.node.info.subtitle.address')}</span>
                   <p className="subtext">
                     {item && item.rewardOwner && item.rewardOwner.addresses && item.rewardOwner.addresses[0]}
                   </p>
                 </div>
               </div>
               <div className="card-wrapper">
-                <p className="title">Stake</p>
+                <p className="title">{f('page.node.info.title.stake')}</p>
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
-                    <span>Owned</span>
+                    <span>{f('page.node.info.subtitle.owned')}</span>
                     <p className="subtext">{numberFormat(stakeAmount, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Total</span>
+                    <span>{f('page.node.info.subtitle.total')}</span>
                     <p className="subtext">{numberFormat(totalStacked, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Network share</span>
+                    <span>{f('page.node.info.subtitle.networkShare')}</span>
                     <p className="subtext">0.9384762%</p>
                   </div>
                 </div>
               </div>
               <div className="card-wrapper">
-                <p className="title">Delegations</p>
+                <p className="title">{f('page.node.info.title.delegations')}</p>
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
-                    <span>Max yield</span>
+                    <span>{f('page.node.info.subtitle.maxYield')}</span>
                     <p className="subtext">{numberFormat(potentialRewardPercent, 3)} %</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Delegation fees</span>
+                    <span>{f('page.node.info.subtitle.delegationsFees')}</span>
                     <p className="subtext">0 AVAX</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Gross rewards</span>
+                    <span>{f('page.node.info.subtitle.grossRewards')}</span>
                     <p className="subtext">0 AVAX</p>
                   </div>
                 </div>
                 <div className="box-row row-2 d-flex">
                   <div className="card-content smallbox">
-                    <span>Net rewards</span>
+                    <span>{f('page.node.info.subtitle.netRewards')}</span>
                     <p className="subtext">0 AVAX</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Delegated</span>
+                    <span>{f('page.node.info.subtitle.delegated')}</span>
                     <p className="subtext">{numberFormat(delegatorsStaked, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Free space</span>
+                    <span>{f('page.node.info.subtitle.freeSpace')}</span>
                     <p className="subtext">{numberFormat(leftToStack, 0)} AVAX</p>
                   </div>
                 </div>
@@ -264,37 +267,37 @@ export const Node = ({
             </div>
             <div className="col-md-6 right">
               <div className="card-wrapper first-box-card">
-                <p className="title">Performance</p>
+                <p className="title">{f('page.node.info.title.perfomance')}</p>
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
-                    <span>Average responses</span>
+                    <span>{f('page.node.info.subtitle.responses.average')}</span>
                     <p className="subtext">100%</p>
                   </div>
                   <div className="card-content smallbox">
-                    <span>Sampled responses</span>
+                    <span>{f('page.node.info.subtitle.responses.sampled')}</span>
                     <p className="subtext">100%</p>
                   </div>
                 </div>
-                <span className="note-text">Response data from a sample of Avalanche nodes. Node uptime can't be known before end time</span>
+                <span className="note-text">{f('page.node.info.description.perfomance')}</span>
               </div>
               <div className="card-wrapper last-box-card">
-                <p className="title">Potential rewards</p>
+                <p className="title">{f('page.node.info.title.potentialRewards')}</p>
                 <div className="card-content">
-                  <span>From owned state</span>
+                  <span>{f('page.node.info.subtitle.fromOwnedStake')}</span>
                   <p className="subtext">{numberFormat(ownRewards, 0)} AVAX</p>
                 </div>
                 <div className="card-content">
-                  <span>From delegations</span>
+                  <span>{f('page.node.info.subtitle.fromDelegations')}</span>
                   <p className="subtext">{numberFormat(delegatorsRewards, 0)} AVAX</p>
                 </div>
                 <div className="card-content">
-                  <span>Total rewards</span>
+                  <span>{f('page.node.info.subtitle.totalRewards')}</span>
                   <p className="subtext">{numberFormat(totalRewards, 0)} AVAX</p>
                 </div>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label">From owned state</label>
-                    <label className="total-label">From delegations</label>
+                    <label className="available-label">{f('page.node.info.subtitle.fromOwnedStake')}</label>
+                    <label className="total-label">{f('page.node.info.subtitle.fromDelegations')}</label>
                   </div>
                   <div className="progress">
                     <div
@@ -317,9 +320,8 @@ export const Node = ({
           <div className="container">
             <div className="">
               <div className="table-title">
-                AVAX delegations
-               </div>
-
+                {f('page.node.table.header')}
+              </div>
             </div>
           </div>
         </div>
@@ -327,6 +329,7 @@ export const Node = ({
           <div className="container">
             <div id="datatable_wrapper" className="dataTables_wrapper no-footer">
               <TableControls
+                locale={locale}
                 page={page}
                 setPage={setPage}
                 perPage={perPage}
@@ -338,11 +341,11 @@ export const Node = ({
                   <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
                     <thead>
                       <tr>
-                        <th>BENEFICIARY</th>
-                        <th>DELEGATED</th>
-                        <th>POTENTIAL REWARDS</th>
-                        <th>STARTED ON</th>
-                        <th>TIME LEFT</th>
+                        <th>{f('page.node.table.header.beneficiary.title')}</th>
+                        <th>{f('page.node.table.header.delegated.title')}</th>
+                        <th>{f('page.node.table.header.potentialRewards.title')}</th>
+                        <th>{f('page.node.table.header.startedon.title')}</th>
+                        <th>{f('page.node.table.header.timeleft.title')}</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -359,9 +362,9 @@ export const Node = ({
                             <td>{numberFormat(item.potentialReward / 1000000000)} AVAX</td>
                             <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
                             <td>
-                              {!!daysLeft && (<span>{daysLeft} days left</span>)}
-                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} hours left</span>)}
-                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} minutes left</span>)}
+                              {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
+                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
+                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
                             </td>
                             <td><i className="fas fa-circle"></i></td>
                           </tr>
@@ -373,6 +376,7 @@ export const Node = ({
                 </div>
               </div>
               <TableControls
+                locale={locale}
                 page={page}
                 setPage={setPage}
                 perPage={perPage}

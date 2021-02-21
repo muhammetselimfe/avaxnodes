@@ -1,6 +1,9 @@
 import Head from 'next/head'
+import Routes from '../routes';
 
+import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
+import get from 'lodash/get'
 
 import Node, { GET_NODE } from '../components/Node';
 import Layout from '../components/Layout';
@@ -8,19 +11,25 @@ import { defaultLocale } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
 import styles from '../styles/Home.module.css'
+import pickParams from '../utils/pickParams';
 
 export default function NodePage(props) {
-  const router = useRouter()
+  const defaultRouter = useRouter()
+  const router = Routes.match(defaultRouter.asPath)
 
-  const currentLocale = ((router || {}).query || {}).locale || defaultLocale
-  const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
+  const currentLocale = get(router, 'route.locale') || get(defaultRouter, 'locale', defaultLocale) || defaultLocale
+
+  const currentRoute = get(router, 'query.nextRoute', 'node')
+
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
 
   return (
     <>
       <Head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Avaxnodes</title>
+        <title>Avaxnodes - {f('page.node.title')} </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -35,16 +44,18 @@ export const getServerSideProps = async (ctx) => {
   const params = new URLSearchParams(`${ctx.resolvedUrl}`.split('?')[1] || '');
   const currentLocale = params.get('locale') || defaultLocale
 
+  const router = Routes.match(ctx.resolvedUrl)
+
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
     query: GET_NODE,
     variables: {
-      filter: {
-        nodeID: params.get('id') ||  ctx.query.id,
-        page: 1,
-        perPage: 10,
-      }
+      filter: pickParams({
+        nodeID: router.query.id ||  ctx.query.id,
+        page: +router.query.page || 1,
+        perPage: +router.query.perPage || 10,
+      })
     },
   })
 

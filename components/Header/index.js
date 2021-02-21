@@ -3,23 +3,30 @@ import { NavDropdown, Navbar } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
+import get from 'lodash/get'
 
 import { defaultLocale, locales } from '../../locales';
-import { Link } from '../../routes'
+import Routes, { Link } from '../../routes'
+import pickParams from '../../utils/pickParams'
 
-export const Header = ({ children, currentLocale, currentRoute, route }) => {
+export const Header = ({ children, currentLocale, currentRoute, route, ...rest }) => {
   const { formatMessage } = useIntl()
   const f = id => formatMessage({ id })
-  const router = useRouter()
+  const defaultRouter = useRouter()
+  const router = Routes.match(defaultRouter.asPath)
   const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode()
 
-  const dropdownLocales = locales.filter(item => item !== currentLocale)
-  const locale = currentLocale === defaultLocale ? undefined : currentLocale
+  // console.log('Header', {
+  //   router, rest, asPath: defaultRouter.asPath
+  // })
+
+  const locale = get(router, 'route.locale') || defaultLocale
+  const dropdownLocales = locales.filter(item => item !== locale)
   return (
     <Navbar collapseOnSelect expand="lg" bg={darkModeActive ? 'dark' : 'light'} variant={darkModeActive ? 'dark' : 'light'} fixed="top">
     {/* <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${darkModeActive ? 'bg-dark' : 'bg-light'}`}> */}
       <div className="container">
-        <Link route={route} params={{ locale }}>
+        <Link href={'home'} locale={locale} params={{}}>
           <a className="navbar-brand">
             {darkModeActive ? (
               <img src="/static/images/logo.svg" className="img-fluid logoTop dark" alt="" />
@@ -34,7 +41,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
 
           <ul className="navbar-nav">
             <li className={`nav-item ${currentRoute === 'home' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-home`} params={{ locale }}>
+              <Link href={`home`} locale={locale} params={{ }}>
                 <a className="nav-link">
                   {f('header.pages.nodes.title')}
                   <span className="sr-only">(current)</span>
@@ -42,7 +49,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
               </Link>
             </li>
             <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
-              <Link route={`${currentLocale}-notifier`} params={{ locale }}>
+              <Link href={`notifier`} locale={locale} params={{  }}>
                 <a className="nav-link">
                   {f('header.pages.notifier.title')}
                 </a>
@@ -83,7 +90,7 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
             title={(
               <span className="mr-2 d-flex align-items-center">
                 <img
-                  src={`/static/images/icons/flag-${currentLocale}.svg`}
+                  src={`/static/images/icons/flag-${locale}.svg`}
                   width={25}
                   height={25}
                   className="mr-2"
@@ -91,30 +98,30 @@ export const Header = ({ children, currentLocale, currentRoute, route }) => {
                     width: 'initial'
                   }}
                 />
-                <span className="text-uppercase">{currentLocale}</span>
+                <span className="text-uppercase">{locale}</span>
               </span>
             )}
             id="nav-dropdown"
           >
-            {dropdownLocales.map(locale => (
-              <NavDropdown.Item eventKey={locale} as="button" key={locale}>
+            {dropdownLocales.map(l => (
+              <NavDropdown.Item eventKey={l} as="button" key={l}>
                 <Link
-                  route={`${locale}-${currentRoute}`}
+                  href={`${currentRoute}`}
+                  locale={l}
                   params={{
-                    ...(router && router.query ? router.query : {}),
-                    locale: locale === defaultLocale ? undefined : locale,
+                    ...pickParams(router.params || {}),
                   }}
                 >
                   <a>
                     <span>
                       <img
-                        src={`/static/images/icons/flag-${locale}.svg`}
+                        src={`/static/images/icons/flag-${l}.svg`}
                         width={25}
                         height={25}
                         className="mr-2"
                         style={{ width: 'initial' }}
                       />
-                      <span className="text-uppercase">{locale}</span>
+                      <span className="text-uppercase">{l}</span>
                     </span>
                   </a>
                 </Link>

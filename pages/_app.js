@@ -11,6 +11,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 // import ApolloClient from "apollo-boost";
 // import { appWithTranslation } from '../i18n'
 import { IntlProvider } from "react-intl"
+import get from 'lodash/get'
 
 import { useApollo } from '../lib/apolloClient'
 
@@ -25,14 +26,17 @@ import '../styles/flags.css'
 import '../styles/jquery.dataTables.min.css'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, ...rest}) {
   const apolloClient = useApollo(pageProps)
 
   const { darkModeActive } = useDarkMode()
 
-  const router = useRouter()
+  const defaultRouter = useRouter()
+  const router = Routes.match(defaultRouter.asPath)
 
-  const locale = ((router || {}).query || {}).locale || defaultLocale
+  const locale = pageProps.currentLocale || get(router, 'route.locale') || get(defaultRouter, 'locale', defaultLocale) || defaultLocale
+
+  // console.log('MyApp', router, locale, pageProps, rest)
 
   const messages = allMessages[locale]
 
@@ -53,19 +57,22 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-MyApp.getInitialProps = async (props) => {
-  const { Component, ctx } = props
-  let pageProps = {};
+// MyApp.getInitialProps = async (props) => {
+//   const { Component, ctx } = props
+//   let pageProps = {};
 
 
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-    pageProps._url = Routes.match(ctx.asPath);
-  }
+//   if (Component.getInitialProps) {
+//     pageProps = await Component.getInitialProps(ctx);
+//     pageProps._url = Routes.match(ctx.asPath);
+//   }
 
-  return { pageProps }
+//   return { pageProps }
+// }
+
+MyApp.getInitialProps = async (appContext) => {
+  // console.log('MyApp', appContext, Routes.match(appContext.asPath))
+  return { ...await App.getInitialProps(appContext) }
 }
-
-// MyApp.getInitialProps = async (appContext) => ({ ...await App.getInitialProps(appContext) })
 
 export default withDarkMode(MyApp)
