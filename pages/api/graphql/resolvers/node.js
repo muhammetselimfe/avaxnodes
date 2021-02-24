@@ -1,3 +1,4 @@
+import Peer from '../../../../models/peer'
 import { getAllValidators } from "../../../../lib/api"
 
 export default async (parent, args, context, info) => {
@@ -6,6 +7,8 @@ export default async (parent, args, context, info) => {
 
     const node = validators
       .find(item => item.nodeID === args.filter.nodeID)
+
+    const peer = await Peer.findOne({ nodeID: node.nodeID })
 
     const delegators = node.delegators || []
 
@@ -25,7 +28,11 @@ export default async (parent, args, context, info) => {
         totalStaked: delegators
           .map(delegator => delegator.stakeAmount / 1000000000)
           .reduce((result, current) => result + current, 0)
-      }
+      },
+      country_code: peer.country_code,
+      country_flag: peer.country_flag,
+      latitude: peer.latitude,
+      longitude: peer.longitude,
     };
   } catch (error) {
     throw error;

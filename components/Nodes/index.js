@@ -40,6 +40,8 @@ export const GET_NODES = gql`
             count
           }
         }
+        country_code
+        country_flag
       }
       pagination {
         page
@@ -427,7 +429,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </td>
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(potentialRewardPercent, 3)}%</td>
-                            <td><img src="/static/images/india-flag.svg" className="flag-image" /> IN</td>
+                            <td><img src={item.country_flag || '/static/images/india-flag.svg'} className="flag-image" /> <span>{item.country_code || 'IN'}</span></td>
                             <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
                           </tr>
                         )

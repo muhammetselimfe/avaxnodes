@@ -47,6 +47,8 @@ export const GET_NODE = gql`
           count
         }
       }
+      latitude
+      longitude
     }
   }
 `;
@@ -69,13 +71,16 @@ export const Node = ({
     },
   });
 
-  const position = [51.505, -0.09]
-
   const MapWithNoSSR = dynamic(() => import("../Map"), {
     ssr: false
   });
 
   const item = (data && data.node) || {delegators: {}}
+
+  const position = [
+    item.latitude || 51.505,
+    item.longitude || -0.09
+  ]
 
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
 

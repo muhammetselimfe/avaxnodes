@@ -1,3 +1,4 @@
+import Peer from '../../../../models/peer'
 import { getAllValidators } from "../../../../lib/api"
 
 export default async (parent, args, context, info) => {
@@ -13,8 +14,25 @@ export default async (parent, args, context, info) => {
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
     const count = currentValidators.length
 
+    const currentValidatorsPageItems = currentValidators.slice((page - 1) * perPage, page * perPage)
+
+    const peers = await Peer
+      .find({
+        nodeID: {
+          $in: currentValidatorsPageItems.map(item => item.nodeID)
+        }
+      })
+      .lean()
+      .exec()
+
+    const peersHash = peers
+      .reduce((result, current) => ({
+        ...result,
+        [current.nodeID]: current,
+      }), {})
+
     return {
-      items: currentValidators.slice((page - 1) * perPage, page * perPage).map((item, index) => {
+      items: currentValidatorsPageItems.map((item, index) => {
         let isPartner = false
         let isSponsored = false
         if (index === 0) {
@@ -26,6 +44,7 @@ export default async (parent, args, context, info) => {
           isPartner = true
         }
         const delegators = item.delegators || []
+        const peer = peersHash[item.nodeID] || {}
         return {
           ...item,
           isPartner,
@@ -40,7 +59,11 @@ export default async (parent, args, context, info) => {
             totalStaked: delegators
               .map(delegator => delegator.stakeAmount / 1000000000)
               .reduce((result, current) => result + current, 0)
-          }
+          },
+          country_code: peer.country_code,
+          country_flag: peer.country_flag,
+          latitude: peer.latitude,
+          longitude: peer.longitude,
         }
       }),
       pagination: {

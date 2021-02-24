@@ -37,6 +37,10 @@ export const typeDefs = gql`
     delegationFee: String
     uptime: String
     connected: Boolean
+    country_code: String
+    latitude: Float
+    longitude: Float
+    country_flag: String
   }
 
   type Stats {
