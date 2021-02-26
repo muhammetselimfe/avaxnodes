@@ -117,13 +117,13 @@ export const Node = ({
           <div className="row content-inner">
             <div className="col-md-4 col-sm-6 col-lg-3">
               <div className="nodebredcrum">
-                <Link href={`home`} locale={locale} params={{ }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
                   <a className="nodes">
                     {f('page.nodes.header')}
                   </a>
@@ -167,8 +167,8 @@ export const Node = ({
                 <p className="progress-title">{f('page.node.space.available')}</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>{numberFormat(maxStaked, 0)}</strong> AVAX {f('page.node.total')}</label>
-                    <label className="total-label"><strong>{numberFormat(leftToStack, 0)}</strong> AVAX {f('page.node.free')}</label>
+                    <label className="available-label"><strong>{numberFormat(maxStaked || 0, 0)}</strong> AVAX {f('page.node.total')}</label>
+                    <label className="total-label"><strong>{numberFormat(leftToStack || 0, 0)}</strong> AVAX {f('page.node.free')}</label>
                   </div>
                   <div className="progress">
                     <div
@@ -186,8 +186,8 @@ export const Node = ({
                 <p className="progress-title">{f('page.node.time.remaining')}</p>
                 <div className="progress-bar-wrap relative">
                   <div className="label-wrap">
-                    <label className="available-label"><strong>{daysTotal}</strong> {f('page.node.days.total')}</label>
-                    <label className="total-label"><strong>{daysLeft}</strong> {f('page.node.days.remaining')}</label>
+                    <label className="available-label"><strong>{daysTotal | 0}</strong> {f('page.node.days.total')}</label>
+                    <label className="total-label"><strong>{daysLeft || 0}</strong> {f('page.node.days.remaining')}</label>
                   </div>
                   <div className="progress">
                     <div

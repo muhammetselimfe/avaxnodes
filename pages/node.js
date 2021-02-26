@@ -46,15 +46,41 @@ export const getServerSideProps = async (ctx) => {
 
   const router = Routes.match(ctx.resolvedUrl)
 
+  if (!router || (router && !router.route)) {
+    return {
+      props: {
+        currentLocale
+      }
+    }
+  }
+
+  if (
+    !get(router, 'params.page') ||
+    get(router, 'params.page') === 'undefined' ||
+    !get(router, 'params.perPage') ||
+    get(router, 'params.perPage') === 'undefined'
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: router.route.getAs({
+          id: router.params.id,
+          page: 1,
+          perPage: 10,
+        })
+      }
+    }
+  }
+
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
     query: GET_NODE,
     variables: {
       filter: pickParams({
-        nodeID: router.query.id ||  ctx.query.id,
-        page: +router.query.page || 1,
-        perPage: +router.query.perPage || 10,
+        nodeID: get(router, 'params.id') ||  ctx.query.id,
+        page: +get(router, 'params.page') || 1,
+        perPage: +get(router, 'params.perPage') || 10,
       })
     },
   })

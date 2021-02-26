@@ -298,13 +298,13 @@ export const Nodes = ({ currentLocale, router }) => {
           <div className="row content-inner">
             <div className="col-md-3 col-sm-3">
               <div className="bredcrum">
-                <Link href={`home`} locale={locale} params={{ }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
                   <a className="nodes">
                     {f('page.nodes.header')}
                   </a>
@@ -405,8 +405,8 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td colSpan="2">
                               <div className="progress-bar-wrap relative">
                                 <div className="label-wrap">
-                                  <label className="available-label"><strong>{numberFormat(totalStacked)}</strong>AVAX</label>
-                                  <label className="total-label"><strong>{numberFormat(leftToStack)}</strong>AVAX</label>
+                                  <label className="available-label"><strong>{numberFormat(totalStacked || 0)}</strong>AVAX</label>
+                                  <label className="total-label"><strong>{numberFormat(leftToStack || 0)}</strong>AVAX</label>
                                 </div>
                                 <div className="progress">
                                   <div
@@ -429,7 +429,13 @@ export const Nodes = ({ currentLocale, router }) => {
                             </td>
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(potentialRewardPercent, 3)}%</td>
-                            <td><img src={item.country_flag || '/static/images/india-flag.svg'} className="flag-image" /> <span>{item.country_code || 'IN'}</span></td>
+                            <td>
+                              {item.country_flag && item.country_code && (
+                                <>
+                                  <img src={item.country_flag} className="flag-image" /> <span>{item.country_code}</span>
+                                </>
+                              )}
+                            </td>
                             <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
                           </tr>
                         )

@@ -11,7 +11,7 @@ const Layout = ({ router = {}, currentLocale, currentRoute, children, ...rest })
   return (
     <>
       <Header currentLocale={currentLocale} route={route} currentRoute={currentRoute} router={router} />
-      {children}
+      {children || null}
       <Footer currentLocale={currentLocale} route={route} currentRoute={currentRoute} />
     </>
   )

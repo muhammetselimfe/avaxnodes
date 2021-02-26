@@ -26,7 +26,7 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
     <Navbar collapseOnSelect expand="lg" bg={darkModeActive ? 'dark' : 'light'} variant={darkModeActive ? 'dark' : 'light'} fixed="top">
     {/* <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${darkModeActive ? 'bg-dark' : 'bg-light'}`}> */}
       <div className="container">
-        <Link href={'home'} locale={locale} params={{}}>
+        <Link href={'home'} locale={locale} params={{ page: 1, perPage: 10 }}>
           <a className="navbar-brand">
             {darkModeActive ? (
               <img src="/static/images/logo.svg" className="img-fluid logoTop dark" alt="" />
@@ -41,7 +41,7 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
 
           <ul className="navbar-nav">
             <li className={`nav-item ${currentRoute === 'home' ? 'active' : ''}`}>
-              <Link href={`home`} locale={locale} params={{ }}>
+              <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
                 <a className="nav-link">
                   {f('header.pages.nodes.title')}
                   <span className="sr-only">(current)</span>

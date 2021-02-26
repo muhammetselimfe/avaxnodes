@@ -35,14 +35,14 @@ export default async (parent, args, context, info) => {
       items: currentValidatorsPageItems.map((item, index) => {
         let isPartner = false
         let isSponsored = false
-        if (index === 0) {
-          isPartner = true
-          isSponsored = true
+        // if (index === 0) {
+        //   isPartner = true
+        //   isSponsored = true
 
-        }
-        if (index === 1) {
-          isPartner = true
-        }
+        // }
+        // if (index === 1) {
+        //   isPartner = true
+        // }
         const delegators = item.delegators || []
         const peer = peersHash[item.nodeID] || {}
         return {

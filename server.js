@@ -16,8 +16,6 @@ const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
   app.render(req, res, route.page, query)
 })
 
-console.log(111, process.env.MONGODB_URI)
-
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -29,43 +27,44 @@ db.once('open', function() {
   // we're connected!
 
   app.prepare().then(() => {
-    console.log(111, process.env.MONGODB_URI)
     express().use(handler).listen(3000)
   })
 
 });
 
-const agenda = new Agenda({
-  db: {
-    address: process.env.MONGODB_URI,
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+if (process.env.START_JOBS && process.env.START_JOBS === 'true') {
+  const agenda = new Agenda({
+    db: {
+      address: process.env.MONGODB_URI,
+      options: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
     },
-  },
-});
-
-addCheckPeersJob.job(agenda)
-addCheckPeerIpsJob.job(agenda)
-addCleanCompletedJobsJob.job(agenda)
-
-async function graceful() {
-  await agenda.stop();
-  process.exit(0);
-}
-
-process.on('SIGTERM', graceful);
-process.on('SIGINT' , graceful);
-
-(async function() { // IIFE to give access to async/await
-  await agenda.start();
-
-  await agenda.every('10 minutes', ['check peers']);
-
-  await agenda.every('1 day', ['clean completed jobs']);
-
-  await agenda.cancel({ nextRunAt: null }, (err, numRemoved) => {
-    debug(err);
-    debug('Number of finished jobs removed', numRemoved);
   });
-})();
+
+  addCheckPeersJob.job(agenda)
+  addCheckPeerIpsJob.job(agenda)
+  addCleanCompletedJobsJob.job(agenda)
+
+  async function graceful() {
+    await agenda.stop();
+    process.exit(0);
+  }
+
+  process.on('SIGTERM', graceful);
+  process.on('SIGINT' , graceful);
+
+  (async function() { // IIFE to give access to async/await
+    await agenda.start();
+
+    await agenda.every('10 minutes', ['check peers']);
+
+    await agenda.every('1 day', ['clean completed jobs']);
+
+    await agenda.cancel({ nextRunAt: null }, (err, numRemoved) => {
+      debug(err);
+      debug('Number of finished jobs removed', numRemoved);
+    });
+  })();
+}
