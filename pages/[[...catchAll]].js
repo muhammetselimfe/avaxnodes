@@ -1,4 +1,5 @@
 import { defaultLocale, locales } from '../locales'
+import Routes from '../routes';
 
 export default function CatchAll(props) {
   return (
@@ -41,6 +42,24 @@ export default function CatchAll(props) {
 //   //     };
 //   //   }
 //   // }
+
+//   const router = Routes.match(ctx.resolvedUrl)
+
+//   console.log('CatchAll', router)
+
+//   if (router && router.route) {
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: router.route.getAs({
+//           ...router.route.params,
+//           // page: 1,
+//           // perPage: 10,
+//           // sorting: '-fee',
+//         })
+//       }
+//     }
+//   }
 
 //   return {
 //       props: {},

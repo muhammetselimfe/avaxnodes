@@ -58,7 +58,7 @@ export const typeDefs = gql`
 
   input NodesFilter {
     filter: String
-    freeSpace: String
+    freeSpace: Int
     maxYield: String
     page: Int
     perPage: Int

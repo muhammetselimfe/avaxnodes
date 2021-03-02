@@ -95,6 +95,7 @@ export default async (parent, args, context, info) => {
           const totalStacked = item.stakeAmount / 1000000000 + delegatorsTotalStaked
           const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
           const leftToStack = maxStaked - totalStacked
+          const leftToStackPercent = 100 - (totalStacked * 100 / maxStaked)
           const stackedPercent = totalStacked * 100 / maxStaked
 
           const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
@@ -127,6 +128,7 @@ export default async (parent, args, context, info) => {
             totalStacked,
             leftToStack,
             stackedPercent,
+            leftToStackPercent,
           }
         })
       myCache.set('preparedValidators', preparedValidators)
@@ -139,11 +141,7 @@ export default async (parent, args, context, info) => {
     if (args.filter.freeSpace) {
       currentValidators = currentValidators
         .filter(item => {
-          const delegatorsStaked = parseFloat(item.delegators.totalStaked)
-          const totalStacked = item.stakeAmount / 1000000000 + delegatorsStaked
-          const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
-          const leftToStackPercent = 100 - (totalStacked * 100 / maxStaked)
-          return leftToStackPercent > parseFloat(args.filter.freeSpace)
+          return item.leftToStackPercent > parseFloat(args.filter.freeSpace)
         })
     }
 

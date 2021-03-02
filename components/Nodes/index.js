@@ -142,15 +142,23 @@ const nodesFilters = {
     label: 'page.nodes.filters.freeSpace.label',
     values: [
       {
-        value: 5,
+        value: 0,
         label: 'page.nodes.filters.freeSpace.option.value',
       },
       {
-        value: 10,
+        value: 20,
         label: 'page.nodes.filters.freeSpace.option.value',
       },
       {
-        value: 15,
+        value: 40,
+        label: 'page.nodes.filters.freeSpace.option.value',
+      },
+      {
+        value: 60,
+        label: 'page.nodes.filters.freeSpace.option.value',
+      },
+      {
+        value: 80,
         label: 'page.nodes.filters.freeSpace.option.value',
       },
     ],
@@ -167,6 +175,7 @@ const Filters = ({
   freeSpace,
   setFilter,
   setPage,
+  setFreeSpace,
 }) => {
   const [selectFilterOpen, setSelectFilterOpen] = React.useState(false);
   const [selectFilterOptionsOpen, setSelectFilterOptionsOpen] = React.useState(false);
@@ -253,8 +262,19 @@ const Filters = ({
             >
               <ul className="dropdown-menu inner show" role="presentation" style={{ marginTop: '0px', marginBottom: '0px' }}>
                 <li className="selected active">
-                  <a role="option" className="dropdown-item active selected" id="bs-select-1-0" tabIndex="0" aria-setsize="3" aria-posinset="1" aria-selected="true">
-                    <span className="text">Free Space</span>
+                  <a
+                    role="option"
+                    className="dropdown-item active selected"
+                    id="bs-select-1-0"
+                    tabIndex="0"
+                    aria-setsize="3"
+                    aria-posinset="1"
+                    aria-selected="true"
+                    onClick={() => {
+                      setSelectFilterOpen(!selectFilterOpen)
+                    }}
+                  >
+                    <span className="text">{preparedCurrentNodesFilter.label}</span>
                   </a>
                 </li>
               </ul>
@@ -308,6 +328,11 @@ const Filters = ({
                           aria-setsize="3"
                           aria-posinset="1"
                           aria-selected="true"
+                          onClick={() => {
+                            setFreeSpace(option.value)
+                            setPage(1)
+                            setSelectFilterOptionsOpen(!selectFilterOptionsOpen)
+                          }}
                         >
                           <span className="text">{option.label}</span>
                         </a>
@@ -335,8 +360,10 @@ export const Nodes = ({ currentLocale, router }) => {
   const [sorting, setSorting] = React.useState(router.query.sorting || '-fee');
   const [freeSpace, setFreeSpace] = React.useState((
     !router.query.freeSpace || router.query.freeSpace === 'undefined')
-      ? ''
-      : router.query.freeSpace
+      ? 0
+      : isNaN(new Number(router.query.freeSpace))
+        ? 0
+        : +router.query.freeSpace
   );
 
   const { loading, error, data } = useQuery(GET_NODES, {

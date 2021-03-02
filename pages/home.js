@@ -98,6 +98,7 @@ export const getServerSideProps = async (ctx) => {
       variables: {
         filter: pickParams({
           filter: get(router, 'params.filter') || '',
+          freeSpace: +get(router, 'params.freeSpace') || 0,
           page: +get(router, 'params.page') || 1,
           perPage: +get(router, 'params.perPage') || 10,
           sorting: +get(router, 'params.sorting') || '-fee',
