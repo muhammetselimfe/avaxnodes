@@ -42,6 +42,10 @@ export const GET_NODES = gql`
         }
         country_code
         country_flag
+        maxYield
+        totalStacked
+        leftToStack
+        stackedPercent
       }
       pagination {
         page
@@ -54,16 +58,10 @@ export const GET_NODES = gql`
 
 const prepareNewSorting = (sorting, field) => {
   const newSorting = sorting.includes(field)
-    ? sorting
-      .split(',')
-      .map(i => i.includes(field)
-        ? (i[0] === '-'
-          ? `+${field}`
-          : `-${field}`)
-        : i
-      )
-      .join(',')
-    : `${sorting},-${field}`
+    ? (sorting[0] === '-'
+      ? `+${field}`
+      : `-${field}`)
+    : `-${field}`
   return newSorting
 }
 
@@ -297,13 +295,10 @@ const Filters = ({
                       <Link
                         href={`home`}
                         locale={locale}
-                        params={{
-                          page: page,
-                          perPage: perPage,
-                          sorting: sorting,
-                          filter: filter,
+                        params={pickParams({
+                          ...router.params,
                           freeSpace: option.value,
-                        }}
+                        })}
                       >
                         <a
                           role="option"
@@ -337,7 +332,7 @@ export const Nodes = ({ currentLocale, router }) => {
   );
   const [page, setPage] = React.useState(+router.query.page || 1);
   const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
-  const [sorting, setSorting] = React.useState(+router.query.sorting || '-delegationFee');
+  const [sorting, setSorting] = React.useState(router.query.sorting || '-fee');
   const [freeSpace, setFreeSpace] = React.useState((
     !router.query.freeSpace || router.query.freeSpace === 'undefined')
       ? ''
@@ -351,6 +346,7 @@ export const Nodes = ({ currentLocale, router }) => {
         page,
         perPage,
         sorting,
+        freeSpace,
       }
     },
   });
@@ -428,51 +424,191 @@ export const Nodes = ({ currentLocale, router }) => {
                   <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
                     <thead>
                       <tr>
-                        <th>{f('page.nodes.table.header.nodeid.title')}</th>
-                        <th>{f('page.nodes.table.header.delegators.title')}</th>
-                        <th>{f('page.nodes.table.header.totalstake.title')}</th>
-                        <th className="free-space">{f('page.nodes.table.header.freespace.title')}</th>
-                        <th>{f('page.nodes.table.header.startedon.title')}</th>
-                        <th>{f('page.nodes.table.header.timeleft.title')}</th>
                         <th>
                           <Link
                             href={`home`}
                             locale={locale}
-                            params={{
-                              page: page,
-                              perPage: perPage,
-                              sorting: prepareNewSorting(sorting, 'delegationFee')
-                            }}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'node-id')
+                            })}
                           >
                             <a
                               onClick={() => {
-                                setSorting(prepareNewSorting(sorting, 'delegationFee'))
+                                setSorting(prepareNewSorting(sorting, 'node-id'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.nodeid.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'node-id')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'delegators')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'delegators'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.delegators.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'delegators')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'total-stake')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'total-stake'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.totalstake.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'total-stake')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th className="free-space">
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'free-space')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'free-space'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.freespace.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'free-space')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'started-on')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'started-on'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.startedon.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'started-on')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'time-left')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'time-left'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.timeleft.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'time-left')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'fee')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'fee'))
                               }}
                             >
                               <span>{f('page.nodes.table.header.fee.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'delegationFee')}
+                              {sortingIcon(sorting, 'fee')}
                             </a>
                           </Link>
                         </th>
-                        <th>{f('page.nodes.table.header.maxyield.title')}</th>
-                        <th>{f('page.nodes.table.header.country.title')}</th>
+                        <th>
+                         <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'max-yield')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'max-yield'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.maxyield.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'max-yield')}
+                            </a>
+                          </Link>
+                        </th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'country')
+                            })}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'country'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.country.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'country')}
+                            </a>
+                          </Link>
+                        </th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       {data && data.nodes && data.nodes.items && data.nodes.items.map((item, index) => {
-                        const delegatorsStaked = parseFloat(item.delegators.totalStaked)
-                        const totalStacked = item.stakeAmount / 1000000000 + delegatorsStaked
-                        const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
-                        const leftToStack = maxStaked - totalStacked
-                        const stackedPercent = totalStacked * 100 / maxStaked
-
-                        const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
-                        const timeLeftRatePercent = 100 - timeLeftRate * 100
-                        const delegationFeeRate = 1 - item.delegationFee / 100
-                        const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * delegationFeeRate
-
                         const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
                         const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
                         const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
@@ -506,15 +642,15 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td colSpan="2">
                               <div className="progress-bar-wrap relative">
                                 <div className="label-wrap">
-                                  <label className="available-label"><strong>{numberFormat(totalStacked || 0)}</strong>AVAX</label>
-                                  <label className="total-label"><strong>{numberFormat(leftToStack || 0)}</strong>AVAX</label>
+                                  <label className="available-label"><strong>{numberFormat(item.totalStacked || 0)}</strong>AVAX</label>
+                                  <label className="total-label"><strong>{numberFormat(item.leftToStack || 0)}</strong>AVAX</label>
                                 </div>
                                 <div className="progress">
                                   <div
                                     className="progress-bar"
                                     role="progressbar"
-                                    style={{ width: `${stackedPercent}%` }}
-                                    aria-valuenow={stackedPercent}
+                                    style={{ width: `${item.stackedPercent}%` }}
+                                    aria-valuenow={item.stackedPercent}
                                     aria-valuemin="0"
                                     aria-valuemax="100"
                                   />
@@ -529,7 +665,7 @@ export const Nodes = ({ currentLocale, router }) => {
                               {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
                             </td>
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
-                            <td>{numberFormat(potentialRewardPercent, 3)}%</td>
+                            <td>{numberFormat(item.maxYield, 3)}%</td>
                             <td>
                               {item.country_flag && item.country_code && (
                                 <>

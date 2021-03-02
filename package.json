@@ -29,6 +29,7 @@
     "next": "10.0.7",
     "next-dark-mode": "^2.3.2",
     "next-routes-with-locale": "loginwashere/next-routes-with-locale#19b8239",
+    "node-cache": "^5.1.2",
     "react": "17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "17.0.1",

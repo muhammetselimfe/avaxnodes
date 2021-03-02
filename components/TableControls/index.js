@@ -48,9 +48,10 @@ const TableControls = ({
               onChange={(event) => {
                 Router.pushRoute(
                   route,
-                  { ...pickParams(router.params || {}), perPage: parseInt(event.target.value, 10) || 10 },
+                  { ...pickParams(router.params || {}), page: 1, perPage: parseInt(event.target.value, 10) || 10 },
                   locale
                 )
+                setPage(1)
                 setPerPage(parseInt(event.target.value, 10))
               }}
               value={perPage}
@@ -72,7 +73,7 @@ const TableControls = ({
           <Link
             href={route}
             locale={locale}
-            params={{ ...pickParams(router.params || {}), page: page - 1 }}
+            params={{ ...pickParams(router.params || {}), page: page - 1 || 1 }}
           >
             <a
               className={`paginate_button previous ${page === 1 ? 'disabled' : ''}`}
@@ -81,8 +82,7 @@ const TableControls = ({
               tabIndex="-1"
               id="datatable_previous"
               onClick={(e) => {
-                // e.preventDefault()
-                setPage(page - 1)
+                setPage(page - 1 || 1)
               }}
             >
               <div>
@@ -110,7 +110,6 @@ const TableControls = ({
                     data-dt-idx="1"
                     tabIndex="0"
                     onClick={(e) => {
-                      // e.preventDefault()
                       setPage(pageNumber)
                     }}
                   >
@@ -123,7 +122,7 @@ const TableControls = ({
           <Link
             href={route}
             locale={locale}
-            params={{ ...pickParams(router.params || {}), page: page + 1 }}
+            params={{ ...pickParams(router.params || {}), page: page + 1 > numberOfPages ? numberOfPages : page + 1 }}
           >
             <a
               className={`paginate_button next ${page === numberOfPages ? 'disabled' : ''}`}
@@ -132,8 +131,7 @@ const TableControls = ({
               tabIndex="0"
               id="datatable_next"
               onClick={(e) => {
-                // e.preventDefault()
-                setPage(page + 1)
+                setPage(page + 1 > numberOfPages ? numberOfPages : page + 1)
               }}
             >
               <div>
@@ -152,7 +150,6 @@ const TableControls = ({
             <select
               disabled={numberOfPages < 40}
               className="selectpage"
-              // tabIndex="-98"
               onChange={(event) => setPage(parseInt(event.target.value, 10))}
               value={page}
             >
@@ -160,43 +157,6 @@ const TableControls = ({
               <option value="30">30</option>
               <option value="40">40</option>
             </select>
-            {/* <button
-              type="button"
-              className="btn dropdown-toggle btn-light"
-              data-toggle="dropdown"
-              role="combobox"
-              aria-owns="bs-select-3"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              title="20"
-            >
-              <div className="filter-option">
-                <div className="filter-option-inner">
-                  <div className="filter-option-inner-inner">20</div>
-                </div>
-              </div>
-            </button> */}
-            {/* <div className="dropdown-menu ">
-              <div className="inner show" role="listbox" id="bs-select-3" tabIndex="-1">
-                <ul className="dropdown-menu inner show" role="presentation" style={{ marginTop: '0px', marginBottom: '0px' }}>
-                  <li className="selected active">
-                    <a role="option" className="dropdown-item active selected" id="bs-select-5-0" tabIndex="0" aria-setsize="3" aria-posinset="1" aria-selected="true">
-                      <span className="text">20</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a role="option" className="dropdown-item" id="bs-select-5-1" tabIndex="0">
-                      <span className="text">30</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a role="option" className="dropdown-item" id="bs-select-5-2" tabIndex="0">
-                      <span className="text">40</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 const locales = [
   'en',
-  'ja',
-  'ko',
+  // 'ja',
+  // 'ko',
   'nl',
-  'zh',
+  // 'zh',
 ]
 module.exports.locales = locales
 

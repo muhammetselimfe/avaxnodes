@@ -41,6 +41,10 @@ export const typeDefs = gql`
     latitude: Float
     longitude: Float
     country_flag: String
+    maxYield: Float
+    totalStacked: Float
+    leftToStack: Float
+    stackedPercent: Float
   }
 
   type Stats {

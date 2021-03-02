@@ -99,7 +99,6 @@ export const Node = ({
   const ownRewardsPercent = ownRewards * 100 / totalRewards
 
   const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
-  const timeLeftRatePercent = 100 - timeLeftRate * 100
   const delegationFeeRate = 1 - item.delegationFee / 100
   const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * delegationFeeRate
 
