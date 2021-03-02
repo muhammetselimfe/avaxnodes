@@ -1,24 +1,24 @@
 module.exports = {
 
-  "header.pages.nodes.title": "Knooppunten",
-  "header.pages.notifier.title": "Kennisgever",
+  "header.pages.nodes.title": "Nodes",
+  "header.pages.notifier.title": "Notifier",
 
-  "stats.total.nodes.title": "Totaal aantal knooppunten",
+  "stats.total.nodes.title": "Totaal aantal nodes",
   "stats.total.providers.title": "Totaal aanbieders",
-  "stats.total.delegations.title": "Totaal aantal delegaties",
+  "stats.total.delegations.title": "Totaal aantal delegators",
   "stats.total.blocks.title": "Totaal aantal blokken",
   "stats.total.transactions.title": "Totaal transacties",
   "stats.total.participation.title": "Totale deelname",
 
-  "page.nodes.title": "Knooppunten",
-  "page.nodes.header": "Knooppunten",
+  "page.nodes.title": "Nodes",
+  "page.nodes.header": "Nodes",
 
-  "page.nodes.table.header.nodeid.title": "Knooppunt-ID",
-  "page.nodes.table.header.delegators.title": "Delegatoren",
+  "page.nodes.table.header.nodeid.title": "Node-ID",
+  "page.nodes.table.header.delegators.title": "Delegators",
   "page.nodes.table.header.totalstake.title": "Totale inzet",
   "page.nodes.table.header.freespace.title": "Vrije ruimte",
   "page.nodes.table.header.startedon.title": "Begon op",
-  "page.nodes.table.header.timeleft.title": "Time left",
+  "page.nodes.table.header.timeleft.title": "Tijd over",
   "page.nodes.table.header.fee.title": "Vergoeding",
   "page.nodes.table.header.maxyield.title": "Maximale opbrengst",
   "page.nodes.table.header.country.title": "Land",
@@ -26,8 +26,8 @@ module.exports = {
   "page.nodes.filters.freeSpace.label": "Free space",
   "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
 
-  "page.node.title": "Knooppunt",
-  "page.node.header": "Knooppuntdetails",
+  "page.node.title": "Node",
+  "page.node.header": "Node Details",
 
   "page.node.space.available": 'Beschikbare ruimte',
   "page.node.time.remaining": 'Resterende ruimte',
@@ -42,7 +42,7 @@ module.exports = {
   "page.node.info.title.perfomance": "Prestaties",
   "page.node.info.subtitle.responses.average": "Gemiddelde reacties",
   "page.node.info.subtitle.responses.sampled": "Steekproeven",
-  "page.node.info.description.perfomance": "Reactiegegevens van een steekproef van lawineknooppunten. Uptime van knooppunten kan niet vóór de eindtijd worden bepaald",
+  "page.node.info.description.perfomance": "Steekproef van reactiesnelheden van Avalanche nodes. Uptime van nodes kan niet vóór de eindtijd worden bepaald",
 
   "page.node.info.title.stake": "Inzet",
   "page.node.info.subtitle.owned": "Eigendom",
