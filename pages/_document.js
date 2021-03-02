@@ -8,7 +8,7 @@ class CustomDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang={this.props.locale}>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link

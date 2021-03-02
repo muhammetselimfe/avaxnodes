@@ -23,6 +23,9 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "最大収量",
   "page.nodes.table.header.country.title": "国",
 
+  "page.nodes.filters.freeSpace.label": "Free space",
+  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+
   "page.node.title": "ノード",
   "page.node.header": "ノードの詳細",
 

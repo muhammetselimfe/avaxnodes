@@ -23,6 +23,9 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "최대 수율",
   "page.nodes.table.header.country.title": "국가",
 
+  "page.nodes.filters.freeSpace.label": "Free space",
+  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+
   "page.node.title": "마디",
   "page.node.header": "노드 세부 정보",
 

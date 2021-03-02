@@ -23,6 +23,9 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "Max yield",
   "page.nodes.table.header.country.title": "Country",
 
+  "page.nodes.filters.freeSpace.label": "Free space",
+  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+
   "page.node.title": "Node",
   "page.node.header": "Node details",
 

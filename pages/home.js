@@ -84,6 +84,7 @@ export const getServerSideProps = async (ctx) => {
         destination: router.route.getAs({
           page: 1,
           perPage: 10,
+          sorting: '-delegationFee',
         })
       }
     }
@@ -99,6 +100,7 @@ export const getServerSideProps = async (ctx) => {
           filter: get(router, 'params.filter') || '',
           page: +get(router, 'params.page') || 1,
           perPage: +get(router, 'params.perPage') || 10,
+          sorting: +get(router, 'params.sorting') || '-delegationFee',
         })
       },
     })

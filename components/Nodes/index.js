@@ -1,6 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
@@ -51,6 +51,31 @@ export const GET_NODES = gql`
     }
   }
 `;
+
+const prepareNewSorting = (sorting, field) => {
+  const newSorting = sorting.includes(field)
+    ? sorting
+      .split(',')
+      .map(i => i.includes(field)
+        ? (i[0] === '-'
+          ? `+${field}`
+          : `-${field}`)
+        : i
+      )
+      .join(',')
+    : `${sorting},-${field}`
+  return newSorting
+}
+
+const sortingIcon = (sorting, field) => {
+  return sorting.includes(field) ? (
+    sorting.includes(`-${field}`)
+      ? <FaSortDown />
+      : <FaSortUp />
+  ) : (
+    <FaSort />
+  )
+}
 
 const Stats = ({ data = {} }) => {
   const { formatMessage } = useIntl()
@@ -113,10 +138,35 @@ const Stats = ({ data = {} }) => {
   )
 }
 
+const nodesFilters = {
+  freeSpace: {
+    value: 'freeSpace',
+    label: 'page.nodes.filters.freeSpace.label',
+    values: [
+      {
+        value: 5,
+        label: 'page.nodes.filters.freeSpace.option.value',
+      },
+      {
+        value: 10,
+        label: 'page.nodes.filters.freeSpace.option.value',
+      },
+      {
+        value: 15,
+        label: 'page.nodes.filters.freeSpace.option.value',
+      },
+    ],
+  },
+}
+
 const Filters = ({
   locale,
   router,
   filter,
+  page,
+  perPage,
+  sorting,
+  freeSpace,
   setFilter,
   setPage,
 }) => {
@@ -124,9 +174,30 @@ const Filters = ({
   const [selectFilterOptionsOpen, setSelectFilterOptionsOpen] = React.useState(false);
   const { darkModeActive } = useDarkMode()
   const { formatMessage } = useIntl()
-  const f = id => formatMessage({ id })
+  const f = (id, values = {}) => formatMessage({ id }, values)
 
   const route = router.query.nextRoute
+
+  const filterType = typeof freeSpace !== 'undefined' ? 'freeSpace' : ''
+
+  const currentNodesFilterKey = Object.keys(nodesFilters)
+    .find(key => key === filterType)
+
+  const currentNodesFilter = nodesFilters[currentNodesFilterKey]
+
+  const preparedCurrentNodesFilter = currentNodesFilter ? {
+    ...currentNodesFilter,
+    label: f(currentNodesFilter.label),
+    values: currentNodesFilter.values.map(i => {
+      return {
+        ...i,
+        label: f(i.label, { percent: i.value, }),
+        active: i.value == freeSpace
+      }
+    })
+  } : {values: []}
+
+  const activeOption = preparedCurrentNodesFilter.values.find(i => i.active) || {}
 
   return (
     <div className="filter-wrapper">
@@ -158,11 +229,6 @@ const Filters = ({
       </div>
       <div className="freespace-wrap">
         <div className="dropdown bootstrap-select">
-          <select className="selectpicker" tabIndex="-98">
-            <option>Free Space</option>
-            <option>Free Space1</option>
-            <option>Free Space2</option>
-          </select>
           <button
             type="button"
             className="btn dropdown-toggle btn-light"
@@ -171,12 +237,12 @@ const Filters = ({
             aria-owns="bs-select-1"
             aria-haspopup="listbox"
             aria-expanded="false"
-            title="Free Space"
+            title={preparedCurrentNodesFilter.label}
             onClick={() => setSelectFilterOpen(!selectFilterOpen)}
           >
             <div className="filter-option">
               <div className="filter-option-inner">
-                <div className="filter-option-inner-inner">Free Space</div>
+                <div className="filter-option-inner-inner">{preparedCurrentNodesFilter.label}</div>
               </div>
             </div>
           </button>
@@ -193,16 +259,6 @@ const Filters = ({
                     <span className="text">Free Space</span>
                   </a>
                 </li>
-                <li>
-                  <a role="option" className="dropdown-item" id="bs-select-1-1" tabIndex="0">
-                    <span className="text">Free Space1</span>
-                  </a>
-                </li>
-                <li>
-                  <a role="option" className="dropdown-item" id="bs-select-1-2" tabIndex="0">
-                    <span className="text">Free Space2</span>
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
@@ -210,11 +266,6 @@ const Filters = ({
       </div>
       <div className="freespace-wrap">
         <div className="dropdown bootstrap-select">
-          <select className="selectpicker" tabIndex="-98">
-            <option>More than 5%</option>
-            <option>More than 10%</option>
-            <option>More than 15%2</option>
-          </select>
           <button
             type="button"
             className="btn dropdown-toggle btn-light"
@@ -223,12 +274,12 @@ const Filters = ({
             aria-owns="bs-select-2"
             aria-haspopup="listbox"
             aria-expanded="false"
-            title="More than 5%"
+            title={activeOption.label}
             onClick={() => setSelectFilterOptionsOpen(!selectFilterOptionsOpen)}
           >
             <div className="filter-option">
               <div className="filter-option-inner">
-                <div className="filter-option-inner-inner">More than 5%</div>
+                <div className="filter-option-inner-inner">{activeOption.label}</div>
               </div>
             </div>
           </button>
@@ -240,21 +291,35 @@ const Filters = ({
               style={{ maxHeight: '570.422px', overflowY: 'auto', minHeight: '0px' }}
             >
               <ul className="dropdown-menu inner show" role="presentation" style={{ marginTop: '0px', marginBottom: '0px' }}>
-                <li className="selected active">
-                  <a role="option" className="dropdown-item active selected" id="bs-select-2-0" tabIndex="0" aria-setsize="3" aria-posinset="1" aria-selected="true">
-                    <span className="text">More than 5%</span>
-                  </a>
-                </li>
-                <li>
-                  <a role="option" className="dropdown-item" id="bs-select-2-1" tabIndex="0">
-                    <span className="text">More than 10%</span>
-                  </a>
-                </li>
-                <li>
-                  <a role="option" className="dropdown-item" id="bs-select-2-2" tabIndex="0">
-                    <span className="text">More than 15%2</span>
-                  </a>
-                </li>
+                {preparedCurrentNodesFilter.values.map(option => {
+                  return (
+                    <li className={option.active ? `selected active` : ''}>
+                      <Link
+                        href={`home`}
+                        locale={locale}
+                        params={{
+                          page: page,
+                          perPage: perPage,
+                          sorting: sorting,
+                          filter: filter,
+                          freeSpace: option.value,
+                        }}
+                      >
+                        <a
+                          role="option"
+                          className={`dropdown-item ${option.active ?  'active selected' : ''}`}
+                          id="bs-select-2-0"
+                          tabIndex="0"
+                          aria-setsize="3"
+                          aria-posinset="1"
+                          aria-selected="true"
+                        >
+                          <span className="text">{option.label}</span>
+                        </a>
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
@@ -272,6 +337,12 @@ export const Nodes = ({ currentLocale, router }) => {
   );
   const [page, setPage] = React.useState(+router.query.page || 1);
   const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
+  const [sorting, setSorting] = React.useState(+router.query.sorting || '-delegationFee');
+  const [freeSpace, setFreeSpace] = React.useState((
+    !router.query.freeSpace || router.query.freeSpace === 'undefined')
+      ? ''
+      : router.query.freeSpace
+  );
 
   const { loading, error, data } = useQuery(GET_NODES, {
     variables: {
@@ -279,6 +350,7 @@ export const Nodes = ({ currentLocale, router }) => {
         filter,
         page,
         perPage,
+        sorting,
       }
     },
   });
@@ -318,11 +390,16 @@ export const Nodes = ({ currentLocale, router }) => {
       <div className="main-content">
         <div className="container">
           <Filters
+            page={page}
+            perPage={perPage}
+            sorting={sorting}
+            freeSpace={freeSpace}
             locale={locale}
             router={router}
             filter={filter}
             setFilter={setFilter}
             setPage={setPage}
+            setFreeSpace={setFreeSpace}
           />
         </div>
         <div className="PageTitle">
@@ -357,7 +434,27 @@ export const Nodes = ({ currentLocale, router }) => {
                         <th className="free-space">{f('page.nodes.table.header.freespace.title')}</th>
                         <th>{f('page.nodes.table.header.startedon.title')}</th>
                         <th>{f('page.nodes.table.header.timeleft.title')}</th>
-                        <th>{f('page.nodes.table.header.fee.title')}</th>
+                        <th>
+                          <Link
+                            href={`home`}
+                            locale={locale}
+                            params={{
+                              page: page,
+                              perPage: perPage,
+                              sorting: prepareNewSorting(sorting, 'delegationFee')
+                            }}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'delegationFee'))
+                              }}
+                            >
+                              <span>{f('page.nodes.table.header.fee.title')}</span>
+                              {' '}
+                              {sortingIcon(sorting, 'delegationFee')}
+                            </a>
+                          </Link>
+                        </th>
                         <th>{f('page.nodes.table.header.maxyield.title')}</th>
                         <th>{f('page.nodes.table.header.country.title')}</th>
                         <th></th>
@@ -383,7 +480,11 @@ export const Nodes = ({ currentLocale, router }) => {
                         return (
                           <tr key={index}>
                             <td scope="row" style={{ position: 'relative' }}>
-                              <Link href={`node`} locale={locale} params={{ id: item.nodeID }}>
+                              <Link href={`node`} locale={locale} params={{
+                                id: item.nodeID,
+                                page: 1,
+                                perPage: 10,
+                              }}>
                                 <a className="stretched-link">
 
                                   <span id="code">{shortNodeId(item.nodeID)}</span>

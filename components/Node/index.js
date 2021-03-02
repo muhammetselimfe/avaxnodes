@@ -57,8 +57,8 @@ export const Node = ({
   router,
   currentLocale,
 }) => {
-  const [page, setPage] = React.useState(1);
-  const [perPage, setPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(+router.query.page || 1);
+  const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
 
   const filter = {
     nodeID: router.query.id,

@@ -23,6 +23,9 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "Maximale opbrengst",
   "page.nodes.table.header.country.title": "Land",
 
+  "page.nodes.filters.freeSpace.label": "Free space",
+  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+
   "page.node.title": "Knooppunt",
   "page.node.header": "Knooppuntdetails",
 

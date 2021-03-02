@@ -23,6 +23,9 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "最大产量",
   "page.nodes.table.header.country.title": "国家",
 
+  "page.nodes.filters.freeSpace.label": "Free space",
+  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+
   "page.node.title": "节点",
   "page.node.header": "节点详细信息",
 
