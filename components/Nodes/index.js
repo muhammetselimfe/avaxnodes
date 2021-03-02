@@ -311,7 +311,7 @@ const Filters = ({
               <ul className="dropdown-menu inner show" role="presentation" style={{ marginTop: '0px', marginBottom: '0px' }}>
                 {preparedCurrentNodesFilter.values.map(option => {
                   return (
-                    <li className={option.active ? `selected active` : ''}>
+                    <li className={option.active ? `selected active` : ''} key={option.value}>
                       <Link
                         href={`home`}
                         locale={locale}

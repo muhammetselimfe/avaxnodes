@@ -23,8 +23,8 @@ module.exports = {
   "page.nodes.table.header.maxyield.title": "Maximale opbrengst",
   "page.nodes.table.header.country.title": "Land",
 
-  "page.nodes.filters.freeSpace.label": "Free space",
-  "page.nodes.filters.freeSpace.option.value": "More than {percent}%",
+  "page.nodes.filters.freeSpace.label": "Vrije ruimte",
+  "page.nodes.filters.freeSpace.option.value": "Meer dan {percent}%",
 
   "page.node.title": "Node",
   "page.node.header": "Node Details",
