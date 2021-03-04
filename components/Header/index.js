@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
 import get from 'lodash/get'
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 import { defaultLocale, locales } from '../../locales';
 import Routes, { Link } from '../../routes'
@@ -88,17 +89,18 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
               border: 'none',
             }}
             title={(
-              <span className="mr-2 d-flex align-items-center">
+              <span className="mr-2 d-flex align-items-center pt-1 pb-1">
                 <img
                   src={`/static/images/icons/flag-${locale}.svg`}
-                  width={25}
-                  height={25}
+                  width={16}
+                  height={16}
                   className="mr-2"
                   style={{
                     width: 'initial'
                   }}
                 />
-                <span className="text-uppercase">{locale}</span>
+                <span className="text-uppercase mr-2">{locale}</span>
+                <FaAngleDown size={16} />
               </span>
             )}
             id="nav-dropdown"
@@ -116,8 +118,8 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                     <span>
                       <img
                         src={`/static/images/icons/flag-${l}.svg`}
-                        width={25}
-                        height={25}
+                        width={16}
+                        height={16}
                         className="mr-2"
                         style={{ width: 'initial' }}
                       />

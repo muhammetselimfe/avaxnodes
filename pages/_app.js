@@ -18,13 +18,13 @@ import { useApollo } from '../lib/apolloClient'
 import allMessages from '../i18nLocales'
 import { defaultLocale } from '../locales'
 
-import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/main.css'
 import '../styles/dd.css'
 import '../styles/flags.css'
 import '../styles/jquery.dataTables.min.css'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps, ...rest}) {
   const apolloClient = useApollo(pageProps)

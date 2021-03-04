@@ -451,7 +451,7 @@ export const Nodes = ({ currentLocale, router }) => {
                   <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
                     <thead>
                       <tr>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -471,7 +471,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -491,7 +491,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -511,7 +511,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th className="free-space">
+                        <th className="free-space sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -531,7 +531,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -551,7 +551,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -571,7 +571,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -591,7 +591,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                          <Link
                             href={`home`}
                             locale={locale}
@@ -611,7 +611,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             </a>
                           </Link>
                         </th>
-                        <th>
+                        <th className="sorting">
                           <Link
                             href={`home`}
                             locale={locale}
@@ -695,12 +695,12 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td>{numberFormat(item.maxYield, 3)}%</td>
                             <td>
                               {item.country_flag && item.country_code && (
-                                <>
+                                <div className="d-flex">
                                   <img src={item.country_flag} className="flag-image" /> <span>{item.country_code}</span>
-                                </>
+                                </div>
                               )}
                             </td>
-                            <td><FaCircle fill={item.connected ? '#5DA574' : undefined} /></td>
+                            <td><FaCircle fill={item.connected ? '#5DA574' : undefined} size={10} /></td>
                           </tr>
                         )
                       })}
