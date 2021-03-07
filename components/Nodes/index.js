@@ -446,9 +446,13 @@ export const Nodes = ({ currentLocale, router }) => {
                 setPerPage={setPerPage}
                 pagination={data && data.nodes && data.nodes.pagination}
               />
-              <div className="row mb-3">
-                <div className="col-sm-12">
-                  <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
+              <div className="row mb-3 dataTables_scroll">
+                <div className="col-sm-12 dataTables_scrollHead">
+                  <table
+                    id="datatable"
+                    className="display responsive nowrap dataTable table table-hover table-responsive"
+                    style={{ width: '100%' }}
+                  >
                     <thead>
                       <tr>
                         <th className="sorting">
@@ -694,7 +698,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(item.maxYield, 3)}%</td>
                             <td>
-                              {item.country_flag && item.country_code && (
+                              {item && item.country_flag && item.country_code && (
                                 <div className="d-flex">
                                   <img src={item.country_flag} className="flag-image" /> <span>{item.country_code}</span>
                                 </div>

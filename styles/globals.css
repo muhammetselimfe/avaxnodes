@@ -1,3 +1,14 @@
+.table-responsive {
+  display: table!important;
+}
+@media (min-width: 1200px) {
+  .table-responsive-xxl {
+      display: table;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+  }
+}
 
 #toggel_btn label {
   position: unset;
@@ -10,11 +21,28 @@
 .toggle-wrap {
   padding: 9px 6px;
 }
+.dropdown-toggle.nav-link {
+  padding: 2px 4px;
+}
+@media (min-width: 1370px) {
+  .toggle-wrap {
+    padding: 4px 6px;
+  }
+  .dropdown-toggle.nav-link {
+    padding: 4px 4px;
+  }
+  .dropdown .dropdown-toggle {
+    font-size: 14px!important;
+  }
+  .bootstrap-select.dropdown .dropdown-toggle {
+    font-size: 16px!important;
+  }
+}
 
 .freespace-wrap .bootstrap-select {
   width: 100% !important;
 }
-.bootstrap-select .dropdown-toggle {
+.bootstrap-select.dropdown .dropdown-toggle {
   background-color: #20202A !important;
   border-radius: 4px;
   box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.06);
@@ -49,9 +77,6 @@
 }
 .bootstrap-select .dropdown-toggle .filter-option {
   height: auto !important;
-}
-.dropdown-toggle.nav-link {
-  padding: 2px 4px;
 }
 .dropdown .dropdown-menu {
   max-width: 100%;
@@ -89,12 +114,24 @@ td a,
 td a:hover {
   color: #FFFFFF;
 }
+.dataTables_scrollHead {
+  max-width: 1370px!important;
+  overflow-x: auto;
+}
+table.dataTable {
+  max-width: 100%;
+}
 table.dataTable thead .sorting {
   background-image: none!important;
 }
 
 .bg-light {
   padding: 9px 0px;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .bg-light {
+      padding: 13px 0px;
+  }
 }
 
 body.mode-light {
@@ -108,6 +145,11 @@ body.mode-light {
 }
 .mode-light .navbar-nav .nav-item.active:after {
   background-color: #FF6832;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .mode-light .navbar-nav .nav-item.active:after {
+      background-color: transparent;
+  }
 }
 
 .mode-light #toggel_btn label {
@@ -142,6 +184,11 @@ body.mode-light {
 .mode-light .search-container .input-icons .form-control {
   background-color: white!important;
 }
+
+.dropdown .dropdown-toggle {
+  /* color: #292932; */
+  background-color: rgba(255, 255, 255, 0.06);
+}
 .mode-light .dropdown .dropdown-toggle {
   color: #292932;
   background-color: rgba(0, 0, 0, 0.1);
@@ -164,6 +211,20 @@ body.mode-light {
 .mode-light table.dataTable tbody tr {
   background-color: transparent !important;
 }
+#datatable thead > tr > th,
+.dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+  color: #20202A !important;
+}
+@media (min-width: 1370px) {
+  #datatable thead > tr > th,
+  .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+    font-size: 18px;
+  }
+
+}
+.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+  color: #20202A !important;
+}
 
 .mode-light div.dataTables_wrapper div.dataTables_length select {
   background-color: #FFFFFF;
@@ -176,23 +237,23 @@ body.mode-light {
   color: #20202A !important;
 }
 
-.mode-light .bootstrap-select .dropdown-toggle {
+.mode-light .bootstrap-select.dropdown .dropdown-toggle {
   background-color: #fff!important;
   color: #81818C!important;
   background-image: url('/static/images/dropdown1.svg');
 }
-.mode-light .bootstrap-select .dropdown-menu {
+.mode-light .bootstrap-select.dropdown .dropdown-menu {
   background-color: #FFFFFF!important;
 }
-.mode-light .bootstrap-select .dropdown-item {
+.mode-light .bootstrap-select.dropdown .dropdown-item {
   background-color: #FFFFFF!important;
   color: #81818C!important;
 }
-.mode-light .bootstrap-select .dropdown-item.active {
+.mode-light .bootstrap-select.dropdown .dropdown-item.active {
   background-color: #f2f2f2!important;
   color: #000!important;
 }
-.mode-light .bootstrap-select .dropdown-item:hover {
+.mode-light .bootstrap-select.dropdown .dropdown-item:hover {
   background-color: #f2f2f2!important;
   color: #000!important;
 }

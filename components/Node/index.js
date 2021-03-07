@@ -340,9 +340,12 @@ export const Node = ({
                 setPerPage={setPerPage}
                 pagination={data && data.node && data.node.delegators && data.node.delegators.pagination}
               />
-              <div className="row mb-3">
-                <div className="col-sm-12">
-                  <table id="datatable" className="display responsive nowrap dataTable table-hover" style={{ width: '100%' }}>
+              <div className="row mb-3 dataTables_scroll">
+                <div className="col-sm-12 dataTables_scrollHead">
+                  <table
+                    className="display responsive nowrap dataTable table table-hover table-responsive"
+                    style={{ width: '100%' }}
+                  >
                     <thead>
                       <tr>
                         <th>{f('page.node.table.header.beneficiary.title')}</th>

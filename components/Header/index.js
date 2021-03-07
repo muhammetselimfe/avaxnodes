@@ -81,11 +81,11 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
           <NavDropdown
             as="button"
             disabled={!dropdownLocales.length}
-            className="d-flex align-items-center"
+            className="d-flex align-items-center ml-3"
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.06)',
+              // backgroundColor: 'rgba(255, 255, 255, 0.06)',
               borderRadius: '3px',
-              boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.03)',
+              // boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.03)',
               border: 'none',
             }}
             title={(
@@ -94,7 +94,7 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                   src={`/static/images/icons/flag-${locale}.svg`}
                   width={16}
                   height={16}
-                  className="mr-2"
+                  className="mr-2 ml-2"
                   style={{
                     width: 'initial'
                   }}
@@ -120,7 +120,7 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                         src={`/static/images/icons/flag-${l}.svg`}
                         width={16}
                         height={16}
-                        className="mr-2"
+                        className="mr-2 ml-2"
                         style={{ width: 'initial' }}
                       />
                       <span className="text-uppercase">{l}</span>
