@@ -49,6 +49,7 @@ export const GET_NODE = gql`
       }
       latitude
       longitude
+      networkShare
     }
   }
 `;
@@ -88,7 +89,7 @@ export const Node = ({
   const stakeAmount = item.stakeAmount / 1000000000
   const totalStacked = stakeAmount + delegatorsStaked
   const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
-  const leftToStack = maxStaked - totalStacked
+  const leftToStack = (maxStaked - totalStacked) > 0 ? (maxStaked - totalStacked) :  0
   const stackedPercent = totalStacked * 100 / maxStaked
 
   const ownRewards = item.potentialReward / 1000000000
@@ -233,7 +234,7 @@ export const Node = ({
                   </div>
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.networkShare')}</span>
-                    <p className="subtext">0.9384762%</p>
+                    <p className="subtext">{numberFormat(item.networkShare || 0, 6)}%</p>
                   </div>
                 </div>
               </div>
@@ -363,7 +364,7 @@ export const Node = ({
                         const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
                         const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
                         return (
-                          <tr key={item.rewardOwner.addresses[0]}>
+                          <tr key={`${item.rewardOwner.addresses[0]}-${index}`}>
                             <td><span id="code1">{shortNodeId(item.rewardOwner.addresses[0])}</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
                             <td>{numberFormat(item.stakeAmount / 1000000000)} AVAX</td>
                             <td>{numberFormat(item.potentialReward / 1000000000)} AVAX</td>

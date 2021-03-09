@@ -4,15 +4,15 @@ export const typeDefs = gql`
   type Delegator {
     nodeID: String
     txID: String
-    startTime: String
-    endTime: String
-    stakeAmount: String
+    startTime: Float
+    endTime: Float
+    stakeAmount: Float
     rewardOwner: RewardOwner
-    potentialReward: String
+    potentialReward: Float
   }
 
   type RewardOwner {
-    locktime: String
+    locktime: Float
     threshold: String
     addresses: [String]
   }
@@ -20,21 +20,21 @@ export const typeDefs = gql`
   type Delegators {
     items: [Delegator]
     pagination: Pagination
-    totalStaked: String
+    totalStaked: Float
   }
 
   type Node {
     nodeID: ID
     txID: String
-    startTime: String
-    endTime: String
-    stakeAmount: String
-    potentialReward: String
+    startTime: Float
+    endTime: Float
+    stakeAmount: Float
+    potentialReward: Float
     rewardOwner: RewardOwner
     delegators: Delegators
     isPartner: Boolean
     isSponsored: Boolean
-    delegationFee: String
+    delegationFee: Float
     uptime: String
     connected: Boolean
     country_code: String
@@ -45,6 +45,8 @@ export const typeDefs = gql`
     totalStacked: Float
     leftToStack: Float
     stackedPercent: Float
+    leftToStackPercent: Float
+    networkShare: Float
   }
 
   type Stats {
@@ -59,7 +61,7 @@ export const typeDefs = gql`
   input NodesFilter {
     filter: String
     freeSpace: Int
-    maxYield: String
+    maxYield: Float
     page: Int
     perPage: Int
     sorting: String

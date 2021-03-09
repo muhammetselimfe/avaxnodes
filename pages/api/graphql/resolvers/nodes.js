@@ -1,11 +1,7 @@
-import Peer from '../../../../models/peer'
-import { getAllValidators } from "../../../../lib/api"
 import get from 'lodash/get'
-import toNumber from 'lodash/toNumber'
 import isNaN from 'lodash/isNaN'
 
-import NodeCache from 'node-cache'
-const myCache = new NodeCache({ stdTTL: 300 });
+import { getPreparedValidators } from '../../../../lib/preparedValidators'
 
 const sortingMap = {
   fee: 'delegationFee',
@@ -59,80 +55,7 @@ export default async (parent, args, context, info) => {
     const page = Math.abs(args.filter.page) || 1
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
 
-    const validators = await getAllValidators()
-
-    let preparedValidators = myCache.get('preparedValidators');
-    if (preparedValidators == undefined ) {
-      const peers = await Peer
-        .find()
-        .lean()
-        .exec()
-
-      const peersHash = peers
-        .reduce((result, current) => ({
-          ...result,
-          [current.nodeID]: current,
-        }), {})
-        preparedValidators = validators
-        .map((item, index) => {
-          let isPartner = false
-          let isSponsored = false
-          // if (index === 0) {
-          //   isPartner = true
-          //   isSponsored = true
-
-          // }
-          // if (index === 1) {
-          //   isPartner = true
-          // }
-          const delegators = item.delegators || []
-          const peer = peersHash[item.nodeID] || {}
-
-          const delegatorsStaked =  delegators
-            .map(delegator => delegator.stakeAmount / 1000000000)
-            .reduce((result, current) => result + current, 0)
-          const delegatorsTotalStaked = parseFloat(delegatorsStaked)
-          const totalStacked = item.stakeAmount / 1000000000 + delegatorsTotalStaked
-          const maxStaked = Math.min(3000000, (item.stakeAmount / 1000000000) * 5)
-          const leftToStack = maxStaked - totalStacked
-          const leftToStackPercent = 100 - (totalStacked * 100 / maxStaked)
-          const stackedPercent = totalStacked * 100 / maxStaked
-
-          const timeLeftRate = (item.endTime - Date.now() / 1000) / (item.endTime - item.startTime)
-          // const timeLeftRatePercent = 100 - timeLeftRate * 100
-          const delegationFeeRate = 1 - item.delegationFee / 100
-          const potentialRewardPercent = (item.potentialReward * 100 / (item.stakeAmount)) * timeLeftRate * delegationFeeRate
-
-          // const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
-          // const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
-          // const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
-
-          return {
-            ...item,
-            isPartner,
-            isSponsored,
-            delegators: {
-              items: delegators.slice((page - 1) * perPage, page * perPage),
-              pagination: {
-                page,
-                perPage,
-                count: delegators.length
-              },
-              totalStaked: delegatorsTotalStaked
-            },
-            country_code: peer.country_code,
-            country_flag: peer.country_flag,
-            latitude: peer.latitude,
-            longitude: peer.longitude,
-            maxYield: potentialRewardPercent,
-            totalStacked,
-            leftToStack,
-            stackedPercent,
-            leftToStackPercent,
-          }
-        })
-      myCache.set('preparedValidators', preparedValidators)
-    }
+    const preparedValidators = await getPreparedValidators()
 
     let currentValidators = preparedValidators
     if (args.filter.filter) {

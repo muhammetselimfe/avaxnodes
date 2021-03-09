@@ -46,6 +46,7 @@ export const GET_NODES = gql`
         totalStacked
         leftToStack
         stackedPercent
+        leftToStackPercent
       }
       pagination {
         page
@@ -673,15 +674,15 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td colSpan="2">
                               <div className="progress-bar-wrap relative">
                                 <div className="label-wrap">
-                                  <label className="available-label"><strong>{numberFormat(item.totalStacked || 0)}</strong>AVAX</label>
-                                  <label className="total-label"><strong>{numberFormat(item.leftToStack || 0)}</strong>AVAX</label>
+                                  <label className="available-label"><strong>{numberFormat(item.totalStacked || 0, 0)}</strong>AVAX</label>
+                                  <label className="total-label"><strong>{numberFormat(item.leftToStack || 0, 0)}</strong>AVAX</label>
                                 </div>
                                 <div className="progress">
                                   <div
                                     className="progress-bar"
                                     role="progressbar"
-                                    style={{ width: `${item.stackedPercent}%` }}
-                                    aria-valuenow={item.stackedPercent}
+                                    style={{ width: `${item.leftToStackPercent}%` }}
+                                    aria-valuenow={item.leftToStackPercent}
                                     aria-valuemin="0"
                                     aria-valuemax="100"
                                   />
@@ -696,7 +697,7 @@ export const Nodes = ({ currentLocale, router }) => {
                               {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
                             </td>
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
-                            <td>{numberFormat(item.maxYield, 3)}%</td>
+                            <td>{numberFormat(item.maxYield, 2)}%</td>
                             <td>
                               {item && item.country_flag && item.country_code && (
                                 <div className="d-flex">

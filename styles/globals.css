@@ -123,6 +123,13 @@ table.dataTable {
 }
 table.dataTable thead .sorting {
   background-image: none!important;
+
+}
+
+.main-progress-wrapper .right-side .progress-bar-wrap .progress,
+.main-progress-wrapper .left-side .progress-bar-wrap .progress,
+.progress-bar-wrap .progress {
+  background-color: #e4ebf1;
 }
 
 .bg-light {

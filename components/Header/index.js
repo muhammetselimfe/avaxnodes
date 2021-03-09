@@ -49,13 +49,13 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                 </a>
               </Link>
             </li>
-            <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
+            {/* <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
               <Link href={`notifier`} locale={locale} params={{  }}>
                 <a className="nav-link">
                   {f('header.pages.notifier.title')}
                 </a>
               </Link>
-            </li>
+            </li> */}
           </ul>
 
           <ul className="navbar-nav ml-auto">
