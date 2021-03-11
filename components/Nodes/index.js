@@ -221,7 +221,11 @@ const Filters = ({
             onChange={(event) => {
               Router.pushRoute(
                 route,
-                { ...pickParams(router.params || {}), page: 1, filter: event.target.value },
+                pickParams({
+                  ...pickParams(router.params || {}),
+                  page: 1,
+                  filter: event.target.value === '' ? undefined : event.target.value
+                }),
                 locale
               )
               setFilter(event.target.value)

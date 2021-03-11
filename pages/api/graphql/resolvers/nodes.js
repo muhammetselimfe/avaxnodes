@@ -59,7 +59,7 @@ export default async (parent, args, context, info) => {
 
     let currentValidators = preparedValidators
     if (args.filter.filter) {
-      currentValidators = validators.filter(item => item.nodeID.includes(args.filter.filter))
+      currentValidators = currentValidators.filter(item => item.nodeID.includes(args.filter.filter))
     }
     if (args.filter.freeSpace) {
       currentValidators = currentValidators
