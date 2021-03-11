@@ -4,6 +4,7 @@ import { FaCircle, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
+import Flag from 'react-world-flags'
 
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
@@ -699,9 +700,9 @@ export const Nodes = ({ currentLocale, router }) => {
                             <td>{numberFormat(item.delegationFee, 0)}%</td>
                             <td>{numberFormat(item.maxYield, 2)}%</td>
                             <td>
-                              {item && item.country_flag && item.country_code && (
+                              {item && item.country_code && (
                                 <div className="d-flex">
-                                  <img src={item.country_flag} className="flag-image" /> <span>{item.country_code}</span>
+                                  <Flag code={item.country_code} height="16" /> <span>{item.country_code}</span>
                                 </div>
                               )}
                             </td>
