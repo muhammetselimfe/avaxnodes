@@ -7,7 +7,7 @@ import get from 'lodash/get'
 
 import Node, { GET_NODE } from '../components/Node';
 import Layout from '../components/Layout';
-import { defaultLocale } from '../locales'
+import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
 import styles from '../styles/Home.module.css'
@@ -31,6 +31,19 @@ export default function NodePage(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Avaxnodes - {f('page.node.title')} </title>
         <link rel="icon" href="/favicon.ico" />
+
+        <link rel="canonical" href={router.parsedUrl.href} />
+        {locales.map(locale => {
+          const localeRoute = Routes.findAndGetUrls(router.route.name, locale, pickParams(router.params))
+          return (
+            <link
+              key={locale}
+              rel="alternate"
+              hreflang={locale}
+              href={`${router.parsedUrl.origin}${localeRoute.urls.as}`}
+            />
+          )
+        })}
       </Head>
 
       <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>

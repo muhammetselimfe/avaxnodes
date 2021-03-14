@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
 import { useIntl } from "react-intl"
+import ReactClipboard from 'react-clipboardjs-copy'
 
 import dynamic from "next/dynamic";
 
@@ -54,12 +55,26 @@ export const GET_NODE = gql`
   }
 `;
 
+const MapWithNoSSR = dynamic(() => import("../Map"), {
+  ssr: false
+});
+
 export const Node = ({
   router,
   currentLocale,
 }) => {
   const [page, setPage] = React.useState(+router.query.page || 1);
   const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
+
+  const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
+
+  React.useEffect(() => {
+    if (nodeIdCopiedToClipboard) {
+      setTimeout(() => {
+        setNodeIdCopiedToClipboard(false)
+      }, 1000)
+    }
+  }, [nodeIdCopiedToClipboard])
 
   const filter = {
     nodeID: router.query.id,
@@ -72,16 +87,12 @@ export const Node = ({
     },
   });
 
-  const MapWithNoSSR = dynamic(() => import("../Map"), {
-    ssr: false
-  });
-
   const item = (data && data.node) || {delegators: {}}
 
-  const position = [
+  const position = React.useMemo(()=> ([
     item.latitude || 51.505,
     item.longitude || -0.09
-  ]
+  ]), [item.latitude, item.longitude, loading])
 
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
 
@@ -117,13 +128,13 @@ export const Node = ({
           <div className="row content-inner">
             <div className="col-md-4 col-sm-6 col-lg-3">
               <div className="nodebredcrum">
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
                   <a className="nodes">
                     {f('page.nodes.header')}
                   </a>
@@ -145,7 +156,23 @@ export const Node = ({
             <div className="row content-inner align-items-center">
               <div className=" col-9 col-md-8 col-sm-8">
                 <div className="Title">
-                  <span id="copycode">{shortNodeId(router.query.id)}</span>  <img data-clipboard-action="copy" data-clipboard-target="#copycode" src="/static/images/pdficon.svg" className="pdf-image" />
+                  <span id="copycode" title={router.query.id} className="mr-3">{shortNodeId(router.query.id)}</span>
+                  <ReactClipboard
+                    text={router.query.id}
+                    onSuccess={(e) => {
+                      setNodeIdCopiedToClipboard(true)
+                    }}
+                  >
+                    <img
+                      data-clipboard-action="copy"
+                      data-clipboard-target="#copycode"
+                      src="/static/images/pdficon.svg"
+                      className="pdf-image"
+                    />
+                  </ReactClipboard>
+                  {nodeIdCopiedToClipboard && (
+                    <div className="copiedtext d-block">Copied to clipboard</div>
+                  )}
                 </div>
 
               </div>

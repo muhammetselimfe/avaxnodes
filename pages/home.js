@@ -1,16 +1,13 @@
-// import React from 'react'
 import Head from 'next/head'
 
 import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
-// import { useDarkMode } from 'next-dark-mode'
-// import I18nProvider from 'next-translate/I18nProvider'
 import get from 'lodash/get'
 import Routes from '../routes';
 
 import Nodes, { GET_NODES } from '../components/Nodes';
 import Layout from '../components/Layout';
-import { defaultLocale } from '../locales'
+import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
 import styles from '../styles/Home.module.css'
@@ -24,31 +21,35 @@ export default function Home(props) {
 
   const currentRoute = get(router, 'query.nextRoute', 'home')
 
-  // console.log('Home', currentRoute, currentLocale, router, props.currentLocale, props)
-
-  // const { darkModeActive } = useDarkMode()
-
-  // React.useEffect(() => {
-  //   document.querySelector("body").classList.toggle('mode-dark', darkModeActive)
-  // }, [darkModeActive]);
-
   const { formatMessage } = useIntl()
   const f = id => formatMessage({ id })
 
   return (
     <>
-      {/* <I18nProvider lang={currentLocale}> */}
-        <Head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-          <title>Avaxnodes {f('page.nodes.title')}</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+      <Head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Avaxnodes {f('page.nodes.title')}</title>
+        <link rel="icon" href="/favicon.ico" />
 
-        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
-          <Nodes currentLocale={currentLocale} currentRoute={currentRoute} router={router} />
-        </Layout>
-      {/* </I18nProvider> */}
+        <link rel="canonical" href={router.parsedUrl.href} />
+        {locales.map(locale => {
+          const localeRoute = Routes.findAndGetUrls(router.route.name, locale, pickParams(router.params))
+          return (
+            <link
+              key={locale}
+              rel="alternate"
+              hreflang={locale}
+              href={`${router.parsedUrl.origin}${localeRoute.urls.as}`}
+            />
+          )
+        })}
+
+      </Head>
+
+      <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
+        <Nodes currentLocale={currentLocale} currentRoute={currentRoute} router={router} />
+      </Layout>
     </>
   )
 }
@@ -76,7 +77,9 @@ export const getServerSideProps = async (ctx) => {
     !get(router, 'params.page') ||
     get(router, 'params.page') === 'undefined' ||
     !get(router, 'params.perPage') ||
-    get(router, 'params.perPage') === 'undefined'
+    get(router, 'params.perPage') === 'undefined' ||
+    !get(router, 'params.sorting') ||
+    get(router, 'params.sorting') === 'undefined'
   ) {
     return {
       redirect: {
@@ -101,7 +104,7 @@ export const getServerSideProps = async (ctx) => {
           freeSpace: +get(router, 'params.freeSpace') || 0,
           page: +get(router, 'params.page') || 1,
           perPage: +get(router, 'params.perPage') || 10,
-          sorting: +get(router, 'params.sorting') || '-fee',
+          sorting: get(router, 'params.sorting') || '-fee',
         })
       },
     })

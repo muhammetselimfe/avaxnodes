@@ -5,11 +5,12 @@ import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
 import Flag from 'react-world-flags'
+import ReactClipboard from 'react-clipboardjs-copy'
+import debounce from 'lodash/debounce'
 
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
-import { defaultLocale, locales } from '../../locales';
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
 import pickParams from '../../utils/pickParams';
@@ -171,14 +172,12 @@ const Filters = ({
   locale,
   router,
   filter,
-  page,
-  perPage,
-  sorting,
   freeSpace,
   setFilter,
   setPage,
   setFreeSpace,
 }) => {
+  const [localFilter, setLocalFilter] = React.useState(filter);
   const [selectFilterOpen, setSelectFilterOpen] = React.useState(false);
   const [selectFilterOptionsOpen, setSelectFilterOptionsOpen] = React.useState(false);
   const { darkModeActive } = useDarkMode()
@@ -204,9 +203,26 @@ const Filters = ({
         active: i.value == freeSpace
       }
     })
-  } : {values: []}
+  } : { values: [] }
 
   const activeOption = preparedCurrentNodesFilter.values.find(i => i.active) || {}
+
+  const debouncedNavigate = React.useCallback(
+		debounce(value => {
+      Router.pushRoute(
+        route,
+        pickParams({
+          ...pickParams(router.params || {}),
+          page: 1,
+          filter: value === '' ? undefined : value
+        }),
+        locale
+      )
+      setFilter(value)
+      setPage(1)
+    }, 500),
+		[], // will be created only once initially
+	);
 
   return (
     <div className="filter-wrapper">
@@ -217,25 +233,17 @@ const Filters = ({
             type="text"
             className="form-control search-field"
             placeholder={f('filter.search.placeolder')}
-            value={filter}
+            value={localFilter}
             onChange={(event) => {
-              Router.pushRoute(
-                route,
-                pickParams({
-                  ...pickParams(router.params || {}),
-                  page: 1,
-                  filter: event.target.value === '' ? undefined : event.target.value
-                }),
-                locale
-              )
-              setFilter(event.target.value)
-              setPage(1)
+              const value = event.target.value
+              setLocalFilter(value)
+              debouncedNavigate(value)
             }}
           />
           <img src="/static/images/search.svg" alt="search" className="search" />
           {darkModeActive ? (
             <img src="/static/images/right-arrow.svg" className="right-arrow" />
-          ): (
+          ) : (
             <img src="/static/images/search2.svg" className="right-arrow" />
           )}
         </div>
@@ -328,7 +336,7 @@ const Filters = ({
                       >
                         <a
                           role="option"
-                          className={`dropdown-item ${option.active ?  'active selected' : ''}`}
+                          className={`dropdown-item ${option.active ? 'active selected' : ''}`}
                           id="bs-select-2-0"
                           tabIndex="0"
                           aria-setsize="3"
@@ -355,6 +363,118 @@ const Filters = ({
   )
 }
 
+const NodeTableItem = ({ item, f, locale }) => {
+  const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
+
+  React.useEffect(() => {
+    if (nodeIdCopiedToClipboard) {
+      setTimeout(() => {
+        setNodeIdCopiedToClipboard(false)
+      }, 1000)
+    }
+  }, [nodeIdCopiedToClipboard])
+
+  const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
+  const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
+  const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
+
+  return (
+    <tr
+      onClick={() => {
+        console.log('tr click', nodeIdCopiedToClipboard)
+        if (!nodeIdCopiedToClipboard) {
+          Router.pushRoute(
+            'node',
+            pickParams({
+              id: item.nodeID,
+              page: 1,
+              perPage: 10,
+            }),
+            locale
+          )
+        }
+      }}
+    >
+      <td scope="row" style={{ position: 'relative' }} onClick={e => {
+        if (Array.from(e.target.classList).includes('pdf-image')) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+        console.log('ReactClipboard onClick', e, e.target)
+      }}>
+        <Link href={`node`} locale={locale} params={{
+          id: item.nodeID,
+          page: 1,
+          perPage: 10,
+        }}>
+          <a className="d-inline-block" title={item.nodeID}>
+            <span id="code" className="mr-2">{shortNodeId(item.nodeID)}</span>
+          </a>
+        </Link>
+        <ReactClipboard
+
+          text={item.nodeID}
+          onSuccess={(e) => {
+            console.log('ReactClipboard onSuccess', nodeIdCopiedToClipboard, e)
+            setNodeIdCopiedToClipboard(true)
+          }}
+        >
+          <img
+            data-clipboard-action="copy"
+            data-clipboard-target="#code"
+            src="/static/images/pdficon.svg"
+            className="pdf-image"
+          />
+        </ReactClipboard>
+        {nodeIdCopiedToClipboard && (
+          <div className="copiedtext d-block">Copied to clipboard</div>
+        )}
+        <div className="table-tab-wrapper">
+          {item.isSponsored && (<span className="sponsertag mr-1">{f('common.sponsored')}</span>)}
+          {item.isPartner && (<span className="providertag">{f('common.provider')}</span>)}
+        </div>
+
+      </td>
+      <td>{numberFormat(item.delegators.pagination.count, 0)}</td>
+      <td colSpan="2">
+        <div className="progress-bar-wrap relative">
+          <div className="label-wrap">
+            <label className="available-label"><strong>{numberFormat(item.totalStacked || 0, 0)}</strong>AVAX</label>
+            <label className="total-label"><strong>{numberFormat(item.leftToStack || 0, 0)}</strong>AVAX</label>
+          </div>
+          <div className="progress">
+            <div
+              className="progress-bar"
+              role="progressbar"
+              style={{ width: `${item.leftToStackPercent}%` }}
+              aria-valuenow={item.leftToStackPercent}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            />
+          </div>
+        </div>
+      </td>
+      <td style={{ display: 'none' }}></td>
+      <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
+      <td>
+        {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
+        {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
+        {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
+      </td>
+      <td>{numberFormat(item.delegationFee, 0)}%</td>
+      <td>{numberFormat(item.maxYield, 2)}%</td>
+      <td>
+        {item && item.country_code && (
+          <div className="d-flex">
+            <Flag code={item.country_code} height="16" className="mr-2" /> <span>{item.country_code}</span>
+          </div>
+        )}
+      </td>
+      <td><FaCircle fill={item.connected ? '#5DA574' : undefined} size={10} /></td>
+    </tr>
+  )
+}
+
 export const Nodes = ({ currentLocale, router }) => {
   const [filter, setFilter] = React.useState(
     (!router.query.filter || router.query.filter === 'undefined')
@@ -366,10 +486,10 @@ export const Nodes = ({ currentLocale, router }) => {
   const [sorting, setSorting] = React.useState(router.query.sorting || '-fee');
   const [freeSpace, setFreeSpace] = React.useState((
     !router.query.freeSpace || router.query.freeSpace === 'undefined')
+    ? 0
+    : isNaN(new Number(router.query.freeSpace))
       ? 0
-      : isNaN(new Number(router.query.freeSpace))
-        ? 0
-        : +router.query.freeSpace
+      : +router.query.freeSpace
   );
 
   const { loading, error, data } = useQuery(GET_NODES, {
@@ -399,13 +519,13 @@ export const Nodes = ({ currentLocale, router }) => {
           <div className="row content-inner">
             <div className="col-md-3 col-sm-3">
               <div className="bredcrum">
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
                   <a>
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10 }}>
+                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
                   <a className="nodes">
                     {f('page.nodes.header')}
                   </a>
@@ -602,7 +722,7 @@ export const Nodes = ({ currentLocale, router }) => {
                           </Link>
                         </th>
                         <th className="sorting">
-                         <Link
+                          <Link
                             href={`home`}
                             locale={locale}
                             params={pickParams({
@@ -646,72 +766,13 @@ export const Nodes = ({ currentLocale, router }) => {
                     </thead>
                     <tbody>
                       {data && data.nodes && data.nodes.items && data.nodes.items.map((item, index) => {
-                        const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
-                        const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
-                        const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
-
                         return (
-                          <tr key={index}>
-                            <td scope="row" style={{ position: 'relative' }}>
-                              <Link href={`node`} locale={locale} params={{
-                                id: item.nodeID,
-                                page: 1,
-                                perPage: 10,
-                              }}>
-                                <a className="stretched-link">
-
-                                  <span id="code">{shortNodeId(item.nodeID)}</span>
-                                  <img
-                                    data-clipboard-action="copy"
-                                    data-clipboard-target="#code"
-                                    src="/static/images/pdficon.svg"
-                                    className="pdf-image"
-                                  />
-                                  <div className="table-tab-wrapper">
-                                    {item.isSponsored && (<span className="sponsertag mr-1">{f('common.sponsored')}</span>)}
-                                    {item.isPartner && (<span className="providertag">{f('common.provider')}</span>)}
-                                  </div>
-                                </a>
-                              </Link>
-
-                            </td>
-                            <td>{numberFormat(item.delegators.pagination.count, 0)}</td>
-                            <td colSpan="2">
-                              <div className="progress-bar-wrap relative">
-                                <div className="label-wrap">
-                                  <label className="available-label"><strong>{numberFormat(item.totalStacked || 0, 0)}</strong>AVAX</label>
-                                  <label className="total-label"><strong>{numberFormat(item.leftToStack || 0, 0)}</strong>AVAX</label>
-                                </div>
-                                <div className="progress">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    style={{ width: `${item.leftToStackPercent}%` }}
-                                    aria-valuenow={item.leftToStackPercent}
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                  />
-                                </div>
-                              </div>
-                            </td>
-                            <td style={{ display: 'none' }}></td>
-                            <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
-                            <td>
-                              {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
-                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
-                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
-                            </td>
-                            <td>{numberFormat(item.delegationFee, 0)}%</td>
-                            <td>{numberFormat(item.maxYield, 2)}%</td>
-                            <td>
-                              {item && item.country_code && (
-                                <div className="d-flex">
-                                  <Flag code={item.country_code} height="16" /> <span>{item.country_code}</span>
-                                </div>
-                              )}
-                            </td>
-                            <td><FaCircle fill={item.connected ? '#5DA574' : undefined} size={10} /></td>
-                          </tr>
+                          <NodeTableItem
+                            key={`${item.nodeID}- ${index}`}
+                            item={item}
+                            index={index}
+                            f={f}
+                          />
                         )
                       })}
                     </tbody>
