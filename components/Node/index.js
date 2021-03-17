@@ -51,6 +51,8 @@ export const GET_NODE = gql`
       latitude
       longitude
       networkShare
+      grossRewards
+      netRewards
     }
   }
 `;
@@ -90,9 +92,11 @@ export const Node = ({
   const item = (data && data.node) || {delegators: {}}
 
   const position = React.useMemo(()=> ([
-    item.latitude || 51.505,
-    item.longitude || -0.09
+    item.latitude,
+    item.longitude
   ]), [item.latitude, item.longitude, loading])
+
+  console.log('Node', position)
 
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
 
@@ -232,9 +236,11 @@ export const Node = ({
           </div>
         </div>
       </div>
-      <div className="map-content" style={{ position: 'relative', overflow: 'hidden' }}>
-        <MapWithNoSSR position={position} />
-      </div>
+      {position[0] !== null && position[1] !== null && typeof position[0] !== 'undefined' && typeof position[1] !== 'undefined' && (
+        <div className="map-content" style={{ position: 'relative', overflow: 'hidden' }}>
+          <MapWithNoSSR position={position} loading={loading} />
+        </div>
+      )}
       <div className="box-wrapper">
         <div className="container">
           <div className="row content-inner">
@@ -274,17 +280,17 @@ export const Node = ({
                   </div>
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.delegationsFees')}</span>
-                    <p className="subtext">0 AVAX</p>
+                    <p className="subtext">{numberFormat(item.delegationFee || 0, 0)}%</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.grossRewards')}</span>
-                    <p className="subtext">0 AVAX</p>
+                    <p className="subtext">{numberFormat(item.grossRewards || 0, 0)} AVAX</p>
                   </div>
                 </div>
                 <div className="box-row row-2 d-flex">
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.netRewards')}</span>
-                    <p className="subtext">0 AVAX</p>
+                    <p className="subtext">{numberFormat(item.netRewards || 0, 0)} AVAX</p>
                   </div>
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.delegated')}</span>

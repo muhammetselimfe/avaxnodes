@@ -13,7 +13,7 @@
     "apollo-boost": "^0.4.9",
     "apollo-server-micro": "^2.19.0",
     "axios": "^0.21.0",
-    "axios-cache-adapter": "^3.0.0-beta.0",
+    "axios-cache-adapter": "^2.7.3",
     "bootstrap": "^4.5.3",
     "bootstrap-select": "^1.13.18",
     "debug": "^4.3.1",

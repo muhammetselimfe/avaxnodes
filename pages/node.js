@@ -27,7 +27,7 @@ export default function NodePage(props) {
   return (
     <>
       <Head>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Avaxnodes - {f('page.node.title')} </title>
         <link rel="icon" href="/favicon.ico" />
@@ -39,7 +39,7 @@ export default function NodePage(props) {
             <link
               key={locale}
               rel="alternate"
-              hreflang={locale}
+              hrefLang={locale}
               href={`${router.parsedUrl.origin}${localeRoute.urls.as}`}
             />
           )

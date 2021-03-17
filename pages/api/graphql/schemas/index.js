@@ -47,6 +47,8 @@ export const typeDefs = gql`
     stackedPercent: Float
     leftToStackPercent: Float
     networkShare: Float
+    grossRewards: Float
+    netRewards: Float
   }
 
   type Stats {
