@@ -3,6 +3,7 @@ import {
   getCurrentSupply,
   getLastBlockHeight,
   getTotalStake,
+  getTransactionsCount,
 } from "../../../../lib/api"
 
 export default async (parent, args, context, info) => {
@@ -14,11 +15,12 @@ export default async (parent, args, context, info) => {
     const totalBlocks = await getLastBlockHeight()
     const currentSupply = await getCurrentSupply()
     const totalStake = await getTotalStake()
+    const transactionsCount = await getTransactionsCount()
     const totalParticipation = ((totalStake / 1000000000) / (currentSupply / 1000000000)) * 100
 
     return {
       totalNodes: validators.length,
-      totalTransactions: 0,
+      totalTransactions: transactionsCount,
       totalProviders: 0,
       totalDelegations,
       totalBlocks,

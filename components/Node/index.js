@@ -53,6 +53,7 @@ export const GET_NODE = gql`
       networkShare
       grossRewards
       netRewards
+      uptimePercent
     }
   }
 `;
@@ -60,6 +61,55 @@ export const GET_NODE = gql`
 const MapWithNoSSR = dynamic(() => import("../Map"), {
   ssr: false
 });
+
+const DelegatorItem = ({ item, f }) => {
+  const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
+  const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
+  const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
+
+  const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
+
+  React.useEffect(() => {
+    if (nodeIdCopiedToClipboard) {
+      setTimeout(() => {
+        setNodeIdCopiedToClipboard(false)
+      }, 1000)
+    }
+  }, [nodeIdCopiedToClipboard])
+
+  return (
+    <tr>
+      <td style={{ position: 'relative' }}>
+        <span id="code1">{shortNodeId(item.rewardOwner.addresses[0])}</span>
+        <ReactClipboard
+          text={item.rewardOwner.addresses[0]}
+          onSuccess={(e) => {
+            setNodeIdCopiedToClipboard(true)
+          }}
+        >
+          <img
+            data-clipboard-action="copy"
+            data-clipboard-target="#code"
+            src="/static/images/pdficon.svg"
+            className="pdf-image"
+          />
+        </ReactClipboard>
+        {nodeIdCopiedToClipboard && (
+          <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
+        )}
+      </td>
+      <td>{numberFormat(item.stakeAmount / 1000000000)} AVAX</td>
+      <td>{numberFormat(item.potentialReward / 1000000000)} AVAX</td>
+      <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
+      <td>
+        {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
+        {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
+        {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
+      </td>
+      <td><i className="fas fa-circle"></i></td>
+    </tr>
+  )
+}
 
 export const Node = ({
   router,
@@ -95,8 +145,6 @@ export const Node = ({
     item.latitude,
     item.longitude
   ]), [item.latitude, item.longitude, loading])
-
-  console.log('Node', position)
 
   const locale = currentLocale === defaultLocale ? undefined : currentLocale
 
@@ -175,7 +223,7 @@ export const Node = ({
                     />
                   </ReactClipboard>
                   {nodeIdCopiedToClipboard && (
-                    <div className="copiedtext d-block">Copied to clipboard</div>
+                    <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
                   )}
                 </div>
 
@@ -238,7 +286,7 @@ export const Node = ({
       </div>
       {position[0] !== null && position[1] !== null && typeof position[0] !== 'undefined' && typeof position[1] !== 'undefined' && (
         <div className="map-content" style={{ position: 'relative', overflow: 'hidden' }}>
-          <MapWithNoSSR position={position} loading={loading} />
+          <MapWithNoSSR position={position} popup={item.nodeID} />
         </div>
       )}
       <div className="box-wrapper">
@@ -309,12 +357,12 @@ export const Node = ({
                 <div className="box-row d-flex">
                   <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.responses.average')}</span>
-                    <p className="subtext">100%</p>
+                    <p className="subtext">{item.uptimePercent ? numberFormat(Number(item.uptimePercent) * 100, 0) : 0}%</p>
                   </div>
-                  <div className="card-content smallbox">
+                  {/* <div className="card-content smallbox">
                     <span>{f('page.node.info.subtitle.responses.sampled')}</span>
                     <p className="subtext">100%</p>
-                  </div>
+                  </div> */}
                 </div>
                 <span className="note-text">{f('page.node.info.description.perfomance')}</span>
               </div>
@@ -393,22 +441,13 @@ export const Node = ({
                     <tbody>
 
                       {item && item.delegators && item.delegators.items && item.delegators.items.map((item, index) => {
-                        const daysLeft = moment(item.endTime * 1000).diff(moment(), 'days')
-                        const hoursLeft = moment(item.endTime * 1000).diff(moment(), 'hours')
-                        const minutesLeft = moment(item.endTime * 1000).diff(moment(), 'minutes')
                         return (
-                          <tr key={`${item.rewardOwner.addresses[0]}-${index}`}>
-                            <td><span id="code1">{shortNodeId(item.rewardOwner.addresses[0])}</span> <img data-clipboard-action="copy" data-clipboard-target="#code1" src="/static/images/pdficon.svg" className="pdf-image" /></td>
-                            <td>{numberFormat(item.stakeAmount / 1000000000)} AVAX</td>
-                            <td>{numberFormat(item.potentialReward / 1000000000)} AVAX</td>
-                            <td>{moment(item.startTime * 1000).format('MMM D, YYYY')}</td>
-                            <td>
-                              {!!daysLeft && (<span>{daysLeft} {f('common.left.days')}</span>)}
-                              {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.left.hours')}</span>)}
-                              {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.left.minutes')}</span>)}
-                            </td>
-                            <td><i className="fas fa-circle"></i></td>
-                          </tr>
+                          <DelegatorItem
+                            key={`${item.rewardOwner.addresses[0]}-${index}`}
+                            index={index}
+                            item={item}
+                            f={f}
+                          />
                         )
                       })}
 

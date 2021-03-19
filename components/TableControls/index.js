@@ -95,7 +95,7 @@ const TableControls = ({
             </a>
           </Link>
           <span>
-            {Array.from(Array(Math.max(endPage - startPage, 1)).keys()).map(index => {
+            {Array.from(Array(Math.max(endPage - startPage + 1, 1)).keys()).map(index => {
               const pageNumber = startPage + index
               return (
                 <Link

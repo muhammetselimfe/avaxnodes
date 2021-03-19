@@ -86,4 +86,6 @@ module.exports = {
   "common.left.days": "残りの日数",
   "common.left.hours": "残り時間",
   "common.left.minutes": "残り分",
+
+  "common.copied.to.clipboard": "クリップボードにコピー",
 }

@@ -381,7 +381,6 @@ const NodeTableItem = ({ item, f, locale }) => {
   return (
     <tr
       onClick={() => {
-        console.log('tr click', nodeIdCopiedToClipboard)
         if (!nodeIdCopiedToClipboard) {
           Router.pushRoute(
             'node',
@@ -400,7 +399,6 @@ const NodeTableItem = ({ item, f, locale }) => {
           e.preventDefault()
           e.stopPropagation()
         }
-        console.log('ReactClipboard onClick', e, e.target)
       }}>
         <Link href={`node`} locale={locale} params={{
           id: item.nodeID,
@@ -412,10 +410,8 @@ const NodeTableItem = ({ item, f, locale }) => {
           </a>
         </Link>
         <ReactClipboard
-
           text={item.nodeID}
           onSuccess={(e) => {
-            console.log('ReactClipboard onSuccess', nodeIdCopiedToClipboard, e)
             setNodeIdCopiedToClipboard(true)
           }}
         >
@@ -427,7 +423,7 @@ const NodeTableItem = ({ item, f, locale }) => {
           />
         </ReactClipboard>
         {nodeIdCopiedToClipboard && (
-          <div className="copiedtext d-block">Copied to clipboard</div>
+          <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
         )}
         <div className="table-tab-wrapper">
           {item.isSponsored && (<span className="sponsertag mr-1">{f('common.sponsored')}</span>)}

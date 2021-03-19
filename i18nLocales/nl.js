@@ -86,4 +86,6 @@ module.exports = {
   "common.left.days": "dagen over",
   "common.left.hours": "uren te gaan",
   "common.left.minutes": "minuten over",
+
+  "common.copied.to.clipboard": "Gekopieerd naar het klembord",
 }

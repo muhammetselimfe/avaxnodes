@@ -4,8 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 
-export const Map = ({ position }) => {
-  console.log('Map', position)
+export const Map = ({ position, popup }) => {
   if (
     position &&
     position.length === 2 &&
@@ -27,7 +26,7 @@ export const Map = ({ position }) => {
         />
         <Marker position={position}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            {popup}
           </Popup>
         </Marker>
       </MapContainer>
