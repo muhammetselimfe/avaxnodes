@@ -1,6 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
-import { FaCircle, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
@@ -13,7 +13,9 @@ import numberFormat from '../../utils/numberFormat';
 
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
+import SortingIcon from '../SortingIcon'
 import pickParams from '../../utils/pickParams';
+import { prepareNewSorting } from '../../lib/prepareNewSorting';
 
 export const GET_NODES = gql`
   query GetNodes ($filter: NodesFilter!) {
@@ -58,25 +60,6 @@ export const GET_NODES = gql`
     }
   }
 `;
-
-const prepareNewSorting = (sorting, field) => {
-  const newSorting = sorting.includes(field)
-    ? (sorting[0] === '-'
-      ? `+${field}`
-      : `-${field}`)
-    : `-${field}`
-  return newSorting
-}
-
-const sortingIcon = (sorting, field) => {
-  return sorting.includes(field) ? (
-    sorting.includes(`-${field}`)
-      ? <FaSortDown />
-      : <FaSortUp />
-  ) : (
-    <FaSort />
-  )
-}
 
 const Stats = ({ data = {} }) => {
   const { formatMessage } = useIntl()
@@ -388,6 +371,7 @@ const NodeTableItem = ({ item, f, locale }) => {
               id: item.nodeID,
               page: 1,
               perPage: 10,
+              sorting: '-started-on',
             }),
             locale
           )
@@ -404,6 +388,7 @@ const NodeTableItem = ({ item, f, locale }) => {
           id: item.nodeID,
           page: 1,
           perPage: 10,
+          sorting: '-started-on',
         }}>
           <a className="d-inline-block" title={item.nodeID}>
             <span id="code" className="mr-2">{shortNodeId(item.nodeID)}</span>
@@ -593,7 +578,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.nodeid.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'node-id')}
+                              <SortingIcon sorting={sorting} field={'node-id'} />
                             </a>
                           </Link>
                         </th>
@@ -613,7 +598,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.delegators.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'delegators')}
+                              <SortingIcon sorting={sorting} field={'delegators'} />
                             </a>
                           </Link>
                         </th>
@@ -633,7 +618,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.totalstake.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'total-stake')}
+                              <SortingIcon sorting={sorting} field={'total-stake'} />
                             </a>
                           </Link>
                         </th>
@@ -653,7 +638,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.freespace.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'free-space')}
+                              <SortingIcon sorting={sorting} field={'free-space'} />
                             </a>
                           </Link>
                         </th>
@@ -673,7 +658,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.startedon.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'started-on')}
+                              <SortingIcon sorting={sorting} field={'started-on'} />
                             </a>
                           </Link>
                         </th>
@@ -693,7 +678,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.timeleft.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'time-left')}
+                              <SortingIcon sorting={sorting} field={'time-left'} />
                             </a>
                           </Link>
                         </th>
@@ -713,7 +698,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.fee.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'fee')}
+                              <SortingIcon sorting={sorting} field={'fee'} />
                             </a>
                           </Link>
                         </th>
@@ -733,7 +718,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.maxyield.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'max-yield')}
+                              <SortingIcon sorting={sorting} field={'max-yield'} />
                             </a>
                           </Link>
                         </th>
@@ -753,7 +738,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             >
                               <span>{f('page.nodes.table.header.country.title')}</span>
                               {' '}
-                              {sortingIcon(sorting, 'country')}
+                              <SortingIcon sorting={sorting} field={'country'} />
                             </a>
                           </Link>
                         </th>

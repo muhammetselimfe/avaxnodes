@@ -1,6 +1,4 @@
-import get from 'lodash/get'
-import isNaN from 'lodash/isNaN'
-
+import { getSortMethod } from '../../../../lib/getSortMethod'
 import { getPreparedValidators } from '../../../../lib/preparedValidators'
 
 const sortingMap = {
@@ -13,41 +11,6 @@ const sortingMap = {
   ['time-left']: 'endTime',
   ['node-id']: 'nodeID',
   ['country']: 'country_code',
-}
-
-function getSortMethod(){
-  var _args = Array.prototype.slice.call(arguments);
-  return function(a, b) {
-    for (var x in _args) {
-      const field = get(sortingMap, _args[x].substring(1))
-      if (!field) {
-        continue
-      }
-      var ax = get(a, field);
-      var bx = get(b, field);
-      var cx;
-
-      ax = typeof ax === "string"
-        ? (isNaN(new Number(ax))
-          ? ax.toLowerCase()
-          : ax / 1)
-        : ax / 1;
-      bx = typeof bx === "string"
-        ? (isNaN(new Number(bx))
-          ? bx.toLowerCase()
-          : bx / 1)
-        : bx / 1;
-
-      if (_args[x].substring(0,1) === "-") {
-        cx = ax;
-        ax = bx;
-        bx = cx;
-      }
-      if (ax != bx) {
-        return ax < bx ? -1 : 1;
-      }
-    }
-  }
 }
 
 export default async (parent, args, context, info) => {
@@ -69,9 +32,11 @@ export default async (parent, args, context, info) => {
     }
 
     const count = currentValidators.length
-    const sorting = args.filter.sorting || '-fee'
+    const sorting = !args.filter.sorting || !sortingMap[`${args.filter.sorting}`.substring(1)]
+      ? '-fee'
+      : args.filter.sorting
 
-    const sortedCurrentValidators = currentValidators.slice().sort(getSortMethod(...sorting.split(',')))
+    const sortedCurrentValidators = currentValidators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 
     const currentValidatorsPageItems = sortedCurrentValidators.slice((page - 1) * perPage, page * perPage)
 

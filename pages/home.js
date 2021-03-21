@@ -10,7 +10,6 @@ import Layout from '../components/Layout';
 import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
-import styles from '../styles/Home.module.css'
 import pickParams from '../utils/pickParams';
 
 export default function Home(props) {
@@ -59,11 +58,6 @@ export default function Home(props) {
   )
 }
 
-// export const getInitialProps = async ({query}) => {
-//   // query.slug
-//   console.log(query)
-// }
-
 export const getServerSideProps = async (ctx) => {
   const params = new URLSearchParams(`${ctx.resolvedUrl}`.split('?')[1] || '');
   const currentLocale = ctx.locale || defaultLocale
@@ -90,9 +84,15 @@ export const getServerSideProps = async (ctx) => {
       redirect: {
         permanent: false,
         destination: router.route.getAs({
-          page: 1,
-          perPage: 10,
-          sorting: '-fee',
+          page: !get(router, 'params.page') || get(router, 'params.page') === 'undefined'
+            ? 1
+            : +get(router, 'params.page'),
+          perPage: !get(router, 'params.perPage') || get(router, 'params.perPage') === 'undefined'
+            ? 10
+            : +get(router, 'params.perPage'),
+          sorting: !get(router, 'params.sorting') || get(router, 'params.sorting') === 'undefined'
+            ? '-fee'
+            : get(router, 'params.sorting'),
         })
       }
     }

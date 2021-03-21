@@ -74,6 +74,7 @@ export const typeDefs = gql`
     nodeID: ID!
     page: Int
     perPage: Int
+    sorting: String
   }
 
   type Pagination {

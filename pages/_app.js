@@ -8,8 +8,6 @@ import { useRouter } from "next/router"
 
 // import i18nConfig from '../i18n'
 import { ApolloProvider } from "@apollo/react-hooks";
-// import ApolloClient from "apollo-boost";
-// import { appWithTranslation } from '../i18n'
 import { IntlProvider } from "react-intl"
 import get from 'lodash/get'
 
@@ -36,8 +34,6 @@ function MyApp({ Component, pageProps, ...rest}) {
 
   const locale = pageProps.currentLocale || get(router, 'route.locale') || get(defaultRouter, 'locale', defaultLocale) || defaultLocale
 
-  // console.log('MyApp', router, locale, pageProps, rest)
-
   const messages = allMessages[locale]
 
   React.useEffect(() => {
@@ -57,21 +53,7 @@ function MyApp({ Component, pageProps, ...rest}) {
   )
 }
 
-// MyApp.getInitialProps = async (props) => {
-//   const { Component, ctx } = props
-//   let pageProps = {};
-
-
-//   if (Component.getInitialProps) {
-//     pageProps = await Component.getInitialProps(ctx);
-//     pageProps._url = Routes.match(ctx.asPath);
-//   }
-
-//   return { pageProps }
-// }
-
 MyApp.getInitialProps = async (appContext) => {
-  // console.log('MyApp', appContext, Routes.match(appContext.asPath))
   return { ...await App.getInitialProps(appContext) }
 }
 

@@ -12,8 +12,11 @@ import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
 import { defaultLocale, locales } from '../../locales';
-import { Link } from '../../routes'
+import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
+import SortingIcon from '../SortingIcon'
+import { prepareNewSorting } from '../../lib/prepareNewSorting';
+import pickParams from '../../utils/pickParams';
 
 
 export const GET_NODE = gql`
@@ -80,7 +83,7 @@ const DelegatorItem = ({ item, f }) => {
   return (
     <tr>
       <td style={{ position: 'relative' }}>
-        <span id="code1">{shortNodeId(item.rewardOwner.addresses[0])}</span>
+        <span id="code1" title={item.rewardOwner.addresses[0]}>{shortNodeId(item.rewardOwner.addresses[0])}</span>
         <ReactClipboard
           text={item.rewardOwner.addresses[0]}
           onSuccess={(e) => {
@@ -117,6 +120,7 @@ export const Node = ({
 }) => {
   const [page, setPage] = React.useState(+router.query.page || 1);
   const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
+  const [sorting, setSorting] = React.useState(router.query.sorting || '-sorted-on');
 
   const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
 
@@ -132,6 +136,7 @@ export const Node = ({
     nodeID: router.query.id,
     page,
     perPage,
+    sorting,
   }
   const { loading, error, data } = useQuery(GET_NODE, {
     variables: {
@@ -405,7 +410,7 @@ export const Node = ({
         <div className="PagetableTitle">
           <div className="container">
             <div className="">
-              <div className="table-title">
+              <div className="table-title" id="delegations">
                 {f('page.node.table.header')}
               </div>
             </div>
@@ -430,11 +435,111 @@ export const Node = ({
                   >
                     <thead>
                       <tr>
-                        <th>{f('page.node.table.header.beneficiary.title')}</th>
-                        <th>{f('page.node.table.header.delegated.title')}</th>
-                        <th>{f('page.node.table.header.potentialRewards.title')}</th>
-                        <th>{f('page.node.table.header.startedon.title')}</th>
-                        <th>{f('page.node.table.header.timeleft.title')}</th>
+                        <th className="sorting">
+                          <Link
+                            href={`node`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'address')
+                            })}
+                            scroll={false}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'address'))
+                              }}
+                            >
+                              <span>{f('page.node.table.header.beneficiary.title')}</span>
+                              {' '}
+                              <SortingIcon sorting={sorting} field={'address'} />
+                            </a>
+                          </Link>
+                        </th>
+                        <th className="sorting">
+                          <Link
+                            href={`node`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'delegated')
+                            })}
+                            scroll={false}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'delegated'))
+                              }}
+                            >
+                              <span>{f('page.node.table.header.delegated.title')}</span>
+                              {' '}
+                              <SortingIcon sorting={sorting} field={'delegated'} />
+                            </a>
+                          </Link>
+                        </th>
+                        <th className="sorting">
+                          <Link
+                            href={`node`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'reward')
+                            })}
+                            scroll={false}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'reward'))
+                              }}
+                            >
+                              <span>{f('page.node.table.header.potentialRewards.title')}</span>
+                              {' '}
+                              <SortingIcon sorting={sorting} field={'reward'} />
+                            </a>
+                          </Link>
+                        </th>
+                        <th className="sorting">
+                          <Link
+                            href={`node`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'started-on')
+                            })}
+                            scroll={false}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'started-on'))
+                              }}
+                            >
+                              <span>{f('page.node.table.header.startedon.title')}</span>
+                              {' '}
+                              <SortingIcon sorting={sorting} field={'started-on'} />
+                            </a>
+                          </Link>
+                        </th>
+                        <th className="sorting">
+                          <Link
+                            href={`node`}
+                            locale={locale}
+                            params={pickParams({
+                              ...router.params,
+                              sorting: prepareNewSorting(sorting, 'time-left')
+                            })}
+                            scroll={false}
+                          >
+                            <a
+                              onClick={() => {
+                                setSorting(prepareNewSorting(sorting, 'time-left'))
+                              }}
+                            >
+                              <span>{f('page.node.table.header.timeleft.title')}</span>
+                              {' '}
+                              <SortingIcon sorting={sorting} field={'time-left'} />
+                            </a>
+                          </Link>
+                        </th>
                         <th></th>
                       </tr>
                     </thead>

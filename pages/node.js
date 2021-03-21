@@ -10,7 +10,6 @@ import Layout from '../components/Layout';
 import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
-import styles from '../styles/Home.module.css'
 import pickParams from '../utils/pickParams';
 
 export default function NodePage(props) {
@@ -71,16 +70,24 @@ export const getServerSideProps = async (ctx) => {
     !get(router, 'params.page') ||
     get(router, 'params.page') === 'undefined' ||
     !get(router, 'params.perPage') ||
-    get(router, 'params.perPage') === 'undefined'
+    get(router, 'params.perPage') === 'undefined' ||
+    !get(router, 'params.sorting') ||
+    get(router, 'params.sorting') === 'undefined'
   ) {
     return {
       redirect: {
         permanent: false,
         destination: router.route.getAs({
           id: router.params.id,
-          page: 1,
-          perPage: 10,
-          // sorting: '-fee',
+          page: !get(router, 'params.page') || get(router, 'params.page') === 'undefined'
+            ? 1
+            : +get(router, 'params.page'),
+          perPage: !get(router, 'params.perPage') ||get(router, 'params.perPage') === 'undefined'
+            ? 10
+            : +get(router, 'params.perPage'),
+          sorting: !get(router, 'params.sorting') || get(router, 'params.sorting') === 'undefined'
+            ? '-started-on'
+            : get(router, 'params.sorting'),
         })
       }
     }
@@ -95,7 +102,7 @@ export const getServerSideProps = async (ctx) => {
         nodeID: get(router, 'params.id') ||  ctx.query.id,
         page: +get(router, 'params.page') || 1,
         perPage: +get(router, 'params.perPage') || 10,
-        // sorting: +get(router, 'params.sorting') || '-fee',
+        sorting: get(router, 'params.sorting') || '-started-on',
       })
     },
   })
