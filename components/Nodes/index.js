@@ -14,6 +14,7 @@ import numberFormat from '../../utils/numberFormat';
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
 import SortingIcon from '../SortingIcon'
+import Spinner from '../Spinner'
 import pickParams from '../../utils/pickParams';
 import { prepareNewSorting } from '../../lib/prepareNewSorting';
 
@@ -369,9 +370,9 @@ const NodeTableItem = ({ item, f, locale }) => {
             'node',
             pickParams({
               id: item.nodeID,
-              page: 1,
+              /*page: 1,
               perPage: 10,
-              sorting: '-started-on',
+              sorting: '-started-on',*/
             }),
             locale
           )
@@ -386,9 +387,9 @@ const NodeTableItem = ({ item, f, locale }) => {
       }}>
         <Link href={`node`} locale={locale} params={{
           id: item.nodeID,
-          page: 1,
+          /*page: 1,
           perPage: 10,
-          sorting: '-started-on',
+          sorting: '-started-on',*/
         }}>
           <a className="d-inline-block" title={item.nodeID}>
             <span id="code" className="mr-2">{shortNodeId(item.nodeID)}</span>
@@ -500,14 +501,31 @@ export const Nodes = ({ currentLocale, router }) => {
           <div className="row content-inner">
             <div className="col-md-3 col-sm-3">
               <div className="bredcrum">
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
-                  <a>
+                <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
+                  <a
+                    onClick={() => {
+                      setPage(1)
+                      setPerPage(10)
+                      setSorting('-fee')
+                      setFreeSpace(0)
+                      setFilter('')
+                    }}
+                  >
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
-                  <a className="nodes">
+                <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
+                  <a
+                    className="nodes"
+                    onClick={() => {
+                      setPage(1)
+                      setPerPage(10)
+                      setSorting('-fee')
+                      setFreeSpace(0)
+                      setFilter('')
+                    }}
+                  >
                     {f('page.nodes.header')}
                   </a>
                 </Link>
@@ -517,6 +535,7 @@ export const Nodes = ({ currentLocale, router }) => {
           </div>
         </div>
       </div>
+      <Spinner show={loading} />
       <div className="main-content">
         <div className="container">
           <Filters

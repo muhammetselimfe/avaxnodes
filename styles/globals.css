@@ -140,6 +140,42 @@ table.dataTable thead .sorting {
   background-color: #e4ebf1;
 }
 
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.spinner::before {
+  content: '';
+  height: 40px;
+  width: 40px;
+  animation: spinner-rotate 0.8s ease infinite;
+  border: 5px solid #2278cf;
+  border-right-color: #c8ddf3;
+  border-radius: 50%;
+  left: calc(50% - 25px);
+  top: calc(50% - 25px);
+  position: absolute;
+  transition: left 0.3s ease;
+  box-sizing: border-box;
+}
+
 .bg-light {
   padding: 9px 0px;
 }
@@ -341,4 +377,8 @@ body.mode-light {
 }
 .mode-light .main-content .table-title {
   color: #20202A;
+}
+
+.mode-light .spinner {
+  background: rgba(255, 255, 255, 0.8);
 }

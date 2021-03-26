@@ -30,7 +30,7 @@ module.exports = {
   "page.node.header": "节点详细信息",
 
   "page.node.space.available": '可用空间',
-  "page.node.time.remaining": '剩余空间',
+  "page.node.time.remaining": '剩余天数',
   "page.node.total": '全部的',
   "page.node.free": '自由',
   "page.node.days.total": '总天数',

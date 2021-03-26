@@ -15,6 +15,7 @@ import { defaultLocale, locales } from '../../locales';
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
 import SortingIcon from '../SortingIcon'
+import Spinner from '../Spinner'
 import { prepareNewSorting } from '../../lib/prepareNewSorting';
 import pickParams from '../../utils/pickParams';
 
@@ -185,20 +186,40 @@ export const Node = ({
           <div className="row content-inner">
             <div className="col-md-4 col-sm-6 col-lg-3">
               <div className="nodebredcrum">
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
-                  <a>
+                <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
+                  <a
+                    onClick={() => {
+                      setPage(1)
+                      setPerPage(10)
+                      setSorting('-sorted-on')
+                    }}
+                  >
                     <img src="/static/images/home.svg" className="home-image" />
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
-                <Link href={`home`} locale={locale} params={{ page: 1, perPage: 10, sorting: '-fee' }}>
-                  <a className="nodes">
+                <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
+                  <a
+                    className="nodes"
+                    onClick={() => {
+                      setPage(1)
+                      setPerPage(10)
+                      setSorting('-sorted-on')
+                    }}
+                  >
                     {f('page.nodes.header')}
                   </a>
                 </Link>
                 <span style={{ color: '#fff' }}> / </span>
                 <Link href={`node`} locale={locale} params={{ id: router.params.id }}>
-                  <a className="nodes">
+                  <a
+                    className="nodes"
+                    onClick={() => {
+                      setPage(1)
+                      setPerPage(10)
+                      setSorting('-sorted-on')
+                    }}
+                  >
                     {f('page.node.header')}
                   </a>
                 </Link>
@@ -207,6 +228,7 @@ export const Node = ({
           </div>
         </div>
       </div>
+      <Spinner show={loading} />
       <div className="progress-content">
         <div className="TitleNodeID">
           <div className="container">

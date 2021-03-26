@@ -30,7 +30,7 @@ module.exports = {
   "page.node.header": "노드 세부 정보",
 
   "page.node.space.available": '사용 가능한 공간',
-  "page.node.time.remaining": '남은 공간',
+  "page.node.time.remaining": '남은 일수',
   "page.node.total": '합계',
   "page.node.free": '비어 있는',
   "page.node.days.total": '총 일수',

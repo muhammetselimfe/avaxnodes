@@ -72,31 +72,31 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
-  if (
-    !get(router, 'params.page') ||
-    get(router, 'params.page') === 'undefined' ||
-    !get(router, 'params.perPage') ||
-    get(router, 'params.perPage') === 'undefined' ||
-    !get(router, 'params.sorting') ||
-    get(router, 'params.sorting') === 'undefined'
-  ) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: router.route.getAs({
-          page: !get(router, 'params.page') || get(router, 'params.page') === 'undefined'
-            ? 1
-            : +get(router, 'params.page'),
-          perPage: !get(router, 'params.perPage') || get(router, 'params.perPage') === 'undefined'
-            ? 10
-            : +get(router, 'params.perPage'),
-          sorting: !get(router, 'params.sorting') || get(router, 'params.sorting') === 'undefined'
-            ? '-fee'
-            : get(router, 'params.sorting'),
-        })
-      }
-    }
-  }
+  // if (
+  //   !get(router, 'params.page') ||
+  //   get(router, 'params.page') === 'undefined' ||
+  //   !get(router, 'params.perPage') ||
+  //   get(router, 'params.perPage') === 'undefined' ||
+  //   !get(router, 'params.sorting') ||
+  //   get(router, 'params.sorting') === 'undefined'
+  // ) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: router.route.getAs({
+  //         page: !get(router, 'params.page') || get(router, 'params.page') === 'undefined'
+  //           ? 1
+  //           : +get(router, 'params.page'),
+  //         perPage: !get(router, 'params.perPage') || get(router, 'params.perPage') === 'undefined'
+  //           ? 10
+  //           : +get(router, 'params.perPage'),
+  //         sorting: !get(router, 'params.sorting') || get(router, 'params.sorting') === 'undefined'
+  //           ? '-fee'
+  //           : get(router, 'params.sorting'),
+  //       })
+  //     }
+  //   }
+  // }
 
   const apolloClient = initializeApollo()
 

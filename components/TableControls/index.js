@@ -48,7 +48,7 @@ const TableControls = ({
               onChange={(event) => {
                 Router.pushRoute(
                   route,
-                  { ...pickParams(router.params || {}), page: 1, perPage: parseInt(event.target.value, 10) || 10 },
+                  { ...pickParams(router.params || {}), page: undefined, perPage: parseInt(event.target.value, 10) || 10 },
                   locale
                 )
                 setPage(1)
@@ -102,7 +102,7 @@ const TableControls = ({
                   key={`${index}-${pageNumber}`}
                   href={route}
                   locale={locale}
-                  params={{ ...pickParams(router.params || {}), page: pageNumber }}
+                  params={{ ...pickParams(router.params || {}), page: pageNumber === 1 ? undefined : pageNumber }}
                 >
                   <a
                     className={`paginate_button ${page === pageNumber ? 'current' : ''}`}

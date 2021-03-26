@@ -30,7 +30,7 @@ module.exports = {
   "page.node.header": "ノードの詳細",
 
   "page.node.space.available": '利用可能なスペース',
-  "page.node.time.remaining": '残りのスペース',
+  "page.node.time.remaining": '残りの日数',
   "page.node.total": '合計',
   "page.node.free": '自由',
   "page.node.days.total": '合計日数',
