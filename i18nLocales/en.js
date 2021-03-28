@@ -62,7 +62,7 @@ module.exports = {
   "page.node.info.subtitle.delegated": "Delegated",
   "page.node.info.subtitle.freeSpace": "Free space",
 
-  "page.node.table.header": "AVAX delegations",
+  "page.node.table.header": "AVAX Delegations ({count})",
 
   "page.node.table.header.beneficiary.title": "Beneficiary",
   "page.node.table.header.delegated.title": "Delegated",

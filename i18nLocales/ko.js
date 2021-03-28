@@ -62,7 +62,7 @@ module.exports = {
   "page.node.info.subtitle.delegated": "위임 됨",
   "page.node.info.subtitle.freeSpace": "자유 공간",
 
-  "page.node.table.header": "AVAX 위임",
+  "page.node.table.header": "AVAX 위임 ({count})",
 
   "page.node.table.header.beneficiary.title": "수익자",
   "page.node.table.header.delegated.title": "위임 됨",

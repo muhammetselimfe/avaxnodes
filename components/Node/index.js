@@ -4,6 +4,7 @@ import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
 import { useIntl } from "react-intl"
 import ReactClipboard from 'react-clipboardjs-copy'
+import get from 'lodash/get'
 
 import dynamic from "next/dynamic";
 
@@ -58,6 +59,11 @@ export const GET_NODE = gql`
       grossRewards
       netRewards
       uptimePercent
+      leftToStackPercent
+      version
+      publicIP
+      country
+      city
     }
   }
 `;
@@ -177,7 +183,7 @@ export const Node = ({
   const daysLeftPercent = daysLeft * 100 / daysTotal
 
   const { formatMessage } = useIntl()
-  const f = id => formatMessage({ id })
+  const f = (id, values = {}) => formatMessage({ id }, values)
 
   return (
     <>
@@ -233,9 +239,10 @@ export const Node = ({
         <div className="TitleNodeID">
           <div className="container">
             <div className="row content-inner align-items-center">
-              <div className=" col-9 col-md-8 col-sm-8">
+              <div className=" col-9 col-md-8 col-sm-8 col-lg-10 col-xl-10">
                 <div className="Title">
-                  <span id="copycode" title={router.query.id} className="mr-3">{shortNodeId(router.query.id)}</span>
+                  <span title={router.query.id} className="mr-3 d-xs-inline d-sm-inline d-md-inline d-lg-none d-xl-none">{shortNodeId(router.query.id)}</span>
+                  <span title={router.query.id} className="mr-3 d-none d-sm-none d-md-none d-lg-inline d-xl-inline">{router.query.id}</span>
                   <ReactClipboard
                     text={router.query.id}
                     onSuccess={(e) => {
@@ -255,7 +262,7 @@ export const Node = ({
                 </div>
 
               </div>
-              <div className=" col-3 col-md-4 col-sm-4 ">
+              <div className=" col-3 col-md-4 col-sm-4 col-lg-2 col-xl-2">
                 {item && item.connected && (
                   <div className="PagesubTitle d-flex justify-content-end align-items-center">
                     <FaCircle fill={item.connected ? '#5DA574' : undefined} fontSize={10} />
@@ -280,8 +287,8 @@ export const Node = ({
                     <div
                       className="progress-bar"
                       role="progressbar"
-                      style={{ width: `${numberFormat(stackedPercent, 0)}%` }}
-                      aria-valuenow={numberFormat(stackedPercent, 0)}
+                      style={{ width: `${numberFormat(item.leftToStackPercent || 0, 0)}%` }}
+                      aria-valuenow={numberFormat(item.leftToStackPercent || 0, 0)}
                       aria-valuemin="0"
                       aria-valuemax="100"
                     />
@@ -313,7 +320,10 @@ export const Node = ({
       </div>
       {position[0] !== null && position[1] !== null && typeof position[0] !== 'undefined' && typeof position[1] !== 'undefined' && (
         <div className="map-content" style={{ position: 'relative', overflow: 'hidden' }}>
-          <MapWithNoSSR position={position} popup={item.nodeID} />
+          <MapWithNoSSR
+            position={position}
+            item={item}
+          />
         </div>
       )}
       <div className="box-wrapper">
@@ -433,7 +443,9 @@ export const Node = ({
           <div className="container">
             <div className="">
               <div className="table-title" id="delegations">
-                {f('page.node.table.header')}
+                {f('page.node.table.header', {
+                  count: get(data, 'node.delegators.pagination.count') || 0
+                })}
               </div>
             </div>
           </div>

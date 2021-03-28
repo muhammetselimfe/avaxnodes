@@ -62,7 +62,7 @@ module.exports = {
   "page.node.info.subtitle.delegated": "委任",
   "page.node.info.subtitle.freeSpace": "フリースペース",
 
-  "page.node.table.header": "AVAX代表団",
+  "page.node.table.header": "AVAX代表団（{count}）",
 
   "page.node.table.header.beneficiary.title": "受益者",
   "page.node.table.header.delegated.title": "委任",

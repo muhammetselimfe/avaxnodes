@@ -176,6 +176,24 @@ table.dataTable thead .sorting {
   box-sizing: border-box;
 }
 
+.leaflet-tooltip.map-tooltip {
+  background-color: #13131A;
+  border: 0px solid #13131A;
+}
+.leaflet-tooltip.map-tooltip .col-labels {
+  color: #919191;
+}
+.leaflet-tooltip.map-tooltip .col-values {
+  color: white;
+}
+
+.leaflet-tooltip.map-tooltip.leaflet-tooltip-left:before {
+  border-left-color: #13131A;
+}
+.leaflet-tooltip.map-tooltip.leaflet-tooltip-right:before {
+  border-right-color: #13131A;
+}
+
 .bg-light {
   padding: 9px 0px;
 }
@@ -381,4 +399,22 @@ body.mode-light {
 
 .mode-light .spinner {
   background: rgba(255, 255, 255, 0.8);
+}
+
+.mode-light .leaflet-tooltip.map-tooltip {
+  background-color: white;
+  border: 0px solid #13131A;
+}
+.mode-light .leaflet-tooltip.map-tooltip .col-labels {
+  color: #919191;
+}
+.mode-light .leaflet-tooltip.map-tooltip .col-values {
+  color: black;
+}
+
+.mode-light .leaflet-tooltip.map-tooltip.leaflet-tooltip-left:before {
+  border-left-color: white;
+}
+.mode-light .leaflet-tooltip.map-tooltip.leaflet-tooltip-right:before {
+  border-right-color: white;
 }

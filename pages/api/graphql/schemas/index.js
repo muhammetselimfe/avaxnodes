@@ -50,6 +50,10 @@ export const typeDefs = gql`
     grossRewards: Float
     netRewards: Float
     uptimePercent: String
+    version: String
+    publicIP: String
+    country: String
+    city: String
   }
 
   type Stats {

@@ -1,10 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import React from 'react'
+import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 
-export const Map = ({ position, popup }) => {
+export const Map = ({ position, item }) => {
   if (
     position &&
     position.length === 2 &&
@@ -13,6 +14,15 @@ export const Map = ({ position, popup }) => {
     position[0] !== null &&
     position[1] !== null
   ) {
+
+    const leafletRef = React.useRef();
+    React.useEffect(() => {
+      console.log(leafletRef.current)
+      if (leafletRef && leafletRef.current) {
+        leafletRef.current.openPopup();
+      }
+    }, [])
+
     return (
       <MapContainer
         center={position}
@@ -24,10 +34,24 @@ export const Map = ({ position, popup }) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={position}>
-          <Popup>
-            {popup}
-          </Popup>
+        <Marker ref={leafletRef} position={position}>
+          <Tooltip direction={'right'} permanent={true} interactive={true} className="map-tooltip">
+            <div className="row" style={{minWidth: '300px'}}>
+              <div className="col-5 text-right pr-1 col-labels font-weight-bold">
+                <div className="mb-1">IP</div>
+                <div className="mb-1">Location</div>
+                <div className="mb-1">Software version</div>
+                <div className="mb-1">Country</div>
+              </div>
+              <div className="col-7 text-left pl-1 col-values font-weight-bold">
+                <div className="mb-1">{`${item.publicIP}`.split(':')[0]}</div>
+                <div className="mb-1">{item.country}, {item.city}</div>
+                <div className="mb-1">{item.version}</div>
+                <div className="mb-1">{item.country}</div>
+                {/* <div className="text-right"><a href="https://test.com">Go to provider >></a></div> */}
+              </div>
+            </div>
+          </Tooltip>
         </Marker>
       </MapContainer>
     )
