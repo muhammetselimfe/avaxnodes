@@ -179,6 +179,7 @@ table.dataTable thead .sorting {
 .leaflet-tooltip.map-tooltip {
   background-color: #13131A;
   border: 0px solid #13131A;
+  font-size: 14px;
 }
 .leaflet-tooltip.map-tooltip .col-labels {
   color: #919191;

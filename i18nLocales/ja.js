@@ -88,4 +88,9 @@ module.exports = {
   "common.left.minutes": "残り分",
 
   "common.copied.to.clipboard": "クリップボードにコピー",
+
+  "map.tooltip.title.ip": "IP",
+  "map.tooltip.title.location": "ロケーション",
+  "map.tooltip.title.version": "ソフトウェアバージョン",
+  "map.tooltip.title.country": "国",
 }

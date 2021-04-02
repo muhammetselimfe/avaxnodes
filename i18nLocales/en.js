@@ -88,4 +88,9 @@ module.exports = {
   "common.left.minutes": "minutes left",
 
   "common.copied.to.clipboard": "Copied to clipboard",
+
+  "map.tooltip.title.ip": "IP",
+  "map.tooltip.title.location": "Location",
+  "map.tooltip.title.version": "Software version",
+  "map.tooltip.title.country": "Country",
 }

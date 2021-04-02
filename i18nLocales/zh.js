@@ -88,4 +88,9 @@ module.exports = {
   "common.left.minutes": "还剩分钟",
 
   "common.copied.to.clipboard": "复制到剪贴板",
+
+  "map.tooltip.title.ip": "知识产权",
+  "map.tooltip.title.location": "地点",
+  "map.tooltip.title.version": "软件版本",
+  "map.tooltip.title.country": "国家",
 }

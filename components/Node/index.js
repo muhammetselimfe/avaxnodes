@@ -125,9 +125,9 @@ export const Node = ({
   router,
   currentLocale,
 }) => {
-  const [page, setPage] = React.useState(+router.query.page || 1);
-  const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
-  const [sorting, setSorting] = React.useState(router.query.sorting || '-sorted-on');
+  const [page, setPage] = React.useState(+router.params.page || 1);
+  const [perPage, setPerPage] = React.useState(+router.params.perPage || 10);
+  const [sorting, setSorting] = React.useState(router.params.sorting || '-sorted-on');
 
   const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
 
@@ -139,8 +139,20 @@ export const Node = ({
     }
   }, [nodeIdCopiedToClipboard])
 
+  React.useEffect(() => {
+    if (!router.params.page || router.params.page === 'undefined') {
+      setPage(1)
+    }
+    if (!router.params.perPage || router.params.perPage === 'undefined') {
+      setPerPage(10)
+    }
+    if (!router.params.sorting || router.params.sorting === 'undefined') {
+      setSorting('-sorted-on')
+    }
+  }, [router.params])
+
   const filter = {
-    nodeID: router.query.id,
+    nodeID: router.params.id,
     page,
     perPage,
     sorting,
@@ -241,10 +253,10 @@ export const Node = ({
             <div className="row content-inner align-items-center">
               <div className=" col-9 col-md-8 col-sm-8 col-lg-10 col-xl-10">
                 <div className="Title">
-                  <span title={router.query.id} className="mr-3 d-xs-inline d-sm-inline d-md-inline d-lg-none d-xl-none">{shortNodeId(router.query.id)}</span>
-                  <span title={router.query.id} className="mr-3 d-none d-sm-none d-md-none d-lg-inline d-xl-inline">{router.query.id}</span>
+                  <span title={router.params.id} className="mr-3 d-xs-inline d-sm-inline d-md-inline d-lg-none d-xl-none">{shortNodeId(router.params.id)}</span>
+                  <span title={router.params.id} className="mr-3 d-none d-sm-none d-md-none d-lg-inline d-xl-inline">{router.params.id}</span>
                   <ReactClipboard
-                    text={router.query.id}
+                    text={router.params.id}
                     onSuccess={(e) => {
                       setNodeIdCopiedToClipboard(true)
                     }}

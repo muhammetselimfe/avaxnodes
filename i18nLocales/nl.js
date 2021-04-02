@@ -88,4 +88,9 @@ module.exports = {
   "common.left.minutes": "minuten over",
 
   "common.copied.to.clipboard": "Gekopieerd naar het klembord",
+
+  "map.tooltip.title.ip": "IK P",
+  "map.tooltip.title.location": "Plaats",
+  "map.tooltip.title.version": "Software versie",
+  "map.tooltip.title.country": "Land",
 }

@@ -88,4 +88,9 @@ module.exports = {
   "common.left.minutes": "분 남음",
 
   "common.copied.to.clipboard": "클립 보드에 복사 됨",
+
+  "map.tooltip.title.ip": "IP",
+  "map.tooltip.title.location": "위치",
+  "map.tooltip.title.version": "소프트웨어 버전",
+  "map.tooltip.title.country": "국가",
 }

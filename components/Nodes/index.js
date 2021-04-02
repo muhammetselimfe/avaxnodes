@@ -459,20 +459,38 @@ const NodeTableItem = ({ item, f, locale }) => {
 
 export const Nodes = ({ currentLocale, router }) => {
   const [filter, setFilter] = React.useState(
-    (!router.query.filter || router.query.filter === 'undefined')
+    (!router.params.filter || router.params.filter === 'undefined')
       ? ''
-      : router.query.filter
+      : router.params.filter
   );
-  const [page, setPage] = React.useState(+router.query.page || 1);
-  const [perPage, setPerPage] = React.useState(+router.query.perPage || 10);
-  const [sorting, setSorting] = React.useState(router.query.sorting || '-fee');
+  const [page, setPage] = React.useState(+router.params.page || 1);
+  const [perPage, setPerPage] = React.useState(+router.params.perPage || 10);
+  const [sorting, setSorting] = React.useState(router.params.sorting || '-fee');
   const [freeSpace, setFreeSpace] = React.useState((
-    !router.query.freeSpace || router.query.freeSpace === 'undefined')
+    !router.params.freeSpace || router.params.freeSpace === 'undefined')
     ? 0
-    : isNaN(new Number(router.query.freeSpace))
+    : isNaN(new Number(router.params.freeSpace))
       ? 0
-      : +router.query.freeSpace
+      : +router.params.freeSpace
   );
+
+  React.useEffect(() => {
+    if (!router.params.filter || router.params.filter === 'undefined') {
+      setFilter('')
+    }
+    if (!router.params.page || router.params.page === 'undefined') {
+      setPage(1)
+    }
+    if (!router.params.perPage || router.params.perPage === 'undefined') {
+      setPerPage(10)
+    }
+    if (!router.params.sorting || router.params.sorting === 'undefined') {
+      setSorting('-fee')
+    }
+    if (!router.params.freeSpace || router.params.freeSpace === 'undefined' || isNaN(new Number(router.params.freeSpace))) {
+      setFreeSpace(0)
+    }
+  }, [router.params])
 
   const { loading, error, data } = useQuery(GET_NODES, {
     variables: {

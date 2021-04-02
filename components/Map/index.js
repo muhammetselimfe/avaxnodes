@@ -1,5 +1,6 @@
 import React from 'react'
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet'
+import { useIntl } from "react-intl"
 
 import 'leaflet/dist/leaflet.css'
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -14,10 +15,11 @@ export const Map = ({ position, item }) => {
     position[0] !== null &&
     position[1] !== null
   ) {
+    const { formatMessage } = useIntl()
+    const f = (id, values = {}) => formatMessage({ id }, values)
 
     const leafletRef = React.useRef();
     React.useEffect(() => {
-      console.log(leafletRef.current)
       if (leafletRef && leafletRef.current) {
         leafletRef.current.openPopup();
       }
@@ -36,12 +38,12 @@ export const Map = ({ position, item }) => {
         />
         <Marker ref={leafletRef} position={position}>
           <Tooltip direction={'right'} permanent={true} interactive={true} className="map-tooltip">
-            <div className="row" style={{minWidth: '300px'}}>
+            <div className="row" style={{ minWidth: '350px' }}>
               <div className="col-5 text-right pr-1 col-labels font-weight-bold">
-                <div className="mb-1">IP</div>
-                <div className="mb-1">Location</div>
-                <div className="mb-1">Software version</div>
-                <div className="mb-1">Country</div>
+                <div className="mb-1">{f('map.tooltip.title.ip')}</div>
+                <div className="mb-1">{f('map.tooltip.title.location')}</div>
+                <div className="mb-1">{f('map.tooltip.title.version')}</div>
+                <div className="mb-1">{f('map.tooltip.title.country')}</div>
               </div>
               <div className="col-7 text-left pl-1 col-values font-weight-bold">
                 <div className="mb-1">{`${item.publicIP}`.split(':')[0]}</div>
