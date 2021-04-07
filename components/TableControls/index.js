@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import Routes, { Link, Router } from '../../routes'
 import pickParams from '../../utils/pickParams'
+import { defaultRouteParams } from '../../constants'
 
 const maxPagesToShow = 5
 
@@ -27,7 +28,7 @@ const TableControls = ({
 
   let startPage = page - Math.floor(maxPagesToShow / 2)
   if (startPage < 1) {
-    startPage = 1
+    startPage = defaultRouteParams.common.page
   }
   if (startPage > numberOfPages - maxPagesToShow && numberOfPages - maxPagesToShow > maxPagesToShow) {
     startPage = numberOfPages - maxPagesToShow
@@ -48,10 +49,14 @@ const TableControls = ({
               onChange={(event) => {
                 Router.pushRoute(
                   route,
-                  { ...pickParams(router.params || {}), page: undefined, perPage: parseInt(event.target.value, 10) || 10 },
+                  {
+                    ...pickParams(router.params || {}),
+                    page: undefined,
+                    perPage: parseInt(event.target.value, 10) || defaultRouteParams.common.perPage,
+                  },
                   locale
                 )
-                setPage(1)
+                setPage(defaultRouteParams.common.page)
                 setPerPage(parseInt(event.target.value, 10))
               }}
               value={perPage}

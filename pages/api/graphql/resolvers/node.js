@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import { defaultRouteParams } from '../../../../constants'
 import { getSortMethod } from '../../../../lib/getSortMethod'
 import { getPreparedValidators } from '../../../../lib/preparedValidators'
 
@@ -20,13 +21,13 @@ export default async (parent, args, context, info) => {
     const delegators = get(node, 'delegators.itemsAll') || []
 
     const sorting = !args.filter.sorting || !sortingMap[`${args.filter.sorting}`.substring(1)]
-      ? '-started-on'
+      ? defaultRouteParams.node.sorting
       : args.filter.sorting
 
     const sortedCurrentValidators = delegators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 
-    const page = Math.abs(args.filter.page) || 1
-    const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
+    const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
+    const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
 
     return {
       ...node,

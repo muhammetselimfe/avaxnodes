@@ -19,6 +19,7 @@ import SortingIcon from '../SortingIcon'
 import Spinner from '../Spinner'
 import { prepareNewSorting } from '../../lib/prepareNewSorting';
 import pickParams from '../../utils/pickParams';
+import { defaultRouteParams } from '../../constants';
 
 
 export const GET_NODE = gql`
@@ -125,9 +126,9 @@ export const Node = ({
   router,
   currentLocale,
 }) => {
-  const [page, setPage] = React.useState(+router.params.page || 1);
-  const [perPage, setPerPage] = React.useState(+router.params.perPage || 10);
-  const [sorting, setSorting] = React.useState(router.params.sorting || '-sorted-on');
+  const [page, setPage] = React.useState(+router.params.page || defaultRouteParams.common.page);
+  const [perPage, setPerPage] = React.useState(+router.params.perPage || defaultRouteParams.common.perPage);
+  const [sorting, setSorting] = React.useState(router.params.sorting || defaultRouteParams.node.sorting);
 
   const [nodeIdCopiedToClipboard, setNodeIdCopiedToClipboard] = React.useState(false);
 
@@ -141,13 +142,13 @@ export const Node = ({
 
   React.useEffect(() => {
     if (!router.params.page || router.params.page === 'undefined') {
-      setPage(1)
+      setPage(defaultRouteParams.common.page)
     }
     if (!router.params.perPage || router.params.perPage === 'undefined') {
-      setPerPage(10)
+      setPerPage(defaultRouteParams.common.perPage)
     }
     if (!router.params.sorting || router.params.sorting === 'undefined') {
-      setSorting('-sorted-on')
+      setSorting(defaultRouteParams.node.sorting)
     }
   }, [router.params])
 
@@ -207,9 +208,9 @@ export const Node = ({
                 <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
                   <a
                     onClick={() => {
-                      setPage(1)
-                      setPerPage(10)
-                      setSorting('-sorted-on')
+                      setPage(defaultRouteParams.common.page)
+                      setPerPage(defaultRouteParams.common.perPage)
+                      setSorting(defaultRouteParams.node.sorting)
                     }}
                   >
                     <img src="/static/images/home.svg" className="home-image" />
@@ -220,9 +221,9 @@ export const Node = ({
                   <a
                     className="nodes"
                     onClick={() => {
-                      setPage(1)
-                      setPerPage(10)
-                      setSorting('-sorted-on')
+                      setPage(defaultRouteParams.common.page)
+                      setPerPage(defaultRouteParams.common.perPage)
+                      setSorting(defaultRouteParams.node.sorting)
                     }}
                   >
                     {f('page.nodes.header')}
@@ -233,9 +234,9 @@ export const Node = ({
                   <a
                     className="nodes"
                     onClick={() => {
-                      setPage(1)
-                      setPerPage(10)
-                      setSorting('-sorted-on')
+                      setPage(defaultRouteParams.common.page)
+                      setPerPage(defaultRouteParams.common.perPage)
+                      setSorting(defaultRouteParams.node.sorting)
                     }}
                   >
                     {f('page.node.header')}

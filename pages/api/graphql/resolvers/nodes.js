@@ -1,3 +1,4 @@
+import { defaultRouteParams } from '../../../../constants'
 import { getSortMethod } from '../../../../lib/getSortMethod'
 import { getPreparedValidators } from '../../../../lib/preparedValidators'
 
@@ -15,8 +16,8 @@ const sortingMap = {
 
 export default async (parent, args, context, info) => {
   try {
-    const page = Math.abs(args.filter.page) || 1
-    const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100)
+    const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
+    const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
 
     const preparedValidators = await getPreparedValidators()
 
@@ -33,7 +34,7 @@ export default async (parent, args, context, info) => {
 
     const count = currentValidators.length
     const sorting = !args.filter.sorting || !sortingMap[`${args.filter.sorting}`.substring(1)]
-      ? '-fee'
+      ? defaultRouteParams.home.sorting
       : args.filter.sorting
 
     const sortedCurrentValidators = currentValidators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))

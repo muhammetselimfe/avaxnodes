@@ -17,6 +17,7 @@ import SortingIcon from '../SortingIcon'
 import Spinner from '../Spinner'
 import pickParams from '../../utils/pickParams';
 import { prepareNewSorting } from '../../lib/prepareNewSorting';
+import { defaultRouteParams } from '../../constants';
 
 export const GET_NODES = gql`
   query GetNodes ($filter: NodesFilter!) {
@@ -197,13 +198,13 @@ const Filters = ({
         route,
         pickParams({
           ...pickParams(router.params || {}),
-          page: 1,
-          filter: value === '' ? undefined : value
+          page: defaultRouteParams.common.page,
+          filter: value === defaultRouteParams.home.filter ? undefined : value
         }),
         locale
       )
       setFilter(value)
-      setPage(1)
+      setPage(defaultRouteParams.common.page)
     }, 500),
 		[], // will be created only once initially
 	);
@@ -328,7 +329,7 @@ const Filters = ({
                           aria-selected="true"
                           onClick={() => {
                             setFreeSpace(option.value)
-                            setPage(1)
+                            setPage(defaultRouteParams.common.page)
                             setSelectFilterOptionsOpen(!selectFilterOptionsOpen)
                           }}
                         >
@@ -460,35 +461,35 @@ const NodeTableItem = ({ item, f, locale }) => {
 export const Nodes = ({ currentLocale, router }) => {
   const [filter, setFilter] = React.useState(
     (!router.params.filter || router.params.filter === 'undefined')
-      ? ''
+      ? defaultRouteParams.home.filter
       : router.params.filter
   );
-  const [page, setPage] = React.useState(+router.params.page || 1);
-  const [perPage, setPerPage] = React.useState(+router.params.perPage || 10);
-  const [sorting, setSorting] = React.useState(router.params.sorting || '-fee');
+  const [page, setPage] = React.useState(+router.params.page || defaultRouteParams.common.page);
+  const [perPage, setPerPage] = React.useState(+router.params.perPage || defaultRouteParams.common.perPage);
+  const [sorting, setSorting] = React.useState(router.params.sorting || defaultRouteParams.home.sorting);
   const [freeSpace, setFreeSpace] = React.useState((
     !router.params.freeSpace || router.params.freeSpace === 'undefined')
-    ? 0
+    ? defaultRouteParams.home.freeSpace
     : isNaN(new Number(router.params.freeSpace))
-      ? 0
+      ? defaultRouteParams.home.freeSpace
       : +router.params.freeSpace
   );
 
   React.useEffect(() => {
     if (!router.params.filter || router.params.filter === 'undefined') {
-      setFilter('')
+      setFilter(defaultRouteParams.home.filter)
     }
     if (!router.params.page || router.params.page === 'undefined') {
-      setPage(1)
+      setPage(defaultRouteParams.common.page)
     }
     if (!router.params.perPage || router.params.perPage === 'undefined') {
-      setPerPage(10)
+      setPerPage(defaultRouteParams.common.perPage)
     }
     if (!router.params.sorting || router.params.sorting === 'undefined') {
-      setSorting('-fee')
+      setSorting(defaultRouteParams.home.sorting)
     }
     if (!router.params.freeSpace || router.params.freeSpace === 'undefined' || isNaN(new Number(router.params.freeSpace))) {
-      setFreeSpace(0)
+      setFreeSpace(defaultRouteParams.home.freeSpace)
     }
   }, [router.params])
 
@@ -522,11 +523,11 @@ export const Nodes = ({ currentLocale, router }) => {
                 <Link href={`home`} locale={locale} params={{ /*page: 1, perPage: 10, sorting: '-fee'*/ }}>
                   <a
                     onClick={() => {
-                      setPage(1)
-                      setPerPage(10)
-                      setSorting('-fee')
-                      setFreeSpace(0)
-                      setFilter('')
+                      setPage(defaultRouteParams.common.page)
+                      setPerPage(defaultRouteParams.common.perPage)
+                      setSorting(defaultRouteParams.home.sorting)
+                      setFreeSpace(defaultRouteParams.home.freeSpace)
+                      setFilter(defaultRouteParams.home.filter)
                     }}
                   >
                     <img src="/static/images/home.svg" className="home-image" />
@@ -537,11 +538,11 @@ export const Nodes = ({ currentLocale, router }) => {
                   <a
                     className="nodes"
                     onClick={() => {
-                      setPage(1)
-                      setPerPage(10)
-                      setSorting('-fee')
-                      setFreeSpace(0)
-                      setFilter('')
+                      setPage(defaultRouteParams.common.page)
+                      setPerPage(defaultRouteParams.common.perPage)
+                      setSorting(defaultRouteParams.home.sorting)
+                      setFreeSpace(defaultRouteParams.home.freeSpace)
+                      setFilter(defaultRouteParams.home.filter)
                     }}
                   >
                     {f('page.nodes.header')}

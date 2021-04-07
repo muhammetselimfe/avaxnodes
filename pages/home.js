@@ -11,6 +11,7 @@ import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
 import pickParams from '../utils/pickParams';
+import { defaultRouteParams } from '../constants';
 
 export default function Home(props) {
   const defaultRouter = useRouter()
@@ -105,11 +106,11 @@ export const getServerSideProps = async (ctx) => {
       query: GET_NODES,
       variables: {
         filter: pickParams({
-          filter: get(router, 'params.filter') || '',
-          freeSpace: +get(router, 'params.freeSpace') || 0,
-          page: +get(router, 'params.page') || 1,
-          perPage: +get(router, 'params.perPage') || 10,
-          sorting: get(router, 'params.sorting') || '-fee',
+          filter: get(router, 'params.filter') || defaultRouteParams.home.filter,
+          freeSpace: +get(router, 'params.freeSpace') || defaultRouteParams.home.freeSpace,
+          page: +get(router, 'params.page') || defaultRouteParams.common.page,
+          perPage: +get(router, 'params.perPage') || defaultRouteParams.common.perPage,
+          sorting: get(router, 'params.sorting') || defaultRouteParams.home.sorting,
         })
       },
     })
