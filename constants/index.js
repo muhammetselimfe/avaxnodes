@@ -6,7 +6,7 @@ module.exports = {
     },
     home: {
       filter: '',
-      sorting: '-fee',
+      sorting: '-max-yield',
       freeSpace: 0,
     },
     node: {
