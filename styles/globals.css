@@ -195,6 +195,10 @@ table.dataTable thead .sorting {
   border-right-color: #13131A;
 }
 
+.right-text1 {
+  padding: .375rem .75rem;
+}
+
 .bg-light {
   padding: 9px 0px;
 }
@@ -418,4 +422,21 @@ body.mode-light {
 }
 .mode-light .leaflet-tooltip.map-tooltip.leaflet-tooltip-right:before {
   border-right-color: white;
+}
+
+.mode-light .users_wrapper {
+  background-color: #F5F9FA;
+}
+
+.mode-light .user-text-wrap h6,
+.mode-light .user-inner-wrap h3,
+.mode-light .user-bottom-wrap h6,
+.mode-light .tel-text-wrap h6,
+.mode-light .feature-inner h2,
+.mode-light .card-feature .card-body h5 {
+  color: #1C1C24;
+}
+
+.mode-light .card-feature {
+  background-color: #F5F9FA;
 }

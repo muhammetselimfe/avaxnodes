@@ -1,18 +1,28 @@
 import Head from 'next/head'
+import Routes from '../routes';
 
+import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
+import get from 'lodash/get'
 
 import Notifier from '../components/Notifier';
 import Layout from '../components/Layout';
 import { defaultLocale, locales } from '../locales'
+import { initializeApollo, addApolloState } from '../lib/apolloClient'
+import pickParams from '../utils/pickParams';
 
 import styles from '../styles/Home.module.css'
 
 export default function Home(props) {
-  const router = useRouter()
+  const defaultRouter = useRouter()
+  const router = Routes.match(defaultRouter.asPath)
 
-  const currentLocale = ((router || {}).query || {}).locale || defaultLocale
-  const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
+  const currentLocale = get(router, 'route.locale') || get(defaultRouter, 'locale', defaultLocale) || defaultLocale
+
+  const currentRoute = get(router, 'query.nextRoute', 'notifier')
+
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
 
   return (
     <div className={styles.container}>
