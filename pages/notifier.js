@@ -5,7 +5,7 @@ import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
 import get from 'lodash/get'
 
-import Notifier from '../components/Notifier';
+import Notifier, { GET_NOTIFIER_STATS } from '../components/Notifier';
 import Layout from '../components/Layout';
 import { defaultLocale, locales } from '../locales'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
@@ -52,3 +52,35 @@ export default function Home(props) {
     </div>
   )
 }
+
+export const getServerSideProps = async (ctx) => {
+  const params = new URLSearchParams(`${ctx.resolvedUrl}`.split('?')[1] || '');
+  const currentLocale = ctx.locale || defaultLocale
+
+  const router = Routes.match(ctx.resolvedUrl)
+
+  if (!router || (router && !router.route)) {
+    return {
+      props: {
+        currentLocale
+      }
+    }
+  }
+
+  const apolloClient = initializeApollo()
+
+  try {
+    await apolloClient.query({
+      query: GET_NOTIFIER_STATS,
+    })
+  } catch (e) {
+    console.log(e.networkError)
+  }
+
+
+  return addApolloState(apolloClient, {
+    props: {
+      currentLocale
+    },
+  })
+};

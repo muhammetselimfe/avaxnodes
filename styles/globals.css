@@ -198,6 +198,10 @@ table.dataTable thead .sorting {
 .right-text1 {
   padding: .375rem .75rem;
 }
+.right-text1,
+.avax-col-notify {
+  max-width: 260px;
+}
 
 .bg-light {
   padding: 9px 0px;

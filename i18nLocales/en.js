@@ -93,4 +93,38 @@ module.exports = {
   "map.tooltip.title.location": "Location",
   "map.tooltip.title.version": "Software version",
   "map.tooltip.title.country": "Country",
+
+  "notifier.bot.start.button.text": "Start AVAX notifier bot",
+
+  "notifier.features.title": "Cool features!",
+  "notifier.features.0.title": "Awesome feature 1",
+  "notifier.features.0.description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "notifier.features.1.title": "Awesome feature 2",
+  "notifier.features.1.description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "notifier.features.2.title": "Awesome feature 3",
+  "notifier.features.2.description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+
+  "notifier.stats.users.prefix": "Trusted by",
+  "notifier.stats.users.suffix": "Registered Users",
+  "notifier.stats.users.value": "{value} Million",
+  "notifier.stats.total.prefix": "Tracking",
+  "notifier.stats.total.suffix": "Worth of AVAX",
+
+  "notifier.logo.title": "AVAX NOTIFIER",
+  "notifier.logo.description": "Telegram Bot for Avalanche Blockchain",
+
+  "notifier.features.list.0.text": "Unlimited number of addresses and notifications",
+  "notifier.features.list.1.text": "Balance in AVAX, BTC and USD",
+  "notifier.features.list.2.text": "Transactions notifications withthreshold settings",
+  "notifier.features.list.3.text": "Node rewards and cycle performance notifications",
+  "notifier.features.list.4.text": "New origination and delegation notifications",
+  "notifier.features.list.5.text": "Notifications about missing baking and endorsing blocks",
+  "notifier.features.list.6.text": "Whale transactions notifications",
+  "notifier.features.list.7.text": "Automatic public known addresses recognition",
+  "notifier.features.list.others": "... and many other",
+
+  "notifier.what.can.do.title": "What does this bot do?",
+  "notifier.what.can.do.description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut eiusmod tempor incididunt ut labore et",
+  "notifier.where.avax.read.title": "Where can I read more about AVAX?",
+  "notifier.where.avax.read.description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut eiusmod tempor incididunt ut labore et",
 }

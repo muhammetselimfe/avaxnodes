@@ -65,6 +65,11 @@ export const typeDefs = gql`
     totalParticipation: Float
   }
 
+  type NotifierStats {
+    users: Int
+    total: Int
+  }
+
   input NodesFilter {
     filter: String
     freeSpace: Int
@@ -94,6 +99,7 @@ export const typeDefs = gql`
 
   type Query {
     stats: Stats!
+    notifierStats: NotifierStats!
     nodes(filter: NodesFilter!): NodesResponse!
     node(filter: NodeFilter!): Node!
   }`
