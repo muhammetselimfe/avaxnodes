@@ -4,13 +4,14 @@ import { FaCircle } from "react-icons/fa";
 import moment from 'moment'
 import { useDarkMode } from 'next-dark-mode'
 import { useIntl } from "react-intl"
-import Flag from 'react-world-flags'
 import ReactClipboard from 'react-clipboardjs-copy'
 import debounce from 'lodash/debounce'
 
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
+// import Flag from '../Flag'
+import Flag from 'react-world-flags'
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
 import SortingIcon from '../SortingIcon'

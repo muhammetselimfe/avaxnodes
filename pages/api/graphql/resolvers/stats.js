@@ -1,30 +1,24 @@
-import {
-  getAllValidators,
-  getCurrentSupply,
-  getLastBlockHeight,
-  getTotalStake,
-  getTransactionsCount,
-} from "../../../../lib/api"
+import Stats from '../../../../models/stats'
+
+import dbConnect from '../../../../lib/dbConnect'
 
 export default async (parent, args, context, info) => {
+  await dbConnect()
+
   try {
-    const validators = await getAllValidators()
-    const totalDelegations = validators
-      .map(item => (item.delegators || []).length)
-      .reduce((result, current) => result + current, 0)
-    const totalBlocks = await getLastBlockHeight()
-    const currentSupply = await getCurrentSupply()
-    const totalStake = await getTotalStake()
-    const transactionsCount = await getTransactionsCount()
-    const totalParticipation = ((totalStake / 1000000000) / (currentSupply / 1000000000)) * 100
+    let stats = await Stats.findOne({ key: 'stats'})
+
+    if (!stats) {
+      stats = {}
+    }
 
     return {
-      totalNodes: validators.length,
-      totalTransactions: transactionsCount,
-      totalProviders: 0,
-      totalDelegations,
-      totalBlocks,
-      totalParticipation,
+      totalNodes: stats.totalNodes,
+      totalTransactions: stats.totalTransactions,
+      totalProviders: stats.totalProviders,
+      totalDelegations: stats.totalDelegations,
+      totalBlocks: stats.totalBlocks,
+      totalParticipation: stats.totalParticipation,
     }
   } catch (error) {
     console.log('!!!!!!!!!!!', error)

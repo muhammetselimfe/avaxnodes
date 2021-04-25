@@ -7,14 +7,8 @@ export const typeDefs = gql`
     startTime: Float
     endTime: Float
     stakeAmount: Float
-    rewardOwner: RewardOwner
+    rewardOwner: String
     potentialReward: Float
-  }
-
-  type RewardOwner {
-    locktime: Float
-    threshold: String
-    addresses: [String]
   }
 
   type Delegators {
@@ -30,7 +24,7 @@ export const typeDefs = gql`
     endTime: Float
     stakeAmount: Float
     potentialReward: Float
-    rewardOwner: RewardOwner
+    rewardOwner: String
     delegators: Delegators
     isPartner: Boolean
     isSponsored: Boolean

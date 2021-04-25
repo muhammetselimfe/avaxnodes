@@ -1,10 +1,13 @@
 import { defaultRouteParams } from '../../../../constants'
 import { getSortMethod } from '../../../../lib/getSortMethod'
-import { getPreparedValidators } from '../../../../lib/preparedValidators'
+// import { getPreparedValidators } from '../../../../lib/preparedValidators'
+import Node from '../../../../models/node'
+import dbConnect from '../../../../lib/dbConnect'
+
 
 const sortingMap = {
   fee: 'delegationFee',
-  delegators: 'delegators.pagination.count',
+  delegators: 'delegatorsCount',
   ['max-yield']: 'maxYield',
   ['total-stake']: 'totalStacked',
   ['free-space']: 'leftToStack',
@@ -15,24 +18,29 @@ const sortingMap = {
 }
 
 export default async (parent, args, context, info) => {
+  await dbConnect()
+
   try {
     const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
 
-    const preparedValidators = await getPreparedValidators()
+    // const preparedValidators = await getPreparedValidators()
 
-    let currentValidators = preparedValidators
+    // let currentValidators = preparedValidators
+    const filter = {}
     if (args.filter.filter) {
-      currentValidators = currentValidators.filter(item => item.nodeID.includes(args.filter.filter))
+      // currentValidators = currentValidators.filter(item => item.nodeID.includes(args.filter.filter))
+      filter["_id"] = { "$regex": "Alex", "$options": "i" }
     }
     if (args.filter.freeSpace) {
-      currentValidators = currentValidators
-        .filter(item => {
-          return item.leftToStackPercent > parseFloat(args.filter.freeSpace)
-        })
+      // currentValidators = currentValidators
+      //   .filter(item => {
+      //     return item.leftToStackPercent > parseFloat(args.filter.freeSpace)
+      //   })
+      filter["leftToStackPercent"] = { "$gt": parseFloat(args.filter.freeSpace) }
     }
 
-    const count = currentValidators.length
+    // const count = currentValidators.length
     const checkSorting = `${args.filter.sorting}`
       .split(',')
       .filter((item) => !!sortingMap[`${item}`.substring(1)])
@@ -41,12 +49,34 @@ export default async (parent, args, context, info) => {
       ? defaultRouteParams.home.sorting
       : args.filter.sorting
 
-    const sortedCurrentValidators = currentValidators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
+    // const sortedCurrentValidators = currentValidators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 
-    const currentValidatorsPageItems = sortedCurrentValidators.slice((page - 1) * perPage, page * perPage)
+    // const currentValidatorsPageItems = sortedCurrentValidators.slice((page - 1) * perPage, page * perPage)
+
+    // const filter = { "_id": { "$regex": "Alex", "$options": "i" } }
+
+    const count = await Node
+      .countDocuments(filter)
+      .exec()
+    const items = await Node
+      .find(filter)
+      .sort(`${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, ''))
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .lean()
+      .exec()
 
     return {
-      items: currentValidatorsPageItems,
+      items: items.map(i => ({
+        ...i,
+        nodeID: i._id,
+        delegators: {
+          pagination: {
+            count: i.delegatorsCount,
+          },
+          totalStaked: i.delegatorsTotalStake,
+        }
+      })),
       pagination: {
         page,
         perPage,

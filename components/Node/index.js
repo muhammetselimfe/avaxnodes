@@ -28,9 +28,7 @@ export const GET_NODE = gql`
       nodeID
       stakeAmount
       potentialReward
-      rewardOwner {
-        addresses
-      }
+      rewardOwner
       isPartner
       isSponsored
       delegationFee
@@ -39,9 +37,7 @@ export const GET_NODE = gql`
       endTime
       delegators {
         items {
-          rewardOwner {
-            addresses
-          }
+          rewardOwner
           stakeAmount
           potentialReward
           startTime
@@ -91,9 +87,9 @@ const DelegatorItem = ({ item, f }) => {
   return (
     <tr>
       <td style={{ position: 'relative' }}>
-        <span id="code1" title={item.rewardOwner.addresses[0]}>{shortNodeId(item.rewardOwner.addresses[0])}</span>
+        <span id="code1" title={item.rewardOwner}>{shortNodeId(item.rewardOwner)}</span>
         <ReactClipboard
-          text={item.rewardOwner.addresses[0]}
+          text={item.rewardOwner}
           onSuccess={(e) => {
             setNodeIdCopiedToClipboard(true)
           }}
@@ -348,7 +344,7 @@ export const Node = ({
                 <div className="card-content">
                   <span>{f('page.node.info.subtitle.address')}</span>
                   <p className="subtext">
-                    {item && item.rewardOwner && item.rewardOwner.addresses && item.rewardOwner.addresses[0]}
+                    {item && item.rewardOwner}
                   </p>
                 </div>
               </div>
@@ -595,7 +591,7 @@ export const Node = ({
                       {item && item.delegators && item.delegators.items && item.delegators.items.map((item, index) => {
                         return (
                           <DelegatorItem
-                            key={`${item.rewardOwner.addresses[0]}-${index}`}
+                            key={`${item.rewardOwner}-${index}`}
                             index={index}
                             item={item}
                             f={f}

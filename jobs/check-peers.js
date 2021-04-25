@@ -25,7 +25,7 @@ const getPeers = async () => {
   return allItems
 }
 
-const debug = require('debug')('app:jobs:send-tweet')
+const debug = require('debug')('app:jobs:check-peers')
 
 const handler = agenda => async job => {
   debug()

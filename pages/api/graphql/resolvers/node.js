@@ -2,9 +2,13 @@ import get from 'lodash/get'
 import { defaultRouteParams } from '../../../../constants'
 import { getSortMethod } from '../../../../lib/getSortMethod'
 import { getPreparedValidators } from '../../../../lib/preparedValidators'
+import dbConnect from '../../../../lib/dbConnect'
+
+import Node from '../../../../models/node'
+import Delegator from '../../../../models/delegator'
 
 const sortingMap = {
-  address: 'rewardOwner.addresses[0]',
+  address: 'rewardOwner',
   delegated: 'stakeAmount',
   reward: 'potentialReward',
   ['started-on']: 'startTime',
@@ -12,33 +16,49 @@ const sortingMap = {
 }
 
 export default async (parent, args, context, info) => {
+  await dbConnect()
+
   try {
-    const validators = await getPreparedValidators()
+    // const validators = await getPreparedValidators()
 
-    const node = validators
-      .find(item => item.nodeID === args.filter.nodeID)
+    // const node = validators
+    //   .find(item => item.nodeID === args.filter.nodeID)
 
-    const delegators = get(node, 'delegators.itemsAll') || []
+    const node = await Node.findOne({ _id: args.filter.nodeID })
+      .lean()
+      .exec()
+
+    // const delegators = get(node, 'delegators.itemsAll') || []
 
     const sorting = !args.filter.sorting || !sortingMap[`${args.filter.sorting}`.substring(1)]
       ? defaultRouteParams.node.sorting
       : args.filter.sorting
 
-    const sortedCurrentValidators = delegators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
+    // const sortedCurrentValidators = delegators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 
     const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
+
+    const delegators = await Delegator.find({ nodeID: args.filter.nodeID })
+      .sort(`${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, ''))
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .lean()
+      .exec()
 
     return {
       ...node,
       delegators: {
         ...node.delegators,
-        items: sortedCurrentValidators.slice((page - 1) * perPage, page * perPage),
+        // items: sortedCurrentValidators.slice((page - 1) * perPage, page * perPage),
+        items: delegators,
         pagination: {
-          ...node.delegators.pagination,
+          // ...node.delegators.pagination,
+          count: node.delegatorsCount,
           page,
           perPage,
         },
+        totalStaked: node.delegatorsTotalStake,
       },
     };
   } catch (error) {

@@ -9,7 +9,7 @@ const getIpInfo = async (ip) => {
   return result
 }
 
-const debug = require('debug')('app:jobs:send-tweet')
+const debug = require('debug')('app:jobs:check-peer-ips')
 
 const handler = async job => {
   debug()
