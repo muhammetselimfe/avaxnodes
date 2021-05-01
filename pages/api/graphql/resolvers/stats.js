@@ -7,6 +7,8 @@ export default async (parent, args, context, info) => {
 
   try {
     let stats = await Stats.findOne({ key: 'stats'})
+      .lean()
+      .exec()
 
     if (!stats) {
       stats = {}

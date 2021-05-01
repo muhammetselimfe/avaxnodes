@@ -13,6 +13,6 @@ const statsSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Stats = mongoose.models.Peer || mongoose.model('Stats', statsSchema)
+const Stats = mongoose.models.Stats || mongoose.model('Stats', statsSchema)
 
 module.exports = Stats

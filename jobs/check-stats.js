@@ -1,7 +1,8 @@
 const Stats = require('../models/stats')
+const Node = require('../models/node')
+const Delegator = require('../models/delegator')
 
 const {
-  getAllValidators,
   getCurrentSupply,
   getLastBlockHeight,
   getTotalStake,
@@ -13,16 +14,33 @@ const debug = require('debug')('app:jobs:check-stats')
 const handler = agenda => async job => {
   debug()
 
-  let validators = []
-  try {
-    validators = await getAllValidators()
-  } catch (e) {
-    debug(e)
+  // let preparedValidators = []
+  // try {
+  //   preparedValidators = await getPreparedValidators()
+  // } catch (e) {
+  //   debug(e)
+  // }
+
+  const filter = {
+    endTime: { "$gt": parseInt(Date.now() / 1000, 10) }
   }
 
-  const totalDelegations = validators
-    .map(item => (item.delegators || []).length)
-    .reduce((result, current) => result + current, 0)
+  const totalNodes = await Node
+    .countDocuments(filter)
+    .exec()
+
+  const totalDelegationsDoc = await Node
+    .aggregate([
+      { $match: filter },
+      { $group: { _id: null, delegatorsCount: { $sum: "$delegatorsCount" } } }
+    ])
+    .exec()
+
+  debug(totalNodes, totalDelegationsDoc)
+
+  // const totalDelegations = preparedValidators
+  //   .map(item => (item.delegators || []).length)
+  //   .reduce((result, current) => result + current, 0)
 
   let totalBlocks = 0
   try {
@@ -58,10 +76,10 @@ const handler = agenda => async job => {
     await Stats.findOneAndUpdate(
       { key: 'stats' },
       {
-        totalNodes: validators.length,
+        totalNodes: totalNodes,
         totalTransactions: transactionsCount,
         totalProviders: 0,
-        totalDelegations: totalDelegations,
+        totalDelegations: totalDelegationsDoc[0].delegatorsCount,
         totalBlocks: totalBlocks,
         totalParticipation: totalParticipation,
       },
