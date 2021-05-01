@@ -70,11 +70,11 @@ const handler = agenda => async job => {
           },
           {
             nodeID: delegator.nodeID,
+            rewardOwner: delegator.rewardOwner.addresses[0],
             txID: delegator.txID,
             startTime: delegator.startTime,
             endTime: delegator.endTime,
             stakeAmount: delegator.stakeAmount,
-            rewardOwner: validator.rewardOwner.addresses[0],
             potentialReward: delegator.potentialReward,
           },
           { upsert: true }
