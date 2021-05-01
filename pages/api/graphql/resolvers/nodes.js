@@ -13,7 +13,7 @@ const sortingMap = {
   ['free-space']: 'leftToStack',
   ['started-on']: 'startTime',
   ['time-left']: 'endTime',
-  ['node-id']: 'nodeID',
+  ['node-id']: '_id',
   ['country']: 'country_code',
 }
 
@@ -63,6 +63,8 @@ export default async (parent, args, context, info) => {
         : sortingMap[item]
       return result
     }).join(' ')
+
+    console.log(sorting, preparedSorting)
 
     const count = await Node
       .countDocuments(filter)

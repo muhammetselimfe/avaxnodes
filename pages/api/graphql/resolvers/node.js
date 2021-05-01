@@ -30,8 +30,12 @@ export default async (parent, args, context, info) => {
 
     // const delegators = get(node, 'delegators.itemsAll') || []
 
-    const sorting = !args.filter.sorting || !sortingMap[`${args.filter.sorting}`.substring(1)]
-      ? defaultRouteParams.node.sorting
+    const checkSorting = `${args.filter.sorting}`
+      .split(',')
+      .filter((item) => !!sortingMap[`${item}`.substring(1)])
+      .reduce((result, current) => result && current, true)
+    const sorting = !args.filter.sorting || !checkSorting
+      ? defaultRouteParams.home.sorting
       : args.filter.sorting
 
     const preparedSorting = `${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, '').split(' ').map(item => {
@@ -40,6 +44,8 @@ export default async (parent, args, context, info) => {
         : sortingMap[item]
       return result
     }).join(' ')
+
+    console.log(sorting, preparedSorting)
 
     // const sortedCurrentValidators = delegators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 

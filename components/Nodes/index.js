@@ -788,7 +788,7 @@ export const Nodes = ({ currentLocale, router }) => {
                       {data && data.nodes && data.nodes.items && data.nodes.items.map((item, index) => {
                         return (
                           <NodeTableItem
-                            key={`${item.nodeID}- ${index}`}
+                            key={`${item.nodeID}-${index}`}
                             item={item}
                             index={index}
                             f={f}
