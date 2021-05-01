@@ -10,7 +10,7 @@ module.exports = {
       freeSpace: 0,
     },
     node: {
-      sorting: '-sorted-on',
+      sorting: '-started-on',
     }
   }
 }

@@ -27,10 +27,12 @@ export default async (parent, args, context, info) => {
     // const preparedValidators = await getPreparedValidators()
 
     // let currentValidators = preparedValidators
-    const filter = {}
+    const filter = {
+      endTime: { "$gt": parseInt(Date.now() / 1000, 10) }
+    }
     if (args.filter.filter) {
       // currentValidators = currentValidators.filter(item => item.nodeID.includes(args.filter.filter))
-      filter["_id"] = { "$regex": "Alex", "$options": "i" }
+      filter["_id"] = { "$regex": args.filter.filter, "$options": "i" }
     }
     if (args.filter.freeSpace) {
       // currentValidators = currentValidators
@@ -55,12 +57,19 @@ export default async (parent, args, context, info) => {
 
     // const filter = { "_id": { "$regex": "Alex", "$options": "i" } }
 
+    const preparedSorting = `${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, '').split(' ').map(item => {
+      const result = item[0] === '-'
+        ? `-${sortingMap[`${item}`.substring(1)]}`
+        : sortingMap[item]
+      return result
+    }).join(' ')
+
     const count = await Node
       .countDocuments(filter)
       .exec()
     const items = await Node
       .find(filter)
-      .sort(`${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, ''))
+      .sort(preparedSorting)
       .skip((page - 1) * perPage)
       .limit(perPage)
       .lean()

@@ -17,6 +17,7 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+
 @media (min-width: 1200px) {
   .container{
     max-width: 1370px;
@@ -1557,7 +1558,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
   float: left;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-left: 30px;
 }
 /***Tab section css*********/
@@ -2634,10 +2635,8 @@ a {
 }
 
 .tel-text-wrap {
-  margin-top: 27px;
+  margin-top: 32px;
 }
-
-
 
 .mobaile-wrap ul li:before {
   content: "";
@@ -2711,7 +2710,7 @@ a {
 }
 .tel-text-wrap h6{
   color: #FFFFFF;
-  font-family: Staatliches;
+  font-family: 'Staatliches', cursive;
   font-size: 40px;
   letter-spacing: -0.17px;
   line-height: 48px;
@@ -2968,7 +2967,7 @@ a:hover {
 .user-text-wrap h6 {
   color: #FFFFFF;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.07px;
   line-height: 24px;
   text-align: left;
@@ -2986,7 +2985,7 @@ a:hover {
 .user-bottom-wrap h6 {
   color: #FFFFFF;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.07px;
   line-height: 24px;
   text-align: left;
@@ -3127,11 +3126,18 @@ div#avax-inner-flex1{
   background:  #E84142;
   width:100%;
   font-size: 30px;
-  max-width: 288px;
+  max-width: 280px;
   padding: 15px;
   height: 55px;
   color: #ffff;
   text-align: center;
+}
+div#avax-inner-flex1 h6{
+  font-family: 'Staatliches', cursive;
+  transform: skew(15deg);
+  font-size: 30px;
+  letter-spacing: -0.13px;
+  line-height: 28px;
 }
 div#avax-inner-flex2{
   background:  #E84142;
@@ -3371,7 +3377,7 @@ div#avax-inner-flex1 {
 }
 
 .ul-list-wrap {
-  padding-left: 30px !important;
+  padding-left: 10px !important;
 }
 
 .tel-inner-wrap {
@@ -3413,7 +3419,10 @@ div#avax-inner-flex1 {
     margin-top: 16px;
     display: block !important;
   }
-
+  div#avax-inner-flex1 h6 {
+    font-size: 27px;
+    line-height: 24px;
+}
   .table-responsive-md > .table-bordered {
     border: 0;
   }

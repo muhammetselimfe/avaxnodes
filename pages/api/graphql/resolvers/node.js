@@ -34,13 +34,20 @@ export default async (parent, args, context, info) => {
       ? defaultRouteParams.node.sorting
       : args.filter.sorting
 
+    const preparedSorting = `${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, '').split(' ').map(item => {
+      const result = item[0] === '-'
+        ? `-${sortingMap[`${item}`.substring(1)]}`
+        : sortingMap[item]
+      return result
+    }).join(' ')
+
     // const sortedCurrentValidators = delegators.slice().sort(getSortMethod(sortingMap)(...sorting.split(',')))
 
     const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
 
     const delegators = await Delegator.find({ nodeID: args.filter.nodeID })
-      .sort(`${sorting}`.replace(/\,/ig, ' ').replace(/\+/ig, ''))
+      .sort(preparedSorting)
       .skip((page - 1) * perPage)
       .limit(perPage)
       .lean()

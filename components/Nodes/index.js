@@ -10,8 +10,8 @@ import debounce from 'lodash/debounce'
 import shortNodeId from '../../utils/shortNodeId';
 import numberFormat from '../../utils/numberFormat';
 
-// import Flag from '../Flag'
-import Flag from 'react-world-flags'
+import Flag from '../Flag'
+// import Flag from 'react-world-flags'
 import { Link, Router } from '../../routes'
 import TableControls from '../TableControls'
 import SortingIcon from '../SortingIcon'

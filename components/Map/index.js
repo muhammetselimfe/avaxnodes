@@ -37,7 +37,7 @@ export const Map = ({ position, item }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker ref={leafletRef} position={position}>
-          <Tooltip direction={'right'} permanent={true} interactive={true} className="map-tooltip">
+          <Tooltip direction={'right'} permanent={true} interactive={false} className="map-tooltip">
             <div className="row" style={{ minWidth: '350px' }}>
               <div className="col-5 text-right pr-1 col-labels font-weight-bold">
                 <div className="mb-1">{f('map.tooltip.title.ip')}</div>
