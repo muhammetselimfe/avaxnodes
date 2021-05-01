@@ -454,7 +454,7 @@ const NodeTableItem = ({ item, f, locale }) => {
           </div>
         )}
       </td>
-      <td><FaCircle fill={item.connected ? '#5DA574' : undefined} size={10} /></td>
+      <td><FaCircle fill={item.connected ? '#5DA574' : '#E84142'} size={10} /></td>
     </tr>
   )
 }

@@ -46,7 +46,10 @@ export default async (parent, args, context, info) => {
     const page = Math.abs(args.filter.page) || defaultRouteParams.common.page
     const perPage = Math.min(Math.max(Math.abs(args.filter.perPage), 1), 100) || defaultRouteParams.common.perPage
 
-    const delegators = await Delegator.find({ nodeID: args.filter.nodeID })
+    const delegators = await Delegator
+      .find({
+        nodeID: args.filter.nodeID
+      })
       .sort(preparedSorting)
       .skip((page - 1) * perPage)
       .limit(perPage)
