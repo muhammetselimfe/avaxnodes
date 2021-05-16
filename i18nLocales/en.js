@@ -94,7 +94,7 @@ module.exports = {
   "map.tooltip.title.version": "Software version",
   "map.tooltip.title.country": "Country",
 
-  "notifier.bot.start.button.text": "Start AVAX notifier bot",
+  "notifier.bot.start.button.text": "Start AVAX Notifier Bot",
 
   "notifier.features.title": "Cool features!",
   "notifier.features.0.title": "Awesome feature 1",
@@ -106,7 +106,7 @@ module.exports = {
 
   "notifier.stats.users.prefix": "Trusted by",
   "notifier.stats.users.suffix": "Registered Users",
-  "notifier.stats.users.value": "{value} Million",
+  "notifier.stats.users.value": "{value}+",
   "notifier.stats.total.prefix": "Tracking",
   "notifier.stats.total.suffix": "Worth of AVAX",
 

@@ -44,17 +44,20 @@ export const Notifier = ({ currentLocale }) => {
             </div>
 
             <div className="col-sm-6">
-              <a
-                className="right-text1 btn"
-                href={`https://t.me/${process.env.NEXT_PUBLIC_BOT_NAME}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="/static/images/bell2.svg" alt="" style={{ width: '26px' }} />
-                <div className="text_wrap text_wrap1">
-                  <h5>{f('notifier.bot.start.button.text')}</h5>
-                </div>
-              </a>
+
+                <a
+                    className="right-text1 avax-col-notify btn"
+                    href={`https://t.me/${process.env.NEXT_PUBLIC_BOT_NAME}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img src="/static/images/bell4.svg" alt="" style={{ width: '26px' }} />
+                    <div className="text_wrap">
+                        <h5>{f('notifier.bot.start.button.text')}</h5>
+                    </div>
+                </a>
+
+
             </div>
           </div>
         </div>
@@ -84,7 +87,7 @@ export const Notifier = ({ currentLocale }) => {
                 <h3>${numberFormat(get(data, 'notifierStats.total', 0) || 0, 0)}</h3>
               </div>
               <div className="user-bottom-wrap">
-                <h6>{f('notifier.stats.total.prefix')}</h6>
+                <h6>{f('notifier.stats.total.suffix')}</h6>
               </div>
             </div>
             {/* <div className="col-md-3  user_wrap">
@@ -136,10 +139,10 @@ export const Notifier = ({ currentLocale }) => {
                   <li>{f('notifier.features.list.1.text')}</li>
                   <li>{f('notifier.features.list.2.text')}</li>
                   <li>{f('notifier.features.list.3.text')}</li>
-                  <li>{f('notifier.features.list.4.text')}</li>
+                  {/*<li>{f('notifier.features.list.4.text')}</li>
                   <li>{f('notifier.features.list.5.text')}</li>
                   <li>{f('notifier.features.list.6.text')}</li>
-                  <li>{f('notifier.features.list.7.text')}</li>
+                  <li>{f('notifier.features.list.7.text')}</li>*/}
                 </ul>
                 <h6>{f('notifier.features.list.others')}</h6>
               </div>
@@ -216,7 +219,7 @@ export const Notifier = ({ currentLocale }) => {
                 <h3>${numberFormat(get(data, 'notifierStats.total', 0) || 0, 0)}</h3>
               </div>
               <div className="user-bottom-wrap">
-                <h6>{f('notifier.stats.total.prefix')}</h6>
+                <h6>{f('notifier.stats.total.suffix')}</h6>
               </div>
             </div>
             {/* <div className="col-md-3 user_wrap">
@@ -244,7 +247,7 @@ export const Notifier = ({ currentLocale }) => {
           </div>
         </div>
       </div>
-      <div className="bot_wrapper">
+      {/*<div className="bot_wrapper">
         <div className="container ">
           <div className="row row_bot_wrap">
             <div className="col-md-6">
@@ -326,7 +329,7 @@ export const Notifier = ({ currentLocale }) => {
             </div>
           </a>
         </div>
-      </div>
+      </div>*/}
     </>
   )
 }

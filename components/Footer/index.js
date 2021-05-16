@@ -17,14 +17,14 @@ export const Footer = ({ children }) => {
             </div>
           </div>
           <div className="right">
-            <button type="button" className="btn btn-secondary join-us">{f('footer.join.us.telegram')}</button>
-            <ul className="social-icon">
+            <a href="https://t.me/avaxnodes" target="_blank"><button type="button" className="btn btn-secondary join-us">{f('footer.join.us.telegram')}</button></a>
+            {/*<ul className="social-icon">
               <li><a href="#"><img src="/static/images/instagram.png" alt="" className="footer-dark" />
                 <img src="/static/images/light-instagram.png" alt="" className="footer-light" style={{ display: 'none' }} /></a></li>
               <li><a href="#"><img src="/static/images/twitter.png" alt="" className="footer-dark" />
                 <img src="/static/images/light-twitter.png" alt="" className="footer-light" style={{ display: 'none' }} /></a></li>
               <li><a href="#"><img src="/static/images/linkedin.svg" alt="" className="footer-dark" /><img src="/static/images/light-linked.svg" alt="" className="footer-light" style={{ display: 'none' }} /></a></li>
-            </ul>
+            </ul>*/}
           </div>
         </div>
       </div>

@@ -78,7 +78,7 @@ module.exports = {
 
   "space.available": "Beschikbare ruimte",
 
-  "footer.join.us.telegram": "Doe mee op Telegram",
+  "footer.join.us.telegram": "Praat mee op Telegram",
 
   "common.provider": "Aanbieder",
   "common.sponsored": "Gesponsord",
@@ -94,7 +94,7 @@ module.exports = {
   "map.tooltip.title.version": "Software versie",
   "map.tooltip.title.country": "Land",
 
-  "notifier.bot.start.button.text": "Start de AVAX-notifier-bot",
+  "notifier.bot.start.button.text": "Start de AVAX Notifier Bot",
 
   "notifier.features.title": "Coole functies!",
   "notifier.features.0.title": "Geweldige functie 1",
@@ -106,7 +106,7 @@ module.exports = {
 
   "notifier.stats.users.prefix": "Vertrouwd door",
   "notifier.stats.users.suffix": "Geregistreerde gebruikers",
-  "notifier.stats.users.value": "{value} miljoen",
+  "notifier.stats.users.value": "{value}+",
   "notifier.stats.total.prefix": "Volgen",
   "notifier.stats.total.suffix": "Waarde van AVAX",
 
