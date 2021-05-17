@@ -791,6 +791,7 @@ export const Nodes = ({ currentLocale, router }) => {
                             key={`${item.nodeID}-${index}`}
                             item={item}
                             index={index}
+                            locale={locale}
                             f={f}
                           />
                         )
