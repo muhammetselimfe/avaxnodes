@@ -1,19 +1,15 @@
 const mongoose = require('mongoose');
 
-const statsSchema = new mongoose.Schema({
+const notifierStatsSchema = new mongoose.Schema({
   _id: String,
-  totalNodes: Number,
-  totalTransactions: Number,
-  totalProviders: Number,
-  totalDelegations: Number,
-  totalBlocks: Number,
-  totalParticipation: Number,
+  users: Number,
+  total: Number,
 },
 {
   _id: false,
   timestamps: true
 });
 
-const Stats = mongoose.models.Peer || mongoose.model('Stats', statsSchema)
+const NotifierStats = mongoose.models.Peer || mongoose.model('NotifierStats', notifierStatsSchema)
 
-module.exports = Stats
+module.exports = NotifierStats

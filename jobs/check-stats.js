@@ -1,6 +1,5 @@
 const Stats = require('../models/stats')
 const Node = require('../models/node')
-const Delegator = require('../models/delegator')
 
 const {
   getCurrentSupply,
@@ -13,13 +12,6 @@ const debug = require('debug')('app:jobs:check-stats')
 
 const handler = agenda => async job => {
   debug()
-
-  // let preparedValidators = []
-  // try {
-  //   preparedValidators = await getPreparedValidators()
-  // } catch (e) {
-  //   debug(e)
-  // }
 
   const filter = {
     endTime: { "$gt": parseInt(Date.now() / 1000, 10) }
@@ -37,10 +29,6 @@ const handler = agenda => async job => {
     .exec()
 
   debug(totalNodes, totalDelegationsDoc)
-
-  // const totalDelegations = preparedValidators
-  //   .map(item => (item.delegators || []).length)
-  //   .reduce((result, current) => result + current, 0)
 
   let totalBlocks = 0
   try {

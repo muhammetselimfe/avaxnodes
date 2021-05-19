@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const Agenda = require('agenda')
 
 const addCheckStatsJob = require('./jobs/check-stats')
+const addCheckNotifierStatsJob = require('./jobs/check-stats')
 const addCheckNodesJob = require('./jobs/check-nodes')
 const addCheckPeersJob = require('./jobs/check-peers')
 const addCheckPeerIpsJob = require('./jobs/check-peer-ips')
@@ -45,6 +46,7 @@ const agenda = new Agenda({
   },
 });
 
+addCheckNotifierStatsJob.job(agenda)
 addCheckStatsJob.job(agenda)
 addCheckNodesJob.job(agenda)
 
@@ -66,10 +68,10 @@ process.on('SIGINT', graceful);
 (async function () { // IIFE to give access to async/await
   await agenda.start();
 
-  await agenda.every('5 minutes', ['check stats']);
+  await agenda.every('5 minutes', ['check stats', 'check notifier stats']);
 
   if (process.env.START_JOBS && process.env.START_JOBS === 'true') {
-    await agenda.every('10 minutes', ['check peers', 'check stats']);
+    await agenda.every('10 minutes', ['check peers']);
   }
 
   await agenda.every('1 hour', ['check nodes']);

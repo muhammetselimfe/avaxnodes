@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   _id: String,
+  active: Boolean,
   username: String,
   first_name: String,
   last_name: String,
-  observableDelegates: [
+  observableAddresses: [
     {
       type: String,
-      ref: 'Delegate'
+      ref: 'Address'
     }
   ],
   lastActivity: Number,
@@ -21,13 +22,13 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema
-  // .pre('find', function() {
-  //   this.populate('observableAddresses');
-  // })
+  .pre('find', function() {
+    this.populate('observableAddresses');
+  })
   .pre('findOne', function() {
-    this.populate('observableDelegates');
+    this.populate('observableAddresses');
   });
 
-const User = mongoose.models.User || mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 
 module.exports = User
