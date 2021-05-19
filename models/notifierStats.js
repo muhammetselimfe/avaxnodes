@@ -10,6 +10,6 @@ const notifierStatsSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const NotifierStats = mongoose.models.Peer || mongoose.model('NotifierStats', notifierStatsSchema)
+const NotifierStats = mongoose.models.NotifierStats || mongoose.model('NotifierStats', notifierStatsSchema)
 
 module.exports = NotifierStats
