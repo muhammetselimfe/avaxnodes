@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
 const notifierStatsSchema = new mongoose.Schema({
-  _id: String,
+  key: String,
   users: Number,
   total: Number,
 },
 {
-  _id: false,
   timestamps: true
 });
 
