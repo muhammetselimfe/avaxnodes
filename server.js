@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const Agenda = require('agenda')
 
 const addCheckStatsJob = require('./jobs/check-stats')
-const addCheckNotifierStatsJob = require('./jobs/check-stats')
+const addCheckNotifierStatsJob = require('./jobs/check-notifier-stats')
 const addCheckNodesJob = require('./jobs/check-nodes')
 const addCheckPeersJob = require('./jobs/check-peers')
 const addCheckPeerIpsJob = require('./jobs/check-peer-ips')
