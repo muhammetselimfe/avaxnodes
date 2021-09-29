@@ -34,7 +34,6 @@ const TableControls = ({
     startPage = numberOfPages - maxPagesToShow
   }
   const endPage = Math.min(startPage + maxPagesToShow, numberOfPages)
-
   return (
     <div className="row">
       <div className="col-sm-3">
@@ -51,7 +50,7 @@ const TableControls = ({
                   route,
                   {
                     ...pickParams(router.params || {}),
-                    page: undefined,
+                    page,
                     perPage: parseInt(event.target.value, 10) || defaultRouteParams.common.perPage,
                   },
                   locale
@@ -61,6 +60,7 @@ const TableControls = ({
               }}
               value={perPage}
             >
+              <option value="3">3</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
@@ -107,7 +107,7 @@ const TableControls = ({
                   key={`${index}-${pageNumber}`}
                   href={route}
                   locale={locale}
-                  params={{ ...pickParams(router.params || {}), page: pageNumber === 1 ? undefined : pageNumber }}
+                  params={{ ...pickParams(router.params || {}), page: pageNumber === 1 ? 1 : pageNumber }}
                 >
                   <a
                     className={`paginate_button ${page === pageNumber ? 'current' : ''}`}
@@ -158,6 +158,7 @@ const TableControls = ({
               onChange={(event) => setPage(parseInt(event.target.value, 10))}
               value={page}
             >
+              <option value="3">3</option>
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>

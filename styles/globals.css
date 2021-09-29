@@ -286,12 +286,62 @@ body.mode-light {
 .mode-light #datatable_wrapper table.dataTable tbody td img.pdf-image {
   background-color: rgba(0, 0, 0, 0.06);
 }
+.mode-light #datatable_wrapper table.dataTable tbody td {
+  background: white;
+  font-size: 13px;
+  letter-spacing: -0.06px;
+  font-weight: 500;
+  border-top: 6px solid #f5f6fb;
+  padding: 9px 10px;
+}
+.dataTables_scroll table.dataTable.display tbody td {
+  border-top: none;
+  background: #1C1C24;
+  border-bottom: 8px solid #13131a;
+  letter-spacing: -0.06px;
+  padding-top: 21px;
+  padding-bottom: 18px;
+  font-weight: 500;
+  border-top: 0px;
+}
+.dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+  color: #A6A6AF !important;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.06px;
+  line-height: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 14px 18px;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button.current {
+  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid #E7E7E7 !important;
+  background-color: #E0E0E0 !important;
+  background: none;
+}
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #333 !important;
+}
+.mode-light #datatable_wrapper table.dataTable tbody td, #tokenlist_wrapper table.dataTable tbody td {
+  font-size: 13px;
+  letter-spacing: -0.06px;
+  padding-top: 21px;
+  padding-bottom: 18px;
+  font-weight: 500;
+  border-top: 0px;
+}
 .mode-light table.dataTable tbody tr {
   background-color: transparent !important;
 }
+.mode-light #datatable thead > tr > th,
+.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+  color: #20202A !important;
+}
+
 #datatable thead > tr > th,
 .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
-  color: #20202A !important;
+  color: #20202A;
 }
 @media (min-width: 1370px) {
   #datatable thead > tr > th,
@@ -405,11 +455,32 @@ body.mode-light {
 .mode-light .main-content .table-title {
   color: #20202A;
 }
-
+.mode-light .tab_Wrapper .tab-content .tab-pane h2 {
+  color: #000000;
+  font-size: 40px;
+  letter-spacing: -0.17px;
+  line-height: 48px;
+  text-align: left;
+  padding-top: 70px;
+  padding-bottom: 50px;
+  margin-bottom: 0px;
+}
+.mode-light .dataTables_scroll table.dataTable.display tbody td {
+  border-bottom: 10px solid #F5F6FB !important;
+  background-color: #FFFFFF !important;
+  /* border-radius: 4px; */
+  width: 1140px;
+  height: 58px;
+}
 .mode-light .spinner {
   background: rgba(255, 255, 255, 0.5);
 }
-
+.mode-light .white {
+  color: #A6A6AF !important;
+}
+.mode-light .innercode span{
+  color: #A6A6AF !important;
+}
 .mode-light .leaflet-tooltip.map-tooltip {
   background-color: white;
   border: 0px solid #13131A;
