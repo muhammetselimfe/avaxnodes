@@ -1062,6 +1062,9 @@ div.dataTables_wrapper div.dataTables_length label {
   font-size: 10px;
   margin-right: 10px;
 }
+.fa-circle:before {
+  content: "\f111";
+}
 .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
   color: #A6A6AF !important;
   font-family: 'Roboto', sans-serif;

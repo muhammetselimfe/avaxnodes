@@ -1,12 +1,13 @@
 import React from 'react'
 import { useIntl } from "react-intl"
+import ReactClipboard from 'react-clipboardjs-copy'
 import { gql, useQuery } from '@apollo/client';
 import TableControls from '../TableControls'
 import { Link } from '../../routes'
 import Spinner from '../Spinner'
-import { defaultRouteParams } from '../../constants';
 import shortNodeId from '../../utils/shortNodeId';
 import moment from 'moment'
+import { FaCircle } from "react-icons/fa";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions ($filter: TransactionsFilter!){
@@ -68,23 +69,184 @@ export const GET_TOKENS = gql`
     }
   }
 `;
+const TransactionTableItem = ({ item, f, locale }) => {
+    const [transactionIdCopiedToClipboard, setTransactionIdCopiedToClipboard] = React.useState(false);
+    const [fromAddressCopiedToClipboard, setFromAddressCopiedToClipboard] = React.useState(false);
+    const [toAddressCopiedToClipboard, setToAddressCopiedToClipboard] = React.useState(false);
+    const daysLeft = moment(item.age * 1000).diff(moment(), 'days')
+    const hoursLeft = moment(item.age * 1000).diff(moment(), 'hours')
+    const minutesLeft = moment(item.age * 1000).diff(moment(), 'minutes')
+    React.useEffect(() => {
+        if (transactionIdCopiedToClipboard) {
+            setTimeout(() => {
+                setTransactionIdCopiedToClipboard(false)
+            }, 1000)
+        }
+        if (fromAddressCopiedToClipboard) {
+            setTimeout(() => {
+                setFromAddressCopiedToClipboard(false)
+            }, 1000)
+        }
+        if (toAddressCopiedToClipboard) {
+            setTimeout(() => {
+                setToAddressCopiedToClipboard(false)
+            }, 1000)
+        }
+    }, [transactionIdCopiedToClipboard,
+        fromAddressCopiedToClipboard,
+        toAddressCopiedToClipboard
+    ])
+    return (
+        <tr href="transaction-detail.html">
+            <td>{shortNodeId(item.transactionID)}</td>
+            <td style={{ position: 'relative' }} onClick={e => {
+                if (Array.from(e.target.classList).includes('pdf-image')) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
+            }}>
+                <span id="code2" className="spancode">{shortNodeId(item.from)}</span>
+                <ReactClipboard
+                    text={item.transactionID}
+                    onSuccess={(e) => {
+                        setTransactionIdCopiedToClipboard(true)
+                    }}
+                >
+                    <img
+                        data-clipboard-action="copy" data-clipboard-target="#code2"
+                        src="/static/images/pdficon.svg" className="pdf-image" />
+                </ReactClipboard>
+                {transactionIdCopiedToClipboard && (
+                    <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
+                )}
+            </td>
+            <td style={{ position: 'relative' }} onClick={e => {
+                if (Array.from(e.target.classList).includes('pdf-image')) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
+            }}>
+                <div className="innercode">From: <span id="codefrom1">{shortNodeId(item.from)}</span>
+                    <ReactClipboard
+                        text={item.transactionID}
+                        onSuccess={(e) => {
+                            setFromAddressCopiedToClipboard(true)
+                        }}
+                    >
+                        <img
+                            data-clipboard-action="copy" data-clipboard-target="#codefrom1"
+                            src="/static/images/pdficon.svg" className="pdf-image" />
+                    </ReactClipboard>
+                    {fromAddressCopiedToClipboard && (
+                        <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
+                    )}
+                </div>
 
+                <div className="innercode">To: <span id="codeto1">{shortNodeId(item.to)}</span>
+                    <ReactClipboard
+                        text={item.transactionID}
+                        onSuccess={(e) => {
+                            setToAddressCopiedToClipboard(true)
+                        }}
+                    >
+                        <img
+                            data-clipboard-action="copy" data-clipboard-target="#codeto1"
+                            src="/static/images/pdficon.svg" className="pdf-image" />
+                    </ReactClipboard>
+                    {toAddressCopiedToClipboard && (
+                        <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
+                    )}
+                </div>
+            </td>
+            <td>
+                <div className="timestamp">{!!daysLeft && (<span>{daysLeft} {f('common.age.days')}</span>)}
+                    {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.age.hours')}</span>)}
+                    {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.age.minutes')}</span>)}</div>
+                <div className="timestamp">{moment(item.createdAt).format("ddd, MMM Do YYYY, h:mm:ss a")}</div>
+            </td>
+            <td>{item.avax_amount} AVAX</td>
+            <td><FaCircle fill={'#5DA574'} size={10} /></td>
+        </tr>
+    )
+}
+
+const BlockTableItem = ({ item, f, locale }) => {
+    const daysLeft = moment(item.age * 1000).diff(moment(), 'days')
+    const hoursLeft = moment(item.age * 1000).diff(moment(), 'hours')
+    const minutesLeft = moment(item.age * 1000).diff(moment(), 'minutes')
+    return (
+        <tr href="block-detail.html" role="row" className="odd">
+            <td>{item.height}</td>
+            <td>{!!daysLeft && (<span className="white">{daysLeft} {f('common.age.days')}</span>)}
+                {!daysLeft && !!hoursLeft && (<span className="white">{hoursLeft} {f('common.age.hours')}</span>)}
+                {!daysLeft && !hoursLeft && !!minutesLeft && (<span className="white">{minutesLeft} {f('common.age.minutes')}</span>)}<span>&nbsp; Sun, 29 Nov 2020 15:17:20 GMT</span> </td>
+            <td>1</td>
+            <td><span className="white">{item.gasUsed}</span></td>
+            {/* <td><span className="white">145,585:</span> 0.29% of 50,710,977</td> */}
+            <td><span className="white">{item.total_burned}</span></td>
+            <td>{item.volume} AVAX</td>
+            <td>{item.size} BYTES</td>
+        </tr>
+    )
+}
+
+
+const TokenTableItem = ({ item, f, locale }) => {
+    const [contactAddressCopiedToClipboard, setContactAddressCopiedToClipboard] = React.useState(false);
+    React.useEffect(() => {
+        if (contactAddressCopiedToClipboard) {
+            setTimeout(() => {
+                setContactAddressCopiedToClipboard(false)
+            }, 1000)
+        }
+    }, [contactAddressCopiedToClipboard])
+    return (
+        <tr href="token-detail.html" role="row" className="odd">
+            <td>
+                <div className="rect_wrapp">AXP</div>
+            </td>
+            <td>{item.name}</td>
+            <td style={{ position: 'relative' }} onClick={e => {
+                if (Array.from(e.target.classList).includes('pdf-image')) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
+            }}> <span id="copycode">{shortNodeId(item.tokenID)}</span>
+                <ReactClipboard
+                    text={item.tokenID}
+                    onSuccess={(e) => {
+                        setContactAddressCopiedToClipboard(true)
+                    }}
+                >
+                    <img data-clipboard-action="copy" data-clipboard-target="#copycode" src="/static/images/pdficon.svg" className="pdf-image" />
+                </ReactClipboard>
+                {contactAddressCopiedToClipboard && (
+                    <div className="copiedtext d-block">{f('common.copied.to.clipboard')}</div>
+                )}
+            </td>
+            <td>{moment(item.createdAt).format("ddd, MMM Do YYYY, h:mm:ss a")}</td>
+            <td>{item.supply_amount}&nbsp;{item.supply_unit}</td>
+        </tr>
+    )
+}
 export const CChain = ({ currentLocale, router }) => {
     const { formatMessage } = useIntl()
     const f = (id, values = {}) => formatMessage({ id }, values)
     const [page, setPage] = React.useState(1);
     const [perPage, setPerPage] = React.useState(3);
     const [activeTab, setActiveTab] = React.useState('transactions')
+
     const locale = currentLocale
     // React.useEffect(() => {
-        // if (router.params.page === 'undefined') {
-        // if (!router.params.page || router.params.page === 'undefined') {
-        //   setPage(defaultRouteParams.common.page)
-        // }
-        // if (!router.params.perPage || router.params.perPage === 'undefined') {
-        //   setPerPage(defaultRouteParams.common.perPage)
-        // }
+    // if (router.params.page === 'undefined') {
+    // if (!router.params.page || router.params.page === 'undefined') {
+    //   setPage(defaultRouteParams.common.page)
+    // }
+    // if (!router.params.perPage || router.params.perPage === 'undefined') {
+    //   setPerPage(defaultRouteParams.common.perPage)
+    // }
     //   }, [router.params])
+
     const { loading, error, data: transactionData } = useQuery(GET_TRANSACTIONS, {
         variables: {
             filter: {
@@ -109,74 +271,7 @@ export const CChain = ({ currentLocale, router }) => {
             }
         },
     });
-    const TransactionTableItem = ({ item, f, locale }) => {
-        const daysLeft = moment(item.age * 1000).diff(moment(), 'days')
-        const hoursLeft = moment(item.age * 1000).diff(moment(), 'hours')
-        const minutesLeft = moment(item.age * 1000).diff(moment(), 'minutes')
-        return (
-            <tr href="transaction-detail.html">
-                <td>{shortNodeId(item.transactionID)}</td>
-                <td>
-                    <span id="code2" className="spancode">{shortNodeId(item.from)}</span>
-                    <img
-                        data-clipboard-action="copy" data-clipboard-target="#code2"
-                        src="/static/images/pdficon.svg" className="pdf-image" />
-                </td>
-                <td>
-                    <div className="innercode">From: <span id="codefrom2">{shortNodeId(item.from)}</span> <img
-                        data-clipboard-action="copy" data-clipboard-target="#codefrom2"
-                        src="/static/images/pdficon.svg" className="pdf-image" />
-                    </div>
-                    <div className="innercode">To: <span id="codeto2">{shortNodeId(item.to)}</span> <img
-                        data-clipboard-action="copy" data-clipboard-target="#codeto2"
-                        src="/static/images/pdficon.svg" className="pdf-image" />
-                    </div>
-                </td>
-                <td>
-                    <div className="timestamp">{!!daysLeft && (<span>{daysLeft} {f('common.age.days')}</span>)}
-                        {!daysLeft && !!hoursLeft && (<span>{hoursLeft} {f('common.age.hours')}</span>)}
-                        {!daysLeft && !hoursLeft && !!minutesLeft && (<span>{minutesLeft} {f('common.age.minutes')}</span>)}</div>
-                    <div className="timestamp">{moment(item.createdAt).format("ddd, MMM Do YYYY, h:mm:ss a")}</div>
-                </td>
-                <td>{item.avax_amount} AVAX</td>
-                <td><i className="fas fa-circle"></i></td>
-            </tr>
-        )
-    }
-    const BlockTableItem = ({ item, f, locale }) => {
-        const daysLeft = moment(item.age * 1000).diff(moment(), 'days')
-        const hoursLeft = moment(item.age * 1000).diff(moment(), 'hours')
-        const minutesLeft = moment(item.age * 1000).diff(moment(), 'minutes')
-        return (
-            <tr href="block-detail.html" role="row" className="odd">
-                <td>{item.height}</td>
-                <td>{!!daysLeft && (<span className="white">{daysLeft} {f('common.age.days')}</span>)}
-                    {!daysLeft && !!hoursLeft && (<span className="white">{hoursLeft} {f('common.age.hours')}</span>)}
-                    {!daysLeft && !hoursLeft && !!minutesLeft && (<span className="white">{minutesLeft} {f('common.age.minutes')}</span>)}<span>&nbsp; Sun, 29 Nov 2020 15:17:20 GMT</span> </td>
-                <td>1</td>
-                <td><span className="white">{item.gasUsed}</span></td>
-                {/* <td><span className="white">145,585:</span> 0.29% of 50,710,977</td> */}
-                <td><span className="white">{item.total_burned}</span></td>
-                <td>{item.volume} AVAX</td>
-                <td>{item.size} BYTES</td>
-            </tr>
-        )
-    }
-    const TokenTableItem = ({ item, f, locale }) => {
-        return (
-            <tr href="token-detail.html" role="row" className="odd">
-                <td>
-                    <div className="rect_wrapp">AXP</div>
-                </td>
-                <td>{item.name}</td>
-                <td> <span id="copycode">{shortNodeId(item.tokenID)}</span>
-                    <img data-clipboard-action="copy" data-clipboard-target="#copycode" src="/static/images/pdficon.svg" className="pdf-image" />
-                </td>
-                <td>{moment(item.createdAt).format("ddd, MMM Do YYYY, h:mm:ss a")}</td>
-                <td>{item.supply_amount}&nbsp;{item.supply_unit}</td>
-            </tr>
-        )
-    }
+
     const transactionsTable = () => {
         return (
             <div className="tab-pane fade active show" id="transactions" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -240,7 +335,7 @@ export const CChain = ({ currentLocale, router }) => {
                         setPerPage={setPerPage}
                         pagination={blockData && blockData.blocks && blockData.blocks.pagination}
                     />
-                    <table id="datatable" className="display responsive nowrap transactions dataTable" style={{ width: '100%' }}>
+                    <table id="datatable" className="display responsive nowrap dataTable" style={{ width: '100%' }}>
                         <thead>
                             <tr>
                                 <th>HEIGHT</th>
@@ -292,7 +387,7 @@ export const CChain = ({ currentLocale, router }) => {
                         setPerPage={setPerPage}
                         pagination={transactionData && transactionData.transactions && transactionData.transactions.pagination}
                     />
-                    <table id="datatable" className="display responsive nowrap transactions dataTable" style={{ width: '100%' }}>
+                    <table id="datatable" className="display responsive nowrap dataTable" style={{ width: '100%' }}>
                         <thead>
                             <tr>
                                 <th />

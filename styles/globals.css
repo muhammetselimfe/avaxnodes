@@ -1,12 +1,13 @@
 .table-responsive {
-  display: table!important;
+  display: table !important;
 }
+
 @media (min-width: 1200px) {
   .table-responsive-xxl {
-      display: table;
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+    display: table;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -26,30 +27,47 @@
   margin: unset;
   transform: unset;
 }
+
 .toggle-wrap {
   padding: 9px 6px;
 }
+
 .dropdown-toggle.nav-link {
   padding: 2px 4px;
 }
+
 @media (min-width: 1370px) {
   .toggle-wrap {
     padding: 4px 6px;
   }
+
   .dropdown-toggle.nav-link {
     padding: 4px 4px;
   }
+
   .dropdown .dropdown-toggle {
-    font-size: 14px!important;
+    font-size: 14px !important;
   }
+
   .bootstrap-select.dropdown .dropdown-toggle {
-    font-size: 16px!important;
+    font-size: 16px !important;
   }
+}
+
+.mode-light .dataTables_scroll table.dataTable tbody td img.pdf-image {
+  width: 20px;
+  height: 20px;
+  background-color: #2B2929;
+  border-radius: 2px;
+  padding: 3px 4px;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
 .freespace-wrap .bootstrap-select {
   width: 100% !important;
 }
+
 .bootstrap-select.dropdown .dropdown-toggle {
   background-color: #20202A !important;
   border-radius: 4px;
@@ -65,33 +83,41 @@
   background-repeat: no-repeat;
   background-position: 94% 50%;
 }
+
 .bootstrap-select .dropdown-item {
   background-color: #505062;
   color: #fff;
 }
+
 .bootstrap-select .dropdown-menu {
   background-color: #505062;
 }
+
 .bootstrap-select .dropdown-item:hover {
   color: #fff;
   text-decoration: none;
   background-color: #292932;
 }
+
 .bootstrap-select .dropdown-toggle:after {
   display: none !important
 }
+
 .freespace-wrap .bootstrap-select .dropdown-toggle:focus {
   outline: none !important;
 }
+
 .bootstrap-select .dropdown-toggle .filter-option {
   height: auto !important;
 }
+
 .dropdown .dropdown-menu {
   max-width: 100%;
   min-width: 100%;
   color: #000;
   padding: 0;
 }
+
 .dropdown .dropdown-toggle {
   color: #ffffff;
   border-radius: 3px;
@@ -100,37 +126,45 @@
   font-size: 12px;
   font-weight: 400;
 }
+
 .bootstrap-select .dropdown-toggle {
   font-size: 16px;
 }
+
 .dropdown-menu .dropdown-item {
   padding: 4px;
 }
+
 .dropdown-menu .dropdown-item,
 .dropdown-menu .dropdown-item a {
   color: #000;
   text-decoration: none;
 }
+
 .dropdown-menu .dropdown-item:hover {
   outline: none;
   color: #000;
   background-color: #f2f2f2;
 }
+
 th.sorting,
 th.sorting a,
 td a,
 td a:hover {
   color: #FFFFFF;
 }
+
 .dataTables_scrollHead {
-  max-width: 1370px!important;
+  max-width: 1370px !important;
   overflow-x: auto;
 }
+
 table.dataTable {
   max-width: 100%;
 }
+
 table.dataTable thead .sorting {
-  background-image: none!important;
+  background-image: none !important;
 
 }
 
@@ -144,6 +178,7 @@ table.dataTable thead .sorting {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -181,9 +216,11 @@ table.dataTable thead .sorting {
   border: 0px solid #13131A;
   font-size: 14px;
 }
+
 .leaflet-tooltip.map-tooltip .col-labels {
   color: #919191;
 }
+
 .leaflet-tooltip.map-tooltip .col-values {
   color: white;
 }
@@ -191,6 +228,7 @@ table.dataTable thead .sorting {
 .leaflet-tooltip.map-tooltip.leaflet-tooltip-left:before {
   border-left-color: #13131A;
 }
+
 .leaflet-tooltip.map-tooltip.leaflet-tooltip-right:before {
   border-right-color: #13131A;
 }
@@ -198,6 +236,7 @@ table.dataTable thead .sorting {
 .right-text1 {
   padding: .375rem .75rem;
 }
+
 .right-text1,
 .avax-col-notify {
   max-width: 260px;
@@ -206,67 +245,81 @@ table.dataTable thead .sorting {
 .bg-light {
   padding: 9px 0px;
 }
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .bg-light {
-      padding: 13px 0px;
+    padding: 13px 0px;
   }
 }
 
 body.mode-light {
   background-color: #f5f6fb;
 }
+
 .mode-light th.sorting,
 .mode-light th.sorting a,
 .mode-light td a,
 .mode-light td a:hover {
   color: #20202A;
 }
+
 .mode-light .navbar-nav .nav-item.active:after {
   background-color: #FF6832;
 }
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .mode-light .navbar-nav .nav-item.active:after {
-      background-color: transparent;
+    background-color: transparent;
   }
 }
 
 .mode-light #toggel_btn label {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
 .mode-light #toggel_btn label img.night-light {
   background-color: transparent;
 }
+
 .mode-light #toggel_btn label img.day {
   opacity: 1;
 }
+
 .mode-light .footer {
   background-color: #32C5FF;
 }
+
 .mode-light .footer .copyright {
   color: #FFFFFF;
 }
+
 .mode-light .footer .join-us {
   background-color: rgba(255, 255, 255, 0.2);
   color: #FFFFFF;
 }
+
 .mode-light .main-content {
   background-color: #F5F6FB;
 }
+
 .mode-light .PageTitleFont {
   color: #20202A;
 }
+
 .mode-light .form-control {
-  background-color: white!important;
+  background-color: white !important;
   color: #81818C;
 }
+
 .mode-light .search-container .input-icons .form-control {
-  background-color: white!important;
+  background-color: white !important;
 }
 
 .dropdown .dropdown-toggle {
   /* color: #292932; */
   background-color: rgba(255, 255, 255, 0.06);
 }
+
 .mode-light .dropdown .dropdown-toggle {
   color: #292932;
   background-color: rgba(0, 0, 0, 0.1);
@@ -275,25 +328,37 @@ body.mode-light {
 .mode-light table.dataTable thead th {
   border-bottom: none;
 }
+
 .mode-light #datatable_wrapper table.dataTable tbody td {
   background: white;
-  border-top: 6px solid #f5f6fb;
   border-bottom: none;
 }
+
 .mode-light #datatable_wrapper table.dataTable tbody td a {
   color: #292932;
 }
-.mode-light #datatable_wrapper table.dataTable tbody td img.pdf-image {
+
+.mode-light #datatable_wrapper table.transactions.dataTable tbody td img.pdf-image {
   background-color: rgba(0, 0, 0, 0.06);
 }
-.mode-light #datatable_wrapper table.dataTable tbody td {
-  background: white;
-  font-size: 13px;
-  letter-spacing: -0.06px;
-  font-weight: 500;
-  border-top: 6px solid #f5f6fb;
-  padding: 9px 10px;
+
+.mode-light table.dataTable tbody td {
+  background: #000;
+  color: #81818C !important;
 }
+
+.mode-light table.dataTable tbody td div {
+  color: #20202A !important;
+}
+
+table.dataTable tbody td div {
+  color: white;
+}
+
+.mode-light table.dataTable tbody td span {
+  color: #81818C !important;
+}
+
 .dataTables_scroll table.dataTable.display tbody td {
   border-top: none;
   background: #1C1C24;
@@ -301,10 +366,17 @@ body.mode-light {
   letter-spacing: -0.06px;
   padding-top: 21px;
   padding-bottom: 18px;
-  font-weight: 500;
+  font-weight: 400;
   border-top: 0px;
 }
-.dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+
+.mode-light .dataTables_scroll table.dataTable.display tbody td {
+  border-top: none;
+  background: #1C1C24;
+  border-bottom: 8px solid #13131a;
+}
+
+.dataTables_scroll .dataTables_scrollHead table.dataTable thead>tr>th {
   color: #A6A6AF !important;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
@@ -314,43 +386,59 @@ body.mode-light {
   font-weight: 500;
   padding: 14px 18px;
 }
+
 .mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button.current {
   color: rgba(0, 0, 0, 0.6);
   border: 1px solid #E7E7E7 !important;
   background-color: #E0E0E0 !important;
   background: none;
 }
-.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  color: #333 !important;
+
+.mode-light table.dataTable.transactions tbody tr td:first-child {
+  color: #484848 !important;
 }
-.mode-light #datatable_wrapper table.dataTable tbody td, #tokenlist_wrapper table.dataTable tbody td {
-  font-size: 13px;
-  letter-spacing: -0.06px;
-  padding-top: 21px;
-  padding-bottom: 18px;
-  font-weight: 500;
-  border-top: 0px;
+
+.mode-light #codefrom1 {
+  color: #020506 !important;
 }
-.mode-light table.dataTable tbody tr {
-  background-color: transparent !important;
+
+.mode-light #codeto1 {
+  color: #020506 !important;
 }
-.mode-light #datatable thead > tr > th,
-.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+
+.mode-light table.dataTable tbody tr td:first-child {
   color: #20202A !important;
 }
 
-#datatable thead > tr > th,
-.dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+.mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #333 !important;
+}
+
+.mode-light table.dataTable tbody tr {
+  background-color: transparent !important;
+}
+
+.mode-light #datatable thead>tr>th,
+.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead>tr>th {
+  color: #20202A !important;
+}
+
+#datatable thead>tr>th,
+.dataTables_scroll .dataTables_scrollHead table.dataTable thead>tr>th {
   color: #20202A;
 }
+
 @media (min-width: 1370px) {
-  #datatable thead > tr > th,
-  .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+
+  #datatable thead>tr>th,
+  .dataTables_scroll .dataTables_scrollHead table.dataTable thead>tr>th {
     font-size: 18px;
   }
 
 }
-.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
+
+.mode-light .dataTables_scroll .dataTables_scrollHead table.dataTable thead>tr>th {
   color: #20202A !important;
 }
 
@@ -361,29 +449,34 @@ body.mode-light {
   border: none;
   outline: none;
 }
+
 .mode-light table.dataTable tbody tr td:first-child {
   color: #20202A !important;
 }
 
 .mode-light .bootstrap-select.dropdown .dropdown-toggle {
-  background-color: #fff!important;
-  color: #81818C!important;
+  background-color: #fff !important;
+  color: #81818C !important;
   background-image: url('/static/images/dropdown1.svg');
 }
+
 .mode-light .bootstrap-select.dropdown .dropdown-menu {
-  background-color: #FFFFFF!important;
+  background-color: #FFFFFF !important;
 }
+
 .mode-light .bootstrap-select.dropdown .dropdown-item {
-  background-color: #FFFFFF!important;
-  color: #81818C!important;
+  background-color: #FFFFFF !important;
+  color: #81818C !important;
 }
+
 .mode-light .bootstrap-select.dropdown .dropdown-item.active {
-  background-color: #f2f2f2!important;
-  color: #000!important;
+  background-color: #f2f2f2 !important;
+  color: #000 !important;
 }
+
 .mode-light .bootstrap-select.dropdown .dropdown-item:hover {
-  background-color: #f2f2f2!important;
-  color: #000!important;
+  background-color: #f2f2f2 !important;
+  color: #000 !important;
 }
 
 .mode-light .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
@@ -393,6 +486,7 @@ body.mode-light {
   border: 1px solid transparent;
   background: transparent;
 }
+
 .mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button {
   border: 1px solid #E7E7E7 !important;
 }
@@ -400,10 +494,12 @@ body.mode-light {
 .mode-light .dataTables_wrapper .dataTables_paginate a.paginate_button {
   border: 1px solid #E7E7E7 !important;
 }
+
 .mode-light .dataTables_wrapper .dataTables_paginate .paginate_button {
   color: #333 !important;
   border: 1px solid transparent;
 }
+
 .mode-light .dataTables_wrapper .dataTables_paginate .paginate_button {
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   background: transparent;
@@ -415,46 +511,60 @@ body.mode-light {
   color: white !important;
   border: 1px solid #111;
 }
+
 .mode-light .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   background-color: #E0E0E0 !important;
 }
+
 .mode-light .Title {
   color: #20202A;
 }
+
 .mode-light .content-inner img.pdf-image {
   background-color: rgba(0, 0, 0, 0.06);
 }
+
 .mode-light .PagesubTitle {
   color: #81818C;
 }
+
 .mode-light .main-progress-wrapper .progress-title {
   color: #20202A;
 }
+
 .mode-light .main-progress-wrapper .right-side .progress-bar-wrap .progress,
 .mode-light .main-progress-wrapper .left-side .progress-bar-wrap .progress {
   background-color: #EDEDED;
 }
+
 .mode-light .box-wrapper {
   background-color: #F5F6FB;
 }
+
 .mode-light .card-wrapper {
   background-color: #FFFFFF;
 }
+
 .mode-light .card-content {
   background-color: #F5F9FA;
 }
+
 .mode-light .card-wrapper span {
   color: #919191;
 }
+
 .mode-light .card-wrapper p.subtext {
   color: #20202A;
 }
+
 .mode-light .card-wrapper p.title {
   color: #20202A;
 }
+
 .mode-light .main-content .table-title {
   color: #20202A;
 }
+
 .mode-light .tab_Wrapper .tab-content .tab-pane h2 {
   color: #000000;
   font-size: 40px;
@@ -465,29 +575,33 @@ body.mode-light {
   padding-bottom: 50px;
   margin-bottom: 0px;
 }
+
 .mode-light .dataTables_scroll table.dataTable.display tbody td {
   border-bottom: 10px solid #F5F6FB !important;
   background-color: #FFFFFF !important;
-  /* border-radius: 4px; */
-  width: 1140px;
-  height: 58px;
 }
+
 .mode-light .spinner {
   background: rgba(255, 255, 255, 0.5);
 }
+
 .mode-light .white {
   color: #A6A6AF !important;
 }
-.mode-light .innercode span{
+
+.mode-light .innercode span {
   color: #A6A6AF !important;
 }
+
 .mode-light .leaflet-tooltip.map-tooltip {
   background-color: white;
   border: 0px solid #13131A;
 }
+
 .mode-light .leaflet-tooltip.map-tooltip .col-labels {
   color: #919191;
 }
+
 .mode-light .leaflet-tooltip.map-tooltip .col-values {
   color: black;
 }
@@ -495,6 +609,7 @@ body.mode-light {
 .mode-light .leaflet-tooltip.map-tooltip.leaflet-tooltip-left:before {
   border-left-color: white;
 }
+
 .mode-light .leaflet-tooltip.map-tooltip.leaflet-tooltip-right:before {
   border-right-color: white;
 }
