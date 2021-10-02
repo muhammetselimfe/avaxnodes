@@ -3,7 +3,7 @@ import { useIntl } from "react-intl"
 import ReactClipboard from 'react-clipboardjs-copy'
 import { gql, useQuery } from '@apollo/client';
 import TableControls from '../TableControls'
-import { Link } from '../../routes'
+import { Link, Router } from '../../routes'
 import Spinner from '../Spinner'
 import shortNodeId from '../../utils/shortNodeId';
 import moment from 'moment'
@@ -423,6 +423,7 @@ export const CChain = ({ currentLocale, router }) => {
         )
     }
     const renderActiveTab = () => {
+
         switch (activeTab) {
             case 'transactions':
                 return transactionsTable();
@@ -436,6 +437,9 @@ export const CChain = ({ currentLocale, router }) => {
     }
     const handleSetActiveTab = (event, item) => {
         event.preventDefault()
+        Router.pushRoute(
+            `c-chain/${item}`,
+        )
         setPerPage(3);
         setPage(1);
         setActiveTab(item)
