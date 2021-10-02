@@ -49,13 +49,6 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                 </a>
               </Link>
             </li>
-            <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
-              <Link href={`notifier`} locale={locale} params={{  }}>
-                <a className="nav-link">
-                  {f('header.pages.notifier.title')}
-                </a>
-              </Link>
-            </li>  
             <li className={`nav-item ${currentRoute === 'c-chain' ? 'active' : ''}`}>
               <Link href={`c-chain`} locale={locale} params={{  }}>
                 <a className="nav-link">
@@ -63,6 +56,13 @@ export const Header = ({ children, currentLocale, currentRoute, route, ...rest }
                 </a>
               </Link>
             </li>
+            <li className={`nav-item ${currentRoute === 'notifier' ? 'active' : ''}`}>
+              <Link href={`notifier`} locale={locale} params={{  }}>
+                <a className="nav-link">
+                  {f('header.pages.notifier.title')}
+                </a>
+              </Link>
+            </li>  
           </ul>
 
           <ul className="navbar-nav ml-auto">
