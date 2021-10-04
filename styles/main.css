@@ -1062,6 +1062,9 @@ div.dataTables_wrapper div.dataTables_length label {
   font-size: 10px;
   margin-right: 10px;
 }
+.fa-circle:before {
+  content: "\f111";
+}
 .dataTables_scroll .dataTables_scrollHead table.dataTable thead > tr > th {
   color: #A6A6AF !important;
   font-family: 'Roboto', sans-serif;
@@ -2096,6 +2099,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .
 .tab_Wrapper .nav-tabs .nav-link:focus,
 .tab_Wrapper .nav-tabs .nav-link:hover {
   border-color: transparent;
+  cursor: pointer;
 }
 table.dataTable.transactions tbody tr td:first-child {
   color: #484848 !important;
@@ -2158,7 +2162,7 @@ table.dataTable.transactions tbody tr td:first-child {
   padding: 0px 5px;
 }
 #tokenlist_wrapper table.dataTable tbody tr td:nth-of-type(2) {
-  color: #fff !important;
+  color: #fff;
   font-size: 16px !important;
   letter-spacing: -0.07px !important;
   line-height: 19px !important;
