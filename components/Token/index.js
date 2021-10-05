@@ -141,7 +141,7 @@ export const Token = ({ currentLocale, router }) => {
     const { formatMessage } = useIntl()
     const f = (id, values = {}) => formatMessage({ id }, values)
     const [page, setPage] = React.useState(1);
-    const [perPage, setPerPage] = React.useState(3);
+    const [perPage, setPerPage] = React.useState(25);
     const [activeTab, setActiveTab] = React.useState('transactions')
 
     const locale = currentLocale
