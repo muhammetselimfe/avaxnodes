@@ -55,12 +55,12 @@ module.exports = routes({ locale: defaultLocale, hideDefaultLocale: true })
   .add('c-chain/transaction', 'en', '/c-chain/transaction/:id', 'transaction')
   .add('c-chain/transaction', 'nl', '/c-chain/transaction/:id', 'transaction')
   
-  .add('c-chain/block', 'en', '/c-chain/block/:id', 'block')
-  .add('c-chain/block', 'nl', '/c-chain/block/:id', 'block')
+  .add('c-chain/block', 'en', '/c-chain/block/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'block')
+  .add('c-chain/block', 'nl', '/c-chain/block/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'block')
 
   
-  .add('c-chain/token', 'en', '/c-chain/token/:id', 'token')
-  .add('c-chain/token', 'nl', '/c-chain/token/:id', 'token')
+  .add('c-chain/token', 'en', '/c-chain/token/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'token')
+  .add('c-chain/token', 'nl', '/c-chain/token/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'token')
 
   .add('notifier', 'en', '/notifier', 'notifier')
   .add('notifier', 'nl', '/notifier', 'notifier')
