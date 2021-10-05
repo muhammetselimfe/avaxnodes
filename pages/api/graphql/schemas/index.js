@@ -81,11 +81,12 @@ export const typeDefs = gql`
     height: Float,
     age: Float,
     createdAt: Date,
-    gasUsed: String,
     transactions: Float,
     total_burned: Float,
     volume: Float,
-    size: Float
+    size: Float,
+    gasUsed:Float,
+    gasTotal:Float,
   }
   
   type Token {
@@ -127,6 +128,18 @@ export const typeDefs = gql`
     sorting: String
   }
 
+  input TransactionFilter {
+    transactionID: String!
+  }
+  
+  input BlockFilter {
+    blockID: String!
+  }
+  
+  input TokenFilter {
+    tokenID: String!
+  }
+
   type Pagination {
     page: Int
     perPage: Int
@@ -158,7 +171,10 @@ export const typeDefs = gql`
     notifierStats: NotifierStats!
     nodes(filter: NodesFilter!): NodesResponse!
     node(filter: NodeFilter!): Node!
+    transaction(filter: TransactionFilter!): Transaction!
     transactions(filter:TransactionsFilter!):TransactionsResponse!
+    block(filter: BlockFilter!): Block!
     blocks(filter:BlocksFilter!):BlocksResponse!
+    token(filter: TokenFilter!): Token!
     tokens(filter:TokensFilter!):TokensResponse!
   }`
