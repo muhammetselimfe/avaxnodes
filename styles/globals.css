@@ -53,11 +53,16 @@
     font-size: 16px !important;
   }
 }
-
+.mode-light .copy-details-wrapper .pdf-image {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  padding: 6px;
+  margin-left: 10px;
+}
 .mode-light .dataTables_scroll table.dataTable tbody td img.pdf-image {
   width: 20px;
   height: 20px;
-  background-color: #2B2929;
+  background-color:rgba(0,0,0,.06) !important;
   border-radius: 2px;
   padding: 3px 4px;
   margin-left: 5px;
@@ -83,7 +88,6 @@
   background-repeat: no-repeat;
   background-position: 94% 50%;
 }
-
 .bootstrap-select .dropdown-item {
   background-color: #505062;
   color: #fff;
@@ -357,6 +361,101 @@ table.dataTable tbody td div {
 
 .mode-light table.dataTable tbody td span {
   color: #81818C !important;
+}
+.mode-light .copy-details-wrapper .copy_wrapper {
+  color: #20202A;
+  font-size: 40px;
+  letter-spacing: -0.17px;
+  line-height: 48px;
+  text-align: left;
+}
+.mode-light .block-wrapper-inner .block {
+  background-color: #FFFFFF;
+  border-radius: 1px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.mode-light .block-wrapper-inner .block p.white {
+  color: #000 !important;
+}
+
+.mode-light .transaction-block-wrapper {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 23px;
+}
+
+.mode-light .grayscalebox {
+  border-radius: 1px;
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background-color: #F5F9FA;
+}
+
+.mode-light .grayscalebox p {
+  color: #20202A;
+  font-size: 16px;
+  letter-spacing: -0.07px;
+  line-height: 24px;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.transaction-block-wrapper .progress .progress-bar {
+  background-color: #6A6A6A;
+  border-radius: 2px;
+}
+
+.mode-light .execution-wrapper {
+  display: flex;
+  background-color: transparent;
+  justify-content: space-between;
+  border-radius: 1px;
+  margin-bottom: 40px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.mode-light .internal_wrap h1 {
+  color: #20202A;
+  font-size: 26px;
+  letter-spacing: -0.11px;
+  line-height: 31px;
+  text-align: left;
+}
+table.dataTable.transactions tbody tr td.detail:first-child {
+  color: #FFF !important;
+}
+.mode-light .transaction-block-wrapper h5 {
+  color: #20202A;
+  font-size: 18px;
+  letter-spacing: -0.08px;
+  line-height: 22px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.mode-light .execution-wrapper .inner h5 {
+  color: #212529;
+  font-size: 20px;
+  letter-spacing: -0.09px;
+  line-height: 24px;
+  text-align: left;
+  margin-bottom: 0px;
+}
+.mode-light .execution-wrapper .inner img.download-image {
+  background-color: transparent;
+  width: 16px;
+  padding: 0px;
+}
+.mode-light .transaction-block-wrapper .progress {
+  background-color: #2E2D2D;
+  border-radius: 2px;
+  height: 5px;
 }
 
 .dataTables_scroll table.dataTable.display tbody td {
