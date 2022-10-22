@@ -17,6 +17,10 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   test-avaxnodes:
     container_name: test-avaxnodes
@@ -32,6 +36,10 @@ services:
       - "traefik.frontend.rule=Host:test.avaxnodes.com"
     ports:
       - "7600:3000"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   avaxnodes:
     container_name: avaxnodes
@@ -47,3 +55,28 @@ services:
       - "traefik.frontend.rule=Host:avaxnodes.com"
     ports:
       - "7601:3000"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  urlshortener:
+    container_name: urlshortener
+    build:
+      context: ./sites/urlshortener
+      dockerfile: Dockerfile
+      args:
+        - ENV_FILE=.env
+    env_file:
+      - ./sites/urlshortener/.env
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=urlshortener"
+      - "traefik.frontend.rule=Host:urlshortener.com"
+    ports:
+      - "7661:3000"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
