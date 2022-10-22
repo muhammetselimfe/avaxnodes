@@ -10,6 +10,7 @@ services:
       - "--docker.exposedbydefault=false"
       - "--docker.domain=avaxnodes.com"
       - "--docker.domain=test.avaxnodes.com"
+      - "--docker.domain=thebit.cc"
     ports:
       - target: 80
         published: 80
@@ -73,7 +74,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=urlshortener"
-      - "traefik.frontend.rule=Host:urlshortener.com"
+      - "traefik.frontend.rule=Host:thebit.cc"
     ports:
       - "7661:3000"
     logging:
