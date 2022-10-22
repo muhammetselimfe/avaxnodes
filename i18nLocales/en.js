@@ -2,6 +2,17 @@ module.exports = {
 
   "header.pages.nodes.title": "Nodes",
   "header.pages.notifier.title": "Notifier",
+  "header.pages.c-chain.title": "C-Chain",
+
+  "page.transaction.title": "Transaction",
+  "page.transaction.header": "Transaction details",
+  
+  "page.block.title": "Block",
+  "page.block.header": "Block details",
+  
+  "page.token.title": "Token",
+  "page.token.header": "Token details",
+
 
   "stats.total.nodes.title": "Total nodes",
   "stats.total.providers.title": "Total providers",
@@ -86,6 +97,9 @@ module.exports = {
   "common.left.days": "days left",
   "common.left.hours": "hours left",
   "common.left.minutes": "minutes left",
+  "common.age.days": "days",
+  "common.age.hours": "hours",
+  "common.age.minutes": "minutes",
 
   "common.copied.to.clipboard": "Copied to clipboard",
 
