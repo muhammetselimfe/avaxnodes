@@ -44,11 +44,24 @@ module.exports = routes({ locale: defaultLocale, hideDefaultLocale: true })
   // .add('ko-c-chain', '/:locale(ko)/c-chain', 'c-chain')
   // .add('nl-c-chain', '/:locale(nl)/c-chain', 'c-chain')
   // .add('zh-c-chain', '/:locale(zh)/c-chain', 'c-chain')
+
   .add('c-chain', 'en', '/c-chain{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'c-chain')
   .add('c-chain', 'nl', '/c-chain{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'c-chain')
+
   .add('c-chain/transactions', 'en', '/c-chain/transactions{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'c-chain')
   .add('c-chain/blocks', 'en', '/c-chain/blocks{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'c-chain')
   .add('c-chain/tokens', 'en', '/c-chain/tokens{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'c-chain')
+
+  .add('c-chain/transaction', 'en', '/c-chain/transaction/:id', 'transaction')
+  .add('c-chain/transaction', 'nl', '/c-chain/transaction/:id', 'transaction')
+  
+  .add('c-chain/block', 'en', '/c-chain/block/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'block')
+  .add('c-chain/block', 'nl', '/c-chain/block/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'block')
+
+  
+  .add('c-chain/token', 'en', '/c-chain/token/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'token')
+  .add('c-chain/token', 'nl', '/c-chain/token/:id{/page/:page([\\d]+)}?{/per-page/:perPage([\\d]+)}?', 'token')
+
   .add('notifier', 'en', '/notifier', 'notifier')
   .add('notifier', 'nl', '/notifier', 'notifier')
   // .add('notifier', 'ja', '/notifier', 'notifier')

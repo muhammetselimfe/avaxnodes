@@ -2285,6 +2285,7 @@ table.dataTable.transactions tbody tr td:first-child {
     border-radius: 2px;
     padding: 6px;
     margin-left: 10px;
+    cursor: pointer;
   }
   .block-left, .block-right {
     max-width: 266px;
@@ -2453,6 +2454,10 @@ table.dataTable.transactions tbody tr td:first-child {
   margin-bottom: 40px;
   align-items: center;
   padding: 14px 16px;
+}
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 0 !important;
+  margin-bottom: 35px;
 }
 .execution-wrapper .inner h5 {
   color: #FFFFFF;
