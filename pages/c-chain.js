@@ -1,28 +1,36 @@
 import Head from 'next/head'
+import Routes from '../routes';
 
+import { useIntl } from "react-intl"
 import { useRouter } from 'next/router'
 
+import get from 'lodash/get'
 import CChain from '../components/CChain';
 import Layout from '../components/Layout';
 import { defaultLocale, locales } from '../locales'
+import pickParams from '../utils/pickParams';
 
 import styles from '../styles/Home.module.css'
 
 export default function Home(props) {
-  const router = useRouter()
+  const defaultRouter = useRouter()
+  const router = Routes.match(defaultRouter.asPath)
 
-  const currentLocale = ((router || {}).query || {}).locale || defaultLocale
-  const currentRoute = `${((router || {}).route || 'home').replace('/', '')}`
+  const currentLocale = get(router, 'route.locale') || get(defaultRouter, 'locale', defaultLocale) || defaultLocale
 
+  const currentRoute = get(router, 'query.nextRoute', 'c-chain')
+
+  const { formatMessage } = useIntl()
+  const f = id => formatMessage({ id })
   return (
-      <div className={styles.container}>
-        <Head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-          <title>Avaxnodes</title>
-          <link rel="icon" href="/favicon.ico" />
+    <div className={styles.container}>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Avaxnodes</title>
+        <link rel="icon" href="/favicon.ico" />
 
-          <link rel="canonical" href={router.parsedUrl.href} />
+        <link rel="canonical" href={router.parsedUrl.href} />
           {locales.map(locale => {
             const localeRoute = Routes.findAndGetUrls(router.route.name, locale, pickParams(router.params))
             return (
@@ -34,11 +42,11 @@ export default function Home(props) {
               />
             )
           })}
-        </Head>
+      </Head>
 
-        <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute}>
-          <CChain />
-        </Layout>
-      </div>
+      <Layout {...props} currentLocale={currentLocale} currentRoute={currentRoute} router={router}>
+        <CChain router={router} currentLocale={currentLocale} currentRoute={currentRoute}/>
+      </Layout>
+    </div>
   )
 }
