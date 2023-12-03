@@ -18,14 +18,15 @@ const handler = agenda => async job => {
   debug(preparedValidators.length)
 
   for (const validator of preparedValidators) {
-    debug(validator.nodeID, validator.delegators.itemsAll.length)
+    debug(validator.nodeID, validator.delegatorCount)
 
     try {
       await Node.findOneAndUpdate(
         { _id: validator.nodeID },
         {
-          delegatorsCount: validator.delegators.pagination.count,
-          delegatorsTotalStake: validator.delegators.totalStaked,
+          delegatorsCount: validator.delegatorCount,
+          // delegatorsCount: validator.delegators.pagination.count, //API has changed. There is no validator.delegators anymore. Have to change this part on preparedValidators.js later
+          // delegatorsTotalStake: validator.delegators.totalStaked,
           txID: validator.txID,
           startTime: validator.startTime,
           endTime: validator.endTime,
